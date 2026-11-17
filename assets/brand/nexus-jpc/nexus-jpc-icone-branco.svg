@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="55 18 564 478" width="564" height="478" role="img" aria-label="Icone N Nexus JPC">
+<title>N — Nexus JPC</title>
+<defs>
+      <linearGradient id="ribbon" x1="0%" y1="75%" x2="93%" y2="10%"><stop offset="0%" stop-color="#0063F1"/><stop offset="43%" stop-color="#3B82F6"/><stop offset="74%" stop-color="#04D9EE"/><stop offset="100%" stop-color="#0B79FF"/></linearGradient>
+      <linearGradient id="ribbonBack" x1="0%" y1="0%" x2="90%" y2="95%"><stop offset="0%" stop-color="#0067FC"/><stop offset="100%" stop-color="#093BBA"/></linearGradient>
+      <linearGradient id="node" x1="0%" y1="0%" x2="86%" y2="100%"><stop offset="0%" stop-color="#A0F6FA"/><stop offset="55%" stop-color="#43DAF3"/><stop offset="100%" stop-color="#08BDEB"/></linearGradient>
+      <radialGradient id="halo"><stop offset="45%" stop-color="#22D3EE" stop-opacity="0.24"/><stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/></radialGradient>
+      </defs>
+<g id="simbolo-N-monocromatico" fill="#F8FAFC">
+        <path d="M 80,114 L 145,159 L 145,385 L 80,422 Z"/>
+        <path d="M 80,114 L 182,53 Q 193,46 205,53 L 525,252 L 525,132 L 588,132 L 588,348 Q 588,361 575,369 L 529,396 Q 513,406 500,397 L 145,179 Z"/>
+        <circle cx="115" cy="421" r="46"/><circle cx="557" cy="132" r="46"/>
+        </g>
+</svg>
