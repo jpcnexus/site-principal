@@ -1,0 +1,437 @@
+<title>Nexus JPC · Simulação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: simulação da página inicial em 8 cenas empilhadas sobre um canvas fixo (onda + N de partículas); blocos cinza no lugar das imagens */
+:root{
+  --bg:#0B0F14; --bg-alt:#0A1626; --surface:#151B23; --line:rgba(148,163,184,.16);
+  --text:#F8FAFC; --muted:#CBD5E1; --dim:#94A3B8; --blue:#3B82F6; --cyan:#22D3EE;
+  --head:'Space Grotesk',ui-sans-serif,system-ui,sans-serif; --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--bg);color:var(--muted);font:400 16px/1.65 var(--body);overflow-x:hidden;transition:background-color .9s var(--ease-out)}
+h1,h2,h3{font-family:var(--head);color:var(--text);margin:0;letter-spacing:-.025em;line-height:1.05;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1}
+.c{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:768px){.c{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+.tag{position:absolute;top:14px;right:max(16px,env(safe-area-inset-right,0px));font:600 .68rem/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:var(--dim);border:1px dashed rgba(148,163,184,.35);padding:6px 10px;border-radius:8px;z-index:2;background:rgba(11,15,20,.6)}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font:600 .75rem/1 var(--head);letter-spacing:.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:18px}
+.eyebrow::before{content:"";width:24px;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px}
+.grad{background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 22px;border-radius:12px;font:600 .95rem/1 var(--body);border:1px solid transparent;text-decoration:none;cursor:pointer;transition:transform .3s var(--ease-out),box-shadow .3s}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#04121A;box-shadow:0 12px 34px -14px rgba(34,211,238,.7)}
+.btn-p:hover{transform:translateY(-2px)}
+.btn-g{border-color:rgba(148,163,184,.3);color:var(--text);background:rgba(21,27,35,.6)}
+.line-mask{overflow:hidden;display:block;padding-bottom:.06em}
+section{position:relative}
+.scene{padding:120px 0}
+@media(max-width:767px){.scene{padding:88px 0}}
+.h2{font-size:clamp(2rem,1.2rem + 3.2vw,3.6rem)}
+.lead{font-size:clamp(1.02rem,.95rem + .35vw,1.2rem);max-width:56ch;margin-top:18px}
+
+/* header */
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:5;background:rgba(11,15,20,.55);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .c{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font:700 1.05rem/1 var(--head);color:var(--text);letter-spacing:.02em}
+.logo b{color:var(--cyan)}
+.top nav{display:none;gap:26px;font-size:.9rem}
+@media(min-width:900px){.top nav{display:flex}}
+.top .btn{min-height:40px;padding:0 16px;font-size:.85rem}
+
+/* 1 hero */
+.hero{min-height:100svh;display:flex;align-items:center;padding-top:64px}
+.hero .grid{display:grid;width:100%}
+@media(min-width:960px){.hero .grid{grid-template-columns:1.1fr .9fr}}
+.hero h1{font-size:clamp(2.5rem,1.2rem + 5.4vw,5.2rem);line-height:1.02;letter-spacing:-.035em}
+.hero .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.micro{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;font-size:.85rem;color:var(--dim)}
+.micro span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-right:8px;vertical-align:middle}
+.hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+@media(max-width:959px){.hero{align-items:flex-start;padding-top:110px}.hero-space{height:34svh}}
+
+/* 2 dores */
+.pains{display:grid;gap:14px;margin-top:40px;max-width:760px}
+.pain{position:relative;font:500 clamp(1.15rem,1rem + .8vw,1.6rem)/1.3 var(--head);color:var(--muted);padding:14px 0;border-bottom:1px solid var(--line)}
+.pain .tx{background:linear-gradient(var(--cyan),var(--cyan)) no-repeat 0 58%/0% 2px;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.answer{margin-top:34px;font:600 clamp(1.3rem,1.1rem + 1vw,2rem)/1.25 var(--head);color:var(--text);max-width:720px}
+
+/* 3 conexão */
+.connect{display:grid;gap:40px;align-items:center}
+@media(min-width:960px){.connect{grid-template-columns:1fr 1fr}}
+.connect h2 span{display:block}
+.link-vis{position:relative;height:220px;border:1px dashed rgba(148,163,184,.25);border-radius:20px}
+.link-vis svg{position:absolute;inset:0;width:100%;height:100%}
+.link-vis .lbl{position:absolute;font:600 .8rem/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+
+/* 4 cartas */
+.cards{display:grid;gap:16px;margin-top:40px;perspective:1200px}
+@media(min-width:640px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.cards{grid-template-columns:repeat(4,1fr)}}
+.card{position:relative;height:250px;border:0;padding:0;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.card-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .8s var(--ease-out)}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line)}
+.front{background:linear-gradient(160deg,rgba(59,130,246,.14),var(--surface) 60%)}
+.front q{font:600 1.15rem/1.3 var(--head);color:var(--text);quotes:none}
+.front small{font-size:.78rem;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase}
+.back{background:var(--surface);border-color:rgba(34,211,238,.45);transform:rotateY(180deg)}
+.back b{font:700 1.3rem/1.2 var(--head);color:var(--text)}
+.back span{font-size:.92rem}
+.back em{font-style:normal;color:var(--cyan);font-weight:600;font-size:.9rem}
+.card:focus-visible{outline:2px solid var(--cyan);outline-offset:4px;border-radius:18px}
+.foot{margin-top:28px;color:var(--dim)}
+
+/* 5 projetos */
+.projs{display:grid;gap:18px;margin-top:40px}
+@media(min-width:900px){.projs{grid-template-columns:repeat(3,1fr)}}
+.ph{aspect-ratio:16/10;border-radius:14px;background:repeating-linear-gradient(135deg,#1a222c 0 12px,#151b23 12px 24px);border:1px solid var(--line);display:grid;place-items:center;font:500 .8rem/1.3 ui-monospace,monospace;color:var(--dim);text-align:center;padding:10px}
+.proj h3{font-size:1.25rem;margin:14px 0 4px}
+.proj p{font-size:.9rem;color:var(--dim)}
+
+/* 6 processo */
+.proc{overflow:hidden}
+.proc-head{padding-top:120px}
+.track{display:flex;gap:24px;padding:48px 0 120px;will-change:transform}
+.step{flex:0 0 min(78vw,420px);min-height:280px;border-radius:20px;border:1px solid var(--line);background:rgba(21,27,35,.7);padding:28px;position:relative}
+.step .n{font:700 3.2rem/1 var(--head);color:transparent;-webkit-text-stroke:1px rgba(148,163,184,.45)}
+.step.on .n{-webkit-text-stroke:1px var(--cyan);color:rgba(34,211,238,.12)}
+.step h3{font-size:1.5rem;margin:24px 0 10px}
+.rail{position:relative;height:2px;background:var(--line);margin-top:8px}
+.rail i{position:absolute;inset:0;background:linear-gradient(90deg,var(--blue),var(--cyan));box-shadow:0 0 12px var(--cyan);transform-origin:left;transform:scaleX(0)}
+.pay{margin-top:18px;color:var(--text);font-weight:500}
+@media(max-width:767px){.track{flex-direction:column;padding:32px 0 88px}.step{flex:none;min-height:0}.proc-head{padding-top:88px}}
+
+/* 7 faq */
+.faq{display:grid;gap:10px;margin-top:36px;max-width:860px}
+.faq details{border:1px solid var(--line);border-radius:14px;background:rgba(21,27,35,.7);padding:4px 20px}
+.faq summary{cursor:pointer;list-style:none;font:600 1.05rem/1.3 var(--head);color:var(--text);padding:16px 0}
+.faq summary::-webkit-details-marker{display:none}
+.faq p{padding-bottom:16px}
+
+/* 8 cta */
+.final{text-align:center}
+.final .acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:30px}
+.final .lead{margin-inline:auto}
+.foot-note{text-align:center;padding:40px 16px 60px;color:var(--dim);font-size:.85rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+<header class="top"><div class="c"><span class="logo">NEXUS <b>JPC</b></span><nav><span>Início</span><span>Serviços</span><span>Projetos</span><span>Sobre</span><span>Contato</span></nav><a class="btn btn-p" href="#cena-8">Quero meu orçamento</a></div></header>
+
+<section class="hero" id="cena-1" data-bg="#0B0F14">
+  <span class="tag">Cena 1 · A conexão nasce</span>
+  <div class="c grid">
+    <div>
+      <p class="eyebrow">Estúdio de soluções digitais</p>
+      <h1 class="split">Sua empresa merece uma <span class="grad">presença digital que impressiona.</span></h1>
+      <p class="lead">Sites, landing pages e soluções digitais sob medida, com design premium, texto que explica e caminho direto até o seu WhatsApp.</p>
+      <div class="acts"><a class="btn btn-p" href="#cena-8">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-5">Ver projetos reais</a></div>
+      <div class="micro"><span>Projetos publicados</span><span>Atendimento direto</span><span>Proposta sem compromisso</span></div>
+    </div>
+    <div class="hero-space" aria-hidden="true"></div>
+  </div>
+  <span class="hint">role para ver ↓</span>
+</section>
+
+<section class="scene" id="cena-2" data-bg="#0B0F14">
+  <span class="tag">Cena 2 · Frases riscadas</span>
+  <div class="c">
+    <p class="eyebrow">O problema</p>
+    <h2 class="h2 split">Bom no balcão, invisível no celular.</h2>
+    <p class="lead">O cliente procura, chega pelo Instagram e encontra informação espalhada, link quebrado ou nada que passe confiança. Aí ele fecha a aba e vai para o concorrente.</p>
+    <div class="pains">
+      <div class="pain"><span class="tx">"Qual é o preço?" perdido nos comentários.</span></div>
+      <div class="pain"><span class="tx">O serviço que ninguém entende direito.</span></div>
+      <div class="pain"><span class="tx">O WhatsApp que ninguém encontra.</span></div>
+    </div>
+    <p class="answer">Com a Nexus JPC, o visitante entende, confia e chama você.</p>
+  </div>
+</section>
+
+<section class="scene" id="cena-3" data-bg="#0A1626">
+  <span class="tag">Cena 3 · Troca de cor + conexão</span>
+  <div class="c connect">
+    <div>
+      <p class="eyebrow">A conexão</p>
+      <h2 class="h2"><span class="seq">Uma ideia.</span><span class="seq">Uma solução.</span><span class="seq grad">Conectadas.</span></h2>
+      <p class="lead">A Nexus JPC transforma o que você faz em uma experiência digital clara. É a ideia do nosso símbolo: o N que liga dois pontos.</p>
+    </div>
+    <div class="link-vis" aria-hidden="true">
+      <svg viewBox="0 0 400 220" preserveAspectRatio="none"><path id="lk" d="M40 170 C 140 170, 160 50, 360 50" fill="none" stroke="#22D3EE" stroke-width="2" stroke-linecap="round"/><circle cx="40" cy="170" r="9" fill="#0B0F14" stroke="#22D3EE" stroke-width="3"/><circle id="lk2" cx="360" cy="50" r="9" fill="#0B0F14" stroke="#22D3EE" stroke-width="3" opacity=".25"/></svg>
+      <span class="lbl" style="left:20px;bottom:14px">sua ideia</span><span class="lbl" style="right:20px;top:14px">solução digital</span>
+    </div>
+  </div>
+</section>
+
+<section class="scene" id="cena-4" data-bg="#0A1626">
+  <span class="tag">Cena 4 · Cartas que viram</span>
+  <div class="c">
+    <p class="eyebrow">Qual é o seu caso?</p>
+    <h2 class="h2 split">Não sabe se precisa de site, landing page ou outra coisa?</h2>
+    <p class="lead">Toque na frase que mais parece com você.</p>
+    <div class="cards">
+      <button class="card" type="button" aria-pressed="false"><span class="card-in"><span class="face front"><small>Carta 1</small><q>"Quero que me encontrem e confiem no meu negócio."</q><small>toque para virar ↻</small></span><span class="face back"><b>Site institucional</b><span>Seu endereço oficial na internet, com serviços, fotos e contato.</span><em>Ver como funciona →</em></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="card-in"><span class="face front"><small>Carta 2</small><q>"Vou lançar ou vender um produto ou oferta."</q><small>toque para virar ↻</small></span><span class="face back"><b>Landing page</b><span>Uma página focada em uma oferta e em uma única ação.</span><em>Ver como funciona →</em></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="card-in"><span class="face front"><small>Carta 3</small><q>"Preciso organizar links, catálogo ou QR Code."</q><small>toque para virar ↻</small></span><span class="face back"><b>Solução digital</b><span>Páginas de links, catálogos e QR Codes com a sua marca.</span><em>Ver como funciona →</em></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="card-in"><span class="face front"><small>Carta 4</small><q>"Minha rotina vive em planilhas e mensagens soltas."</q><small>toque para virar ↻</small></span><span class="face back"><b>Sistema ou automação</b><span>Agenda, cadastros e tarefas organizados, com avaliação técnica.</span><em>Ver como funciona →</em></span></span></button>
+    </div>
+    <p class="foot">Ainda em dúvida? Descreva com suas palavras e a gente indica o formato.</p>
+  </div>
+</section>
+
+<section class="scene" id="cena-5" data-bg="#0B0F14">
+  <span class="tag">Cena 5 · Telas reais com zoom</span>
+  <div class="c">
+    <p class="eyebrow">Projetos</p>
+    <h2 class="h2 split">Projetos reais. Status transparente.</h2>
+    <p class="lead">Nada de mockup inventado: estes são trabalhos publicados e em desenvolvimento, do jeito que estão hoje.</p>
+    <div class="projs">
+      <div class="proj"><div class="ph zoom">[assets/projects/calma72/capa-720.webp]</div><h3>Calma72</h3><p>Landing Page · Publicado</p></div>
+      <div class="proj"><div class="ph zoom">[assets/projects/ceia/capa-720.webp]</div><h3>Ceia no Seu Orçamento</h3><p>Landing Page · Publicado</p></div>
+      <div class="proj"><div class="ph zoom">[assets/projects/bilhar-dourado/capa-720.webp]</div><h3>Bilhar Dourado</h3><p>Site publicado · Sistema em desenvolvimento</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="proc" id="cena-6" data-bg="#0A1626">
+  <span class="tag">Cena 6 · Processo na horizontal</span>
+  <div class="c proc-head">
+    <p class="eyebrow">Como funciona</p>
+    <h2 class="h2 split">Você acompanha cada etapa.</h2>
+    <div class="rail"><i></i></div>
+  </div>
+  <div class="c"><div class="track">
+    <article class="step"><span class="n">01</span><h3>Entendimento</h3><p>Conversa direta para conhecer seu negócio e seu objetivo.</p></article>
+    <article class="step"><span class="n">02</span><h3>Planejamento</h3><p>Você aprova a estrutura e o visual antes de qualquer código.</p></article>
+    <article class="step"><span class="n">03</span><h3>Desenvolvimento</h3><p>Construímos e testamos no celular e no computador.</p></article>
+    <article class="step"><span class="n">04</span><h3>Entrega</h3><p>Ajustes combinados e projeto preparado para publicação.</p><p class="pay">50% para começar · 50% na entrega</p></article>
+  </div></div>
+</section>
+
+<section class="scene" id="cena-7" data-bg="#0B0F14">
+  <span class="tag">Cena 7 · Perguntas</span>
+  <div class="c">
+    <p class="eyebrow">Dúvidas</p>
+    <h2 class="h2 split">As dúvidas, respondidas.</h2>
+    <div class="faq">
+      <details><summary>Quanto custa um site?</summary><p>Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.</p></details>
+      <details><summary>Como funciona o pagamento?</summary><p>50% do valor para começar e os outros 50% na entrega do projeto.</p></details>
+      <details><summary>E se eu não souber o que preciso?</summary><p>Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado.</p></details>
+      <details><summary>Como sei que o projeto não vai ficar parado?</summary><p>As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.</p></details>
+      <details><summary>Vai ficar com cara de template?</summary><p>Cada projeto parte do seu negócio e do seu público. Veja o portfólio e note que nenhum projeto se parece com o outro.</p></details>
+    </div>
+  </div>
+</section>
+
+<section class="scene final" id="cena-8" data-bg="#0B0F14">
+  <span class="tag">Cena 8 · Chamada final</span>
+  <div class="c">
+    <p class="eyebrow">Orçamento</p>
+    <h2 class="h2 split">Vamos tirar seu projeto do papel?</h2>
+    <p class="lead">Conte sua ideia em 2 minutos. Você recebe uma proposta personalizada, sem compromisso.</p>
+    <div class="acts"><a class="btn btn-p" href="#cena-1">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-1">Falar no WhatsApp</a></div>
+  </div>
+</section>
+<p class="foot-note">Simulação da Carta 2 · blocos cinza = imagens reais que entram na versão final · role de volta ao topo para ver o N se formar de novo</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+'use strict';
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var coarse = matchMedia('(pointer: coarse)').matches;
+
+/* ================= Canvas: onda de pontos + N de partículas ================= */
+var cv = document.getElementById('fx'), ctx = cv.getContext('2d');
+var W, H, dpr, cols, rows, wave = [], trav = [], nPts = [];
+var t = Math.random()*50, mouse = {x:-9999,y:-9999,tx:-9999,ty:-9999,a:0,ta:0};
+var state = { intro: 0, keep: 1 };   // intro: 0→1 ao abrir; keep: 1→0 ao rolar para fora do hero
+var TINTS = ['#3B82F6','#3197F2','#2AACEE','#26BFEC','#22D3EE','#5EE0F2','#A5F3FC'];
+
+// Símbolo oficial do N (caminhos do arquivo nexus-jpc-icone.svg, viewBox 55 18 564 478)
+var N_PATHS = [
+  'M 80,114 L 145,159 L 145,385 L 80,422 Z',
+  'M 80,114 L 182,53 Q 193,46 205,53 L 525,252 L 525,132 L 588,132 L 588,348 Q 588,361 575,369 L 529,396 Q 513,406 500,397 L 145,179 Z'
+];
+var N_NODES = [[115,421],[557,132]];
+
+function sampleN(){
+  var oc = document.createElement('canvas'); oc.width = 564; oc.height = 478;
+  var o = oc.getContext('2d'); o.translate(-55,-18); o.fillStyle = '#fff';
+  N_PATHS.forEach(function(d){ o.fill(new Path2D(d)); });
+  var img = o.getImageData(0,0,564,478).data, pts = [], step = coarse || innerWidth < 700 ? 13 : 10;
+  for (var y=0; y<478; y+=step) for (var x=0; x<564; x+=step) {
+    if (img[(y*564+x)*4+3] > 128) pts.push({x:x+55, y:y+18, node:false});
+  }
+  N_NODES.forEach(function(n){              // nós circulares: anéis concêntricos
+    for (var r=0; r<=46; r+=step*0.8) { var k = Math.max(1, Math.round(2*Math.PI*r/(step*0.9)));
+      for (var i=0;i<k;i++){ var a=i/k*Math.PI*2; pts.push({x:n[0]+Math.cos(a)*r, y:n[1]+Math.sin(a)*r, node:true}); } }
+  });
+  return pts;
+}
+
+function layout(){
+  W = innerWidth; H = innerHeight; dpr = Math.min(devicePixelRatio||1, 1.5);
+  cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  var sp = W < 640 ? 11 : 13; cols = Math.min(130, Math.round(W/sp)); rows = W < 640 ? 20 : 30;
+  wave = [];
+  for (var r=0;r<rows;r++) for (var c=0;c<cols;c++) wave.push({r:r,c:c});
+  // posição e tamanho do N
+  var size = W < 960 ? Math.min(W*0.56, H*0.24) : Math.min(H*0.56, W*0.34);
+  var cx = W < 960 ? W*0.5 : W*0.74, cy = H*0.5;
+  if (W < 960){ var mi = document.querySelector('.hero .micro'); var top = mi ? mi.getBoundingClientRect().bottom + scrollY : H*0.7; cy = Math.min(top + 40 + size/2, H - size/2 - 16); }
+  var s = size/478;
+  var raw = nPts.length ? nPts : (nPts = sampleN());
+  // escolhe pontos da onda (fileiras da frente) para viajar até o N
+  var pool = wave.filter(function(p){ return p.r > rows*0.35; });
+  trav = raw.map(function(p,i){
+    var w = pool[Math.floor((i*7919) % pool.length)];
+    return { w:w, nx: cx + (p.x - 337)*s, ny: cy + (p.y - 257)*s, node:p.node, ox:0, oy:0, delay: Math.random()*0.35 };
+  });
+  var used = {}; trav.forEach(function(p){ used[p.w.r*1000+p.w.c] = 1; });
+  wave.forEach(function(p){ p.trav = !!used[p.r*1000+p.c]; });
+}
+
+function wpos(p){
+  var d = p.r/(rows-1), u = p.c/(cols-1), s = 0.3 + 0.7*Math.pow(d,1.25);
+  var h = Math.sin(u*6.2 + t*0.55 + d*2.4)*0.6 + Math.sin(u*13 - t*0.85 + d*4.1)*0.22 + Math.sin(u*2.3 + t*0.32 - d*1.3)*0.53;
+  return { x: W/2 + (u-0.5)*W*(1.08+0.55*d), y: H*(0.58+0.42*Math.pow(d,1.3)) - h*H*0.09*s, s:s, d:d, u:u, h:h };
+}
+function ease(x){ return x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  var mx = mouse.x, my = mouse.y, ma = mouse.a, prog = state.intro*state.keep;
+  // onda (pontos que não viajam)
+  for (var i=0;i<wave.length;i++){
+    var p = wave[i]; if (p.trav && prog > 0.02) continue;
+    var q = wpos(p), lift = 0;
+    if (ma > .01){ var dx=q.x-mx, dy=(q.y-my)*1.4, dd=Math.sqrt(dx*dx+dy*dy), R=140+90*q.s; if (dd<R){ var f=1-dd/R; lift=f*f*40*q.s*ma; } }
+    var cr = (q.h+1.35)/2.7;
+    ctx.globalAlpha = Math.min(1,(0.12+0.78*Math.pow(q.d,1.4))*(0.45+0.75*cr) + lift/80);
+    ctx.fillStyle = TINTS[Math.min(6,Math.round((q.u*.45+cr*.45+lift/60)*6))];
+    var sz = 0.8 + 1.5*q.s + lift/22; ctx.fillRect(q.x-sz/2, q.y-lift-sz/2, sz, sz);
+  }
+  // pontos que viajam até o N
+  for (var j=0;j<trav.length;j++){
+    var a = trav[j], w = wpos(a.w);
+    var k = prog*1.35 - a.delay;
+    var e = ease(Math.max(0,Math.min(1,k)));
+    var bx = a.nx + Math.sin(t*1.3 + j)*1.2, by = a.ny + Math.cos(t*1.1 + j*0.7)*1.2;
+    // mouse empurra os pontos do N
+    if (ma > .01 && e > .5){ var dx2 = bx-mx, dy2 = by-my, d2 = Math.sqrt(dx2*dx2+dy2*dy2); if (d2 < 90){ var f2=(1-d2/90)*26*ma; a.ox += (dx2/(d2||1)*f2 - a.ox)*.2; a.oy += (dy2/(d2||1)*f2 - a.oy)*.2; } else { a.ox*=.9; a.oy*=.9; } } else { a.ox*=.9; a.oy*=.9; }
+    var x = w.x + (bx + a.ox - w.x)*e, y = w.y + (by + a.oy - w.y)*e;
+    // arco: sobe antes de chegar
+    y -= Math.sin(e*Math.PI) * 60;
+    var tint = a.node ? 6 : Math.min(5, Math.round(((a.nx - (W*0.5))/(W*0.4) + 0.5)*5 + 1));
+    ctx.globalAlpha = 0.35 + 0.65*e;
+    ctx.fillStyle = TINTS[Math.max(0,tint)];
+    var s2 = (0.9 + 1.4*w.s)*(1-e) + (a.node ? 2.6 : 2.2)*e;
+    ctx.fillRect(x-s2/2, y-s2/2, s2, s2);
+  }
+  ctx.globalAlpha = 1;
+}
+
+var last = 0;
+function tick(ts){
+  requestAnimationFrame(tick);
+  if (ts - last < (coarse ? 33 : 16)) return;
+  var dt = Math.min(64, ts-(last||ts))/1000; last = ts; t += dt;
+  mouse.x += (mouse.tx-mouse.x)*.12; mouse.y += (mouse.ty-mouse.y)*.12; mouse.a += (mouse.ta-mouse.a)*.06;
+  draw();
+}
+layout();
+var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(layout, 150); });
+addEventListener('pointermove', function(e){ if (mouse.x < -999){ mouse.x=e.clientX; mouse.y=e.clientY; } mouse.tx=e.clientX; mouse.ty=e.clientY; mouse.ta=1; }, {passive:true});
+addEventListener('pointerup', function(e){ if (e.pointerType !== 'mouse') mouse.ta = 0; }, {passive:true});
+document.addEventListener('pointerleave', function(){ mouse.ta = 0; });
+
+if (reduce || !window.gsap){ state.intro = 1; draw(); return; }
+requestAnimationFrame(tick);
+
+/* ================= Rolagem suave (Lenis) + GSAP ================= */
+gsap.registerPlugin(ScrollTrigger, SplitText);
+var lenis = window.Lenis ? new Lenis({ lerp: 0.1 }) : null;
+if (lenis){ lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(function(time){ lenis.raf(time*1000); }); gsap.ticker.lagSmoothing(0); }
+document.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click', function(e){ var el = document.querySelector(a.getAttribute('href')); if (!el) return; e.preventDefault(); lenis ? lenis.scrollTo(el, {offset:-64}) : el.scrollIntoView({behavior:'smooth'}); }); });
+
+// Cena 1: N se forma ao abrir e se desfaz ao rolar
+gsap.to(state, { intro: 1, duration: 2.2, ease: 'power3.inOut', delay: .3 });
+ScrollTrigger.create({ trigger: '#cena-1', start: 'top top', end: 'bottom top', onUpdate: function(s){ state.keep = Math.max(0, 1 - s.progress*1.5); } });
+gsap.to('#cena-1 .c', { yPercent: -18, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cena-1', start: 'top top', end: 'bottom top', scrub: true } });
+
+// Títulos linha a linha
+document.fonts.ready.then(function(){
+  document.querySelectorAll('.split').forEach(function(el, i){
+    var sp = new SplitText(el, { type: 'lines', mask: 'lines', linesClass: 'ln' });
+    gsap.from(sp.lines, { yPercent: 110, duration: 1, ease: 'power4.out', stagger: .1, delay: i === 0 ? .4 : 0,
+      scrollTrigger: i === 0 ? null : { trigger: el, start: 'top 85%' } });
+  });
+  ScrollTrigger.refresh();
+});
+gsap.utils.toArray('.lead, .eyebrow, .acts, .micro, .foot').forEach(function(el){
+  gsap.from(el, { y: 24, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 90%' } });
+});
+
+// Troca de cor de fundo entre cenas
+gsap.utils.toArray('[data-bg]').forEach(function(sec){
+  ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onToggle: function(s){ if (s.isActive) document.body.style.backgroundColor = sec.dataset.bg; } });
+});
+
+// Cena 2: frases riscadas uma a uma, resposta entra
+var tl2 = gsap.timeline({ scrollTrigger: { trigger: '.pains', start: 'top 70%' } });
+gsap.utils.toArray('.pain').forEach(function(p){
+  tl2.from(p, { x: -30, opacity: 0, duration: .5, ease: 'power3.out' })
+     .to(p.querySelector('.tx'), { backgroundSize: '100% 2px', duration: .45, ease: 'power2.inOut' }, '+=.25')
+     .to(p, { color: 'rgba(148,163,184,.45)', duration: .3 }, '<');
+});
+tl2.from('.answer', { y: 30, opacity: 0, duration: .8, ease: 'power3.out' });
+
+// Cena 3: frases em sequência + linha que conecta os nós com a rolagem
+gsap.from('.seq', { yPercent: 60, opacity: 0, stagger: .18, duration: .9, ease: 'power4.out', scrollTrigger: { trigger: '#cena-3', start: 'top 65%' } });
+var lk = document.getElementById('lk'), L = lk.getTotalLength();
+gsap.set(lk, { strokeDasharray: L, strokeDashoffset: L });
+gsap.timeline({ scrollTrigger: { trigger: '.link-vis', start: 'top 80%', end: 'bottom 40%', scrub: .6 } })
+  .to(lk, { strokeDashoffset: 0, ease: 'none' })
+  .to('#lk2', { opacity: 1, duration: .1 });
+
+// Cena 4: cartas entram em leque e viram ao toque
+gsap.from('.card', { y: 60, rotate: function(i){ return (i-1.5)*4; }, opacity: 0, stagger: .12, duration: 1, ease: 'power4.out', scrollTrigger: { trigger: '.cards', start: 'top 80%' } });
+document.querySelectorAll('.card').forEach(function(c){ c.addEventListener('click', function(){ var on = !c.classList.contains('flip'); c.classList.toggle('flip', on); c.setAttribute('aria-pressed', String(on)); }); });
+
+// Cena 5: telas com zoom e desfoque saindo
+gsap.utils.toArray('.zoom').forEach(function(z, i){
+  gsap.fromTo(z, { scale: 1.15, filter: 'blur(8px)', opacity: 0 }, { scale: 1, filter: 'blur(0px)', opacity: 1, duration: 1.2, delay: i*.12, ease: 'power3.out', scrollTrigger: { trigger: '.projs', start: 'top 80%' } });
+});
+
+// Cena 6: processo na horizontal (desktop) / vertical com linha (celular)
+var mm = gsap.matchMedia();
+mm.add('(min-width: 768px)', function(){
+  var track = document.querySelector('.track'), steps = gsap.utils.toArray('.step');
+  var dist = function(){ return Math.max(0, track.scrollWidth - track.parentElement.clientWidth); };
+  gsap.to(track, { x: function(){ return -dist(); }, ease: 'none',
+    scrollTrigger: { trigger: '#cena-6', start: 'top top', end: function(){ return '+=' + (dist() + innerHeight*0.6); }, pin: true, scrub: .8, invalidateOnRefresh: true,
+      onUpdate: function(s){ gsap.set('.rail i', { scaleX: s.progress }); var n = Math.min(steps.length-1, Math.floor(s.progress*steps.length)); steps.forEach(function(st,i){ st.classList.toggle('on', i <= n); }); } } });
+});
+mm.add('(max-width: 767px)', function(){
+  gsap.utils.toArray('.step').forEach(function(st){ ScrollTrigger.create({ trigger: st, start: 'top 70%', onEnter: function(){ st.classList.add('on'); } }); gsap.from(st, { y: 40, opacity: 0, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: st, start: 'top 88%' } }); });
+  gsap.to('.rail i', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: '.track', start: 'top 70%', end: 'bottom 70%', scrub: true } });
+});
+
+// Cena 7: perguntas em sequência
+gsap.from('.faq details', { y: 24, opacity: 0, stagger: .08, duration: .7, ease: 'power3.out', scrollTrigger: { trigger: '.faq', start: 'top 85%' } });
+})();
+</script>
