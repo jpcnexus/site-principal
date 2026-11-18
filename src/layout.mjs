@@ -248,6 +248,7 @@ export function projectCard(p, { headingLevel = 3, eager = false } = {}) {
     </div>
     <h${headingLevel} class="project-title"><a href="/projetos/${p.slug}/">${esc(p.nome)}</a></h${headingLevel}>
     <p class="project-text">${esc(p.resumo)}</p>
+    ${p.referencia ? `<p class="project-ref">Projeto semelhante: ${esc(p.referencia)}</p>` : ''}
     <div class="project-actions">
       <a class="link-arrow" href="/projetos/${p.slug}/">Ver case ${icon('arrow')}</a>
       ${p.url ? `<a class="link-ext" href="${p.url}" target="_blank" rel="noopener" aria-label="Abrir site publicado de ${esc(shortName(p))} (nova aba)">Ver site ${icon('external')}</a>` : ''}

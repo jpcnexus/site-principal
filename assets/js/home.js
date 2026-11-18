@@ -57,6 +57,41 @@
     card.addEventListener('pointerleave', function () { tilt.style.transform = ''; });
   });
 
+  /* ---------- Portfólio: carrossel com setas, arraste e telas que rolam sozinhas ---------- */
+  var work = document.querySelector('[data-work-track]'), workTouched = false;
+  if (work) {
+    var prev = document.querySelector('[data-work-prev]'), next = document.querySelector('[data-work-next]');
+    var step = function () { var c = work.querySelector('.h-work-card'); return c ? c.getBoundingClientRect().width + 20 : 320; };
+    var arrows = function () { var max = work.scrollWidth - work.clientWidth - 4; if (prev) prev.disabled = work.scrollLeft <= 4; if (next) next.disabled = work.scrollLeft >= max; };
+    var touch = function () { workTouched = true; work.classList.remove('is-drift'); };
+    if (prev) prev.addEventListener('click', function () { touch(); work.scrollBy({ left: -step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    if (next) next.addEventListener('click', function () { touch(); work.scrollBy({ left: step(), behavior: reduce ? 'auto' : 'smooth' }); });
+    work.addEventListener('scroll', arrows, { passive: true }); arrows();
+    ['touchstart', 'wheel', 'keydown'].forEach(function (ev) { work.addEventListener(ev, touch, { passive: true }); });
+    // arrastar com o mouse
+    var drag = null, moved = false;
+    work.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; touch(); drag = { x: e.clientX, left: work.scrollLeft }; moved = false; });
+    window.addEventListener('pointermove', function (e) { if (!drag) return; var dx = e.clientX - drag.x; if (Math.abs(dx) > 5) { moved = true; work.classList.add('is-drag'); } work.scrollLeft = drag.left - dx; });
+    window.addEventListener('pointerup', function () { if (!drag) return; drag = null; setTimeout(function () { work.classList.remove('is-drag'); }, 0); });
+    work.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
+    work.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    // as capturas descem devagar mostrando o site inteiro (só enquanto aparecem na tela)
+    if (!reduce) {
+      work.querySelectorAll('.h-work-view img').forEach(function (img) {
+        var setup = function () {
+          var view = img.parentElement, dist = img.getBoundingClientRect().height - view.getBoundingClientRect().height;
+          if (dist <= 0) return;
+          img.style.setProperty('--dist', dist + 'px');
+          img.style.setProperty('--dur', Math.max(8, dist / 70) + 's');
+          img.classList.add('is-pan');
+        };
+        img.complete ? setup() : img.addEventListener('load', setup);
+      });
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { e.target.classList.toggle('is-visible', e.isIntersecting); }); }, { threshold: 0.4 });
+      work.querySelectorAll('.h-work-view').forEach(function (v) { io.observe(v); });
+    }
+  }
+
   /* ---------- Texto vivo ---------- */
   var GLY = '01<>/_-+=#*';
   function scramble(el, txt, dur) {
@@ -170,14 +205,6 @@
       .to('.h-answer', { opacity: 1, duration: 0.6 });
   });
 
-  /* ---------- Do problema à solução ---------- */
-  gsap.utils.toArray('.h-fix-row').forEach(function (row) {
-    gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 85%' } })
-      .from(row.querySelector('.h-fix-p'), { x: -30, opacity: 0, duration: 0.6, ease: 'power3.out' })
-      .from(row.querySelector('.h-fix-arrow'), { scale: 0, opacity: 0, duration: 0.35 }, '-=.2')
-      .from(row.querySelector('.h-fix-s'), { x: 30, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=.15');
-  });
-
   /* ---------- Cena 4: o site nascendo (presa) ---------- */
   var steps = gsap.utils.toArray('.h-st'), label = document.querySelector('[data-stage-label]');
   var labels = ['01 · Briefing', '02 · Wireframe aprovado', '03 · Design e interações', '04 · No ar'];
@@ -211,28 +238,20 @@
   /* ---------- Cena 5: cartas entram ---------- */
   mm.add('(min-width: 768px)', function () { gsap.from('.h-card', { y: 90, opacity: 0, stagger: 0.1, duration: 1.1, ease: 'power4.out', scrollTrigger: { trigger: '.h-cards', start: 'top 82%' } }); });
 
-  /* ---------- Cena 6: galeria horizontal ---------- */
-  var panels = gsap.utils.toArray('.h-panel'), count = document.querySelector('[data-gal-count]');
-  mm.add('(min-width: 768px)', function () {
-    var track = document.querySelector('[data-gal-track]');
-    var dist = function () { return (panels.length - 1) * window.innerWidth; };
-    var tween = gsap.to(track, {
-      x: function () { return -dist(); }, ease: 'none',
-      scrollTrigger: {
-        trigger: '.h-gal', start: 'top top', end: function () { return '+=' + dist(); }, pin: true, scrub: 0.8, invalidateOnRefresh: true,
-        onUpdate: function (s) {
-          var n = Math.min(panels.length - 1, Math.round(s.progress * (panels.length - 1)));
-          count.textContent = '0' + (n + 1) + ' / 0' + panels.length;
-          setBg(panels[n].getAttribute('data-tint'));
-        }
-      }
+  /* ---------- Cena 6: o carrossel anda para o lado conforme a rolagem ---------- */
+  if (work) {
+    work.classList.add('is-drift');
+    ScrollTrigger.create({ trigger: '.h-work', start: 'top 80%', end: 'bottom 20%', onUpdate: function (s) {
+      if (workTouched) return;
+      var max = work.scrollWidth - work.clientWidth; if (max <= 0) return;
+      work.scrollLeft = s.progress * max;
+    } });
+    // Quando todos os projetos cabem na tela (computador), a fileira ainda desliza de leve para o lado.
+    mm.add('(min-width: 768px)', function () {
+      if (work.scrollWidth - work.clientWidth > 0) return;
+      gsap.fromTo(work, { x: 90 }, { x: -90, ease: 'none', scrollTrigger: { trigger: '.h-work', start: 'top bottom', end: 'bottom top', scrub: 0.6 } });
     });
-    panels.forEach(function (p) {
-      gsap.fromTo(p.querySelector('.h-shot-in'), { rotateY: -24, rotateX: 8, scale: 0.86 }, { rotateY: 0, rotateX: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 90%', end: 'center center', scrub: true } });
-      gsap.fromTo(p.querySelector('.h-panel-name'), { xPercent: 20 }, { xPercent: -20, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
-    });
-  });
-
+  }
 
   /* ---------- Cena 7: perguntas ---------- */
   gsap.from('.h-faq .faq-item', { x: 40, opacity: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.h-faq .faq', start: 'top 85%' } });

@@ -352,6 +352,7 @@ export function projectDetail(p) {
         <div><dt>Tipo</dt><dd>${esc(p.tipo)}</dd></div>
         <div><dt>Categoria</dt><dd>${esc(p.categoria)}</dd></div>
         <div class="is-full"><dt>Status</dt><dd>${esc(p.status.label)}</dd></div>
+        ${p.referencia ? `<div class="is-full is-ref"><dt>Projeto semelhante</dt><dd>${esc(p.referencia)} <small>(valor de referência da tabela atual)</small></dd></div>` : ''}
         ${p.url ? `<div class="is-full"><dt>Endereço</dt><dd><a href="${p.url}" target="_blank" rel="noopener">${esc(p.url.replace('https://', ''))}</a></dd></div>` : ''}
       </dl>
     </div>

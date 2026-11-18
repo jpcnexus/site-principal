@@ -66,7 +66,7 @@ Os HTML gerados ficam versionados no repositório, então a Hostinger serve os a
 
 ### Adicionar um projeto ao portfólio
 
-1. Crie a pasta `assets/projects/<slug>/` com `capa.webp`, `capa-720.webp`, `galeria-1..3.webp` e `mobile.webp` (capturas reais).
+1. Crie a pasta `assets/projects/<slug>/` com `capa.webp`, `capa-720.webp`, `galeria-1..3.webp`, `mobile.webp` e `inteiro.webp` (captura da página inteira no celular, 300px de largura) — todas capturas reais.
 2. Adicione (ou ative) o item em `src/data/projects.mjs`.
 3. Rode `node scripts/build.mjs`. A página, o card e o sitemap são criados automaticamente.
 

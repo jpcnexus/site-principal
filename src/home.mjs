@@ -6,14 +6,29 @@ import { page, esc, icon } from './layout.mjs';
 
 // Frases do "Qual é o seu caso?" ligadas a cada serviço
 const caseLines = {
-  sites: { q: 'Quero que me encontrem e confiem no meu negócio.', label: 'Site institucional', d: 'Para quem só tem Instagram e perde cliente por falta de confiança. Seu site oficial, com serviços, fotos e WhatsApp.' },
-  'landing-pages': { q: 'Vou lançar ou vender um produto ou oferta.', label: 'Landing page', d: 'Para vender um produto ou serviço específico. Uma página que explica a oferta e leva direto à compra ou à conversa.' },
-  'solucoes-digitais': { q: 'Preciso organizar links, catálogo ou QR Code.', label: 'Solução digital', d: 'Para quem tem links ou produtos soltos. Tudo organizado numa página com a sua marca, fácil de compartilhar.' },
-  automacoes: { q: 'Minha rotina vive em planilhas e mensagens soltas.', label: 'Sistema ou automação', d: 'Para quem perde tempo com planilhas e mensagens. Agenda, cadastros e tarefas num só lugar.' },
+  sites: {
+    q: 'Meu cliente não me encontra na internet, ou só tenho Instagram.',
+    label: 'Site do seu negócio',
+    d: 'Um endereço na internet só seu (ex.: seunegocio.com.br) com serviços, fotos, horários e botão do WhatsApp. Passa confiança e aparece no Google.',
+  },
+  'landing-pages': {
+    q: 'Quero vender um produto ou serviço específico.',
+    label: 'Página de vendas',
+    d: 'Uma página só para essa oferta: explica o que você vende, tira as dúvidas e leva o cliente direto a comprar ou a falar com você.',
+  },
+  'solucoes-digitais': {
+    q: 'Meus links, produtos e preços estão espalhados.',
+    label: 'Página de links ou catálogo',
+    d: 'Tudo organizado numa página bonita com a sua marca, fácil de mandar no WhatsApp ou pôr na bio. Pode vir com QR Code.',
+  },
+  automacoes: {
+    q: 'Anoto clientes e horários em papel, planilha ou mensagens soltas.',
+    label: 'Sistema sob medida',
+    d: 'Um programa simples, no celular ou no computador, para organizar agenda, clientes e tarefas. Antes, avaliamos se vale a pena no seu caso.',
+  },
 };
 
 // Cor de fundo de cada projeto na galeria (tom escuro da identidade real de cada site)
-const projectTint = { calma72: '#0A1A1C', ceia: '#0A1A12', 'bilhar-dourado': '#0A1022' };
 
 const faq = [
   ['Quanto custa um site?', 'Os projetos começam em R$ 160 (página de links). Landing pages a partir de R$ 510 e sites institucionais a partir de R$ 960. O valor final vem na proposta personalizada, sem compromisso.'],
@@ -64,20 +79,6 @@ export function home() {
   </div>
 </section>
 
-<section class="h-fix" data-bg="#0B0F14" aria-labelledby="h-fix-title">
-  <div class="h-wide">
-    <p class="eyebrow" data-scramble>Do problema à solução</p>
-    <h2 id="h-fix-title" class="section-title h-split">O que a gente resolve, <span class="grad">sem complicação.</span></h2>
-    <p class="section-text">Você não precisa saber o nome técnico de nada. Veja se algum desses problemas parece com o seu:</p>
-    <ol class="h-fix-list">
-      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>O cliente procura seu negócio e não encontra nada confiável, só um perfil no Instagram.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Um site com a sua cara, que aparece no Google e mostra que você é profissional.</p></div></li>
-      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>As pessoas perguntam preço, horário e serviços toda hora, e muitas desistem antes de comprar.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Uma página que explica tudo de forma clara, respondendo as dúvidas antes de a pessoa perguntar.</p></div></li>
-      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>O interessado não acha o seu WhatsApp ou cansa de procurar o contato.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Botão de WhatsApp em todo lugar: o cliente fala com você em um toque.</p></div></li>
-    </ol>
-    <p class="h-fix-foot">Ainda não sabe qual formato é o seu? Tudo bem. <a href="/contato/">Conte o problema com suas palavras</a>: a gente indica o formato mais simples e barato que resolve.</p>
-  </div>
-</section>
-
 <section class="h-build" data-bg="#091526" aria-labelledby="h-build-title">
   <div class="h-wide h-build-grid">
     <div>
@@ -122,40 +123,51 @@ export function home() {
 <section class="h-case" data-bg="#0B0F14" aria-labelledby="h-case-title">
   <div class="h-wide">
     <div class="section-head is-center"><p class="eyebrow" data-scramble>Qual é o seu caso?</p>
-      <h2 id="h-case-title" class="section-title h-split">Não sabe do que precisa? <span class="grad">Vire uma carta.</span></h2><p class="h-swipe" aria-hidden="true">Deslize para ver as 4 cartas →</p></div>
+      <h2 id="h-case-title" class="section-title h-split">Qual destes problemas <span class="grad">é o seu?</span></h2><p class="section-text h-case-lead">Você não precisa saber nome técnico de nada. Toque no problema que parece com o seu e veja a solução e quanto custa.</p><p class="h-swipe" aria-hidden="true">Deslize para ver os 4 problemas →</p></div>
     <ul class="h-cards">
       ${services
         .map((s, i) => {
           const c = caseLines[s.slug];
           return `<li class="h-card" data-card>
         <div class="h-tilt"><div class="h-card-in">
-          <button type="button" class="h-face h-front" aria-expanded="false" aria-controls="h-card-${s.slug}" data-cursor-text="virar"><small>Carta 0${i + 1}</small><q>${esc(c.q)}</q><small>toque para virar ↻</small><span class="h-big-n" aria-hidden="true">${i + 1}</span></button>
-          <div class="h-face h-back" id="h-card-${s.slug}"><small>Você precisa de</small><b>${esc(c.label)}</b><p>${esc(c.d)}</p><p class="h-price">a partir de <strong>${esc(s.preco.valor)}</strong></p><div class="actions"><a class="link-arrow" href="/servicos/${s.slug}/">Ver como funciona ${icon('arrow')}</a><button type="button" data-unflip>Voltar</button></div></div>
+          <button type="button" class="h-face h-front" aria-expanded="false" aria-controls="h-card-${s.slug}" data-cursor-text="ver"><small>Problema ${i + 1}</small><q>${esc(c.q)}</q><small>toque para ver a solução ↻</small><span class="h-big-n" aria-hidden="true">${i + 1}</span></button>
+          <div class="h-face h-back" id="h-card-${s.slug}"><small>A solução</small><b>${esc(c.label)}</b><p>${esc(c.d)}</p><p class="h-price">a partir de <strong>${esc(s.preco.valor)}</strong></p><div class="actions"><a class="link-arrow" href="/servicos/${s.slug}/">Ver como funciona ${icon('arrow')}</a><button type="button" data-unflip>Voltar</button></div></div>
         </div></div>
       </li>`;
         })
         .join('')}
     </ul>
-    <p class="h-cfoot">Ainda em dúvida? <a href="/contato/">Descreva com suas palavras</a> e a gente indica o formato.</p>
+    <p class="h-cfoot">Nenhum parece com o seu? Tudo bem. <a href="/contato/">Conte o problema com suas palavras</a> e a gente indica o caminho mais simples e barato.</p>
   </div>
 </section>
 
-<section class="h-gal" data-bg="#0B0F14" aria-labelledby="h-gal-title">
-  <div class="h-gal-head h-wide"><h2 id="h-gal-title" class="eyebrow">Projetos reais · status transparente</h2><p class="h-swipe" aria-hidden="true">Deslize para ver os projetos →</p><span class="h-gal-count" data-gal-count aria-hidden="true">01 / 0${projects.length}</span></div>
-  <div class="h-gal-track" data-gal-track>
+<section class="h-work" data-bg="#0B0F14" aria-labelledby="h-work-title">
+  <div class="h-wide">
+    <div class="h-work-head">
+      <div><p class="eyebrow" data-scramble>Portfólio</p><h2 id="h-work-title" class="section-title h-split">Projetos reais, <span class="grad">do topo ao rodapé.</span></h2></div>
+      <div class="h-work-ctrl"><button type="button" class="h-arrow" data-work-prev aria-label="Projeto anterior">${icon('arrowLeft')}</button><button type="button" class="h-arrow" data-work-next aria-label="Próximo projeto">${icon('arrow')}</button></div>
+    </div>
+    <p class="h-swipe" aria-hidden="true">Deslize para ver os projetos →</p>
+  </div>
+  <div class="h-work-track" data-work-track tabindex="0" aria-label="Projetos">
     ${projects
       .map(
-        (p) => `<article class="h-panel" data-tint="${projectTint[p.slug] || '#0B0F14'}">
-      <span class="h-panel-name" aria-hidden="true">${esc(shortName(p).toUpperCase())}</span>
-      <div class="h-shot">
-        <a class="h-shot-in" href="/projetos/${p.slug}/" data-cursor-text="ver" aria-label="Ver o case ${esc(p.nome)}"><img src="/assets/projects/${p.slug}/capa-720.webp" alt="${esc(p.imagens[0].alt)}" width="720" height="450" loading="lazy" decoding="async"></a>
-        <div class="h-meta"><h3><a href="/projetos/${p.slug}/">${esc(p.nome)}</a></h3><span class="chip">${esc(p.categoria)}</span><span class="status status-${p.status.tone}"><span class="status-dot" aria-hidden="true"></span>${esc(p.status.label)}</span>${p.url ? `<a class="link-ext" href="${p.url}" target="_blank" rel="noopener">Ver site ${icon('external')}</a>` : ''}</div>
+        (p) => `<article class="h-work-card">
+      <a class="h-work-shot" href="/projetos/${p.slug}/" data-cursor-text="ver" aria-label="Ver o case ${esc(p.nome)}">
+        <span class="h-work-bar" aria-hidden="true"><i></i><i></i><i></i><em>${esc(p.url ? p.url.replace('https://', '') : p.nome)}</em></span>
+        <span class="h-work-view"><img src="/assets/projects/${p.slug}/inteiro.webp" alt="Página inteira do projeto ${esc(p.nome)}, do topo ao rodapé" width="300" height="1200" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="h-work-meta">
+        <h3><a href="/projetos/${p.slug}/">${esc(p.nome)}</a></h3>
+        <p class="h-work-tags"><span>${esc(p.categoria)}</span> · <span class="h-work-st h-work-st-${p.status.tone}">${esc(p.status.label)}</span></p>
+        ${p.referencia ? `<p class="h-work-ref">Projeto semelhante: ${esc(p.referencia)}</p>` : ''}
+        <p class="h-work-links"><a class="link-arrow" href="/projetos/${p.slug}/">Ver case ${icon('arrow')}</a>${p.url ? `<a class="link-ext" href="${p.url}" target="_blank" rel="noopener">Ver site ${icon('external')}</a>` : ''}</p>
       </div>
     </article>`
       )
       .join('')}
+    <a class="h-work-card h-work-all" href="/projetos/"><span>Ver todos os projetos</span>${icon('arrow')}</a>
   </div>
-  <div class="h-gal-more"><a class="btn btn-ghost btn-sm" href="/projetos/">Ver todos os projetos ${icon('arrow')}</a></div>
 </section>
 
 <section class="h-faq" data-bg="#0B0F14" aria-labelledby="h-faq-title">
