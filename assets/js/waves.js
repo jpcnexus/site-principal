@@ -14,7 +14,8 @@
 
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var coarse = window.matchMedia('(pointer: coarse)').matches;
-  var lowEnd = coarse || (navigator.hardwareConcurrency || 8) <= 4;
+  var phone = coarse || window.innerWidth < 768;
+  var lowEnd = phone || (navigator.hardwareConcurrency || 8) <= 4;
   var heroEl = document.querySelector('[data-fx-n]');
   var finalEl = document.querySelector('[data-fx-final]');
   var afterEl = document.querySelector('[data-fx-n-after]');
@@ -42,7 +43,7 @@
     var oc = document.createElement('canvas'); oc.width = 564; oc.height = 478;
     var o = oc.getContext('2d'); o.translate(-55, -18); o.fillStyle = '#fff';
     N_PATHS.forEach(function (d) { o.fill(new Path2D(d)); });
-    var img = o.getImageData(0, 0, 564, 478).data, pts = [], step = (lowEnd || window.innerWidth < 700) ? 12 : 9;
+    var img = o.getImageData(0, 0, 564, 478).data, pts = [], step = phone ? 15 : lowEnd ? 12 : 9;
     for (var y = 0; y < 478; y += step) for (var x = 0; x < 564; x += step) {
       if (img[(y * 564 + x) * 4 + 3] > 128) pts.push({ x: x + 55 - 337, y: y + 18 - 257, z: (Math.random() - 0.5) * 26, node: false });
     }
@@ -57,12 +58,12 @@
 
   function resize() {
     W = window.innerWidth; H = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, lowEnd ? 1.25 : 1.5);
+    dpr = phone ? 1 : Math.min(window.devicePixelRatio || 1, lowEnd ? 1.25 : 1.5);
     canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    var sp = W < 640 ? 11 : 13;
-    cols = Math.min(lowEnd ? 90 : 130, Math.max(30, Math.round(W / sp)));
-    rows = W < 640 ? 20 : lowEnd ? 24 : 30;
+    var sp = phone ? 15 : 13;
+    cols = Math.min(phone ? 40 : lowEnd ? 90 : 130, Math.max(26, Math.round(W / sp)));
+    rows = phone ? 14 : lowEnd ? 24 : 30;
     wave = [];
     for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++) wave.push({ r: r, c: c, trav: false });
     if (nMode) {
@@ -182,7 +183,7 @@
     if (ripples.length > 2) ripples.shift();
     ripples.push({ x: e.clientX, y: e.clientY, t0: performance.now() });
   }, { passive: true });
-  document.addEventListener('visibilitychange', function () { document.hidden ? stop() : start(); });
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (!phone) start(); });
 
   // Se home.js não assumir (ex.: falha ao carregar as bibliotecas), o N se forma sozinho.
   if (nMode) setTimeout(function () {
@@ -192,6 +193,19 @@
     (function grow() { var k = Math.min(1, (performance.now() - t0) / 1800); st.intro = k; st.pre = 0; if (k < 1) requestAnimationFrame(grow); })();
   }, 1200);
 
-  start();
+  // Celular: a animação só roda enquanto o topo ou a chamada final estão na tela;
+  // nas páginas internas o fundo fica parado (um único quadro), economizando bateria.
+  if (phone) {
+    if (!nMode) { draw(); canvas.classList.add('is-ready'); window.addEventListener('resize', function () { setTimeout(draw, 200); }); return; }
+    var seen = new Map();
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { seen.set(e.target, e.isIntersecting); });
+      var any = false; seen.forEach(function (v) { if (v) any = true; });
+      if (any && !document.hidden) start(); else { stop(); }
+    }, { threshold: 0 });
+    io.observe(heroEl); if (finalEl) io.observe(finalEl);
+  } else {
+    start();
+  }
   requestAnimationFrame(function () { canvas.classList.add('is-ready'); });
 })();

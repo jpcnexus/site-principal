@@ -537,10 +537,28 @@ body.menu-open { overflow: hidden; }
 .has-cursor input, .has-cursor textarea { cursor: text !important; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 html.lenis, html.lenis body { height: auto; }
-@media (prefers-reduced-motion: reduce) { .fx-grain { display: none; } }
+@media (prefers-reduced-motion: reduce), (max-width: 1023px), (pointer: coarse) { .fx-grain, .fx-spot { display: none; } }
 
 /* ---------- Botão de orçamento fixo no celular ---------- */
 .m-cta { position: fixed; z-index: 55; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row-reverse; min-height: 52px; border-radius: 14px; background: var(--grad); color: #04121A; font-weight: 700; box-shadow: 0 16px 40px -12px rgba(34,211,238,.7); transform: translateY(140%); transition: transform .45s var(--ease); }
 .m-cta.is-on { transform: none; }
 @media (min-width: 1024px) { .m-cta { display: none; } }
 @media (max-width: 1023px) { .site-footer { padding-bottom: 96px; } }
+
+/* ---------- Preços ---------- */
+.service-price { font-size: .88rem; color: var(--muted); }
+.service-price b { color: var(--text); font-family: var(--font-head); font-size: 1.05rem; }
+.price-tag { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin-top: 22px; padding: 12px 16px; border-radius: 12px; border: 1px solid rgba(34,211,238,.3); background: rgba(34,211,238,.06); color: var(--muted); max-width: 640px; }
+.price-tag b { font-family: var(--font-head); font-size: 1.35rem; color: var(--text); }
+.price-tag span { font-size: .86rem; color: var(--dim); width: 100%; }
+.price-table { display: grid; border: 1px solid var(--line-2); border-radius: var(--radius-lg); overflow: hidden; background: rgba(21,27,35,.7); }
+.price-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 16px; padding: 18px 22px; border-top: 1px solid var(--line); color: var(--text); transition: background-color .25s; }
+.price-row:first-child { border-top: 0; }
+a.price-row:hover { background: rgba(34,211,238,.06); }
+.price-val { color: var(--dim); font-size: .9rem; white-space: nowrap; }
+.price-val b { font-family: var(--font-head); font-size: 1.2rem; color: var(--cyan); }
+.price-extra { background: rgba(59,130,246,.06); color: var(--muted); }
+.price-notes { display: grid; gap: 8px; margin-top: 18px; font-size: .9rem; }
+.price-notes li { display: flex; gap: 10px; align-items: flex-start; }
+.price-notes .ico { color: var(--cyan); margin-top: 3px; }
+@media (max-width: 600px) { .price-row { flex-direction: column; align-items: flex-start; gap: 2px; padding: 14px 16px; } .price-row > span:first-child { font-size: .95rem; } }

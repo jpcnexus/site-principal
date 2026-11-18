@@ -29,3 +29,10 @@ export const email = null;
 export function waLink(message = whatsapp.defaultMessage) {
   return `https://wa.me/${whatsapp.number}?text=${encodeURIComponent(message)}`;
 }
+
+// Preços de referência ("a partir de"). O valor final sempre vem na proposta.
+export const pricing = {
+  manutencao: 'R$ 90/mês',
+  pagamento: '50% para começar e 50% na entrega',
+  observacao: 'Domínio e hospedagem são contratados à parte, no nome do cliente.',
+};

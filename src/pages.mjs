@@ -1,5 +1,5 @@
 // Conteúdo de cada página. Cada função retorna o HTML completo.
-import { site, whatsapp, waLink } from './config.mjs';
+import { site, whatsapp, waLink, pricing } from './config.mjs';
 import { services, getService } from './data/services.mjs';
 import { activeProjects, categories, shortName } from './data/projects.mjs';
 import {
@@ -88,12 +88,32 @@ ${pageHero({
     <div class="services-grid services-grid-lg">${services.map((s, i) => serviceCard(s, i, 2)).join('')}</div>
   </div>
 </section>
+<section class="section" aria-labelledby="precos-title">
+  <div class="container">
+    ${sectionHead({ eyebrow: 'Investimento', title: '<span id="precos-title">Quanto custa, sem rodeios</span>', text: 'Valores de partida para você se planejar. O valor final depende do que o seu projeto precisa e vem na proposta, sem compromisso.' })}
+    <div class="price-table" data-reveal>
+      ${[
+        ['Página de links / cartão digital', 'R$ 250', '/servicos/solucoes-digitais/'],
+        ['Catálogo digital com QR Code', 'R$ 450', '/servicos/solucoes-digitais/'],
+        ['Landing page', 'R$ 790', '/servicos/landing-pages/'],
+        ['Site institucional (até 5 páginas)', 'R$ 1.490', '/servicos/sites/'],
+        ['Sistemas e automações (após avaliação técnica)', 'R$ 2.500', '/servicos/automacoes/'],
+      ].map(([n, v, h]) => `<a class="price-row" href="${h}"><span>${esc(n)}</span><span class="price-val">a partir de <b>${v}</b></span></a>`).join('')}
+      <div class="price-row price-extra"><span>Manutenção mensal (opcional): atualizações, ajustes e acompanhamento</span><span class="price-val">a partir de <b>${esc(pricing.manutencao)}</b></span></div>
+    </div>
+    <ul class="price-notes" data-reveal>
+      <li>${icon('check')} Pagamento: ${esc(pricing.pagamento)}.</li>
+      <li>${icon('check')} ${esc(pricing.observacao)}</li>
+      <li>${icon('check')} Proposta sem compromisso: você conhece o valor antes de começar.</li>
+    </ul>
+  </div>
+</section>
 ${processSection()}
 <section class="section" aria-labelledby="duvidas-title">
   <div class="container narrow">
     ${sectionHead({ eyebrow: 'Dúvidas', title: '<span id="duvidas-title">Antes de pedir seu orçamento</span>' })}
     <div class="faq">${[
-      ['Quanto custa um site?', 'Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.'],
+      ['Quanto custa um site?', 'Os projetos começam em R$ 250 (página de links). Landing pages a partir de R$ 790 e sites institucionais a partir de R$ 1.490. O valor final vem na proposta personalizada, sem compromisso.'],
       ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto.'],
       ['E se eu não souber o que preciso?', 'Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado.'],
       ['Como sei que o projeto não vai ficar parado?', 'As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.'],
@@ -139,7 +159,7 @@ ${pageHero({
   title: esc(s.titulo),
   text: esc(s.descricao),
   crumbs,
-  extra: `<div class="hero-actions"><a class="btn btn-primary" href="/contato/?tipo=${s.slug}">Quero meu orçamento ${icon('arrow')}</a><a class="btn btn-ghost" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('whatsapp')} Conversar no WhatsApp</a></div>`,
+  extra: `<p class="price-tag">Investimento a partir de <b>${esc(s.preco.valor)}</b><span>${esc(s.preco.nota)} · ${esc(pricing.pagamento)}</span></p><div class="hero-actions"><a class="btn btn-primary" href="/contato/?tipo=${s.slug}">Quero meu orçamento ${icon('arrow')}</a><a class="btn btn-ghost" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('whatsapp')} Conversar no WhatsApp</a></div>`,
 })}
 
 <section class="section section-tight" aria-labelledby="apresentacao-title">

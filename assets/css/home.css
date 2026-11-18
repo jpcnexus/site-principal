@@ -193,3 +193,51 @@ html.pre-on .h-pre { display: flex; }
   .js .h-ty, .js .h-answer { opacity: 1; }
   .h-shot-in { transform: none; }
 }
+
+/* =========================================================
+   Celular: versão mais leve e direta (sem cenas presas,
+   carrosséis de deslizar, menos texto na tela)
+   ========================================================= */
+.h-swipe { display: none; }
+@media (max-width: 767px) {
+  .h-hero { min-height: auto; padding-bottom: 20px; }
+  .h-hero-space { height: 30svh; }
+  .h-hint, .h-n-hint { display: none; }
+  .h-micro { margin-top: 20px; }
+  .h-marquee { padding: 4px 0 20px; }
+  .h-row { font-size: 17vw; }
+  .h-row[data-row="2"] { display: none; }
+  .h-pain { height: auto; display: block; padding: 48px 0; }
+  .h-pain-stage { height: auto; display: flex; flex-direction: column; gap: 10px; padding: 0 var(--gutter); }
+  .h-pain-title { position: static; display: block; text-align: left; padding: 0; margin-bottom: 8px; }
+  .h-pain-title h2 { font-size: clamp(2rem, 9vw, 2.6rem); max-width: none; }
+  .h-notif { position: relative; inset: auto; rotate: 0deg; width: 100%; padding: 12px 14px; box-shadow: none; }
+  .h-answer { position: static; transform: none; width: auto; text-align: left; margin-top: 8px; font-size: 1.15rem; }
+  .h-build { min-height: auto; padding: 48px 0; }
+  .h-try { margin-top: 0; padding: 12px; }
+  .h-demo-note { display: none; }
+  .h-case { padding: 56px 0; }
+  .h-case .section-head { text-align: left; margin-bottom: 0; }
+  .h-swipe { display: block; margin-top: 10px; font-size: .8rem; color: var(--dim); }
+  .h-cards { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; margin: 22px calc(var(--gutter) * -1) 0; padding: 0 var(--gutter) 8px; scrollbar-width: none; }
+  .h-cards::-webkit-scrollbar, .h-gal-track::-webkit-scrollbar { display: none; }
+  .h-card { flex: 0 0 80%; height: 230px; scroll-snap-align: center; rotate: 0deg !important; translate: none !important; }
+  .h-front q { font-size: 1.05rem; }
+  .h-big-n { font-size: 6rem; }
+  .h-cfoot { margin-top: 16px; font-size: .9rem; text-align: left; }
+  .h-gal { height: auto; padding: 48px 0 8px; }
+  .h-gal-head { position: relative; top: auto; padding-top: 0; display: block; }
+  .h-gal-track { flex-direction: row; height: auto; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; padding: 16px var(--gutter) 8px; scrollbar-width: none; }
+  .h-panel { flex: 0 0 86%; height: auto; min-height: 0; padding: 0; display: block; overflow: visible; scroll-snap-align: center; }
+  .h-panel-name { display: none; }
+  .h-shot { width: 100%; }
+  .h-shot-in { transform: none; }
+  .h-meta { margin-top: 12px; gap: 6px 8px; }
+  .h-meta h3 { font-size: 1.1rem; width: 100%; }
+  .h-gal-more { position: relative; left: auto; bottom: auto; transform: none; display: flex; justify-content: center; padding: 16px 0 0; }
+  .h-faq { padding: 56px 0; }
+  .h-final { min-height: auto; padding: 72px 0 56px; }
+  .h-final h2 { font-size: clamp(2.2rem, 10vw, 3rem); }
+}
+.h-price { font-size: .85rem; color: var(--dim); margin-top: -4px; }
+.h-price strong { font-family: var(--font-head); font-size: 1.1rem; color: var(--cyan); }

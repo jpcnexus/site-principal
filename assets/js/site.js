@@ -253,7 +253,7 @@
   var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   // Rolagem suave (Lenis). Se a página inicial usar GSAP, home.js conecta o ScrollTrigger a ela.
-  if (!reduce && window.Lenis) {
+  if (!reduce && fine && window.Lenis) {
     var lenis = new window.Lenis({ lerp: 0.1 });
     window.__lenis = lenis;
     if (!window.gsap) {
@@ -307,9 +307,17 @@
 /* ---------- Botão de orçamento fixo no celular: aparece depois do topo, some perto do fim ---------- */
 (function () {
   var b = document.querySelector('[data-m-cta]'); if (!b) return;
+  var blockers = 0;
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { blockers += e.isIntersecting ? 1 : (e.target.__seen ? -1 : 0); e.target.__seen = e.isIntersecting; });
+      blockers = Math.max(0, blockers); upd();
+    });
+    document.querySelectorAll('.h-final, .cta-banner, .site-footer, .h-hero .hero-actions').forEach(function (el) { io.observe(el); });
+  }
   function upd() {
-    var y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight;
-    b.classList.toggle('is-on', y > window.innerHeight * 0.6 && y < max - 260);
+    var y = window.scrollY;
+    b.classList.toggle('is-on', y > window.innerHeight * 0.6 && blockers === 0);
   }
   window.addEventListener('scroll', upd, { passive: true }); upd();
 })();

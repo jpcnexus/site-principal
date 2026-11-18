@@ -150,6 +150,8 @@
   gsap.fromTo('[data-row="2"]', { xPercent: -35 }, { xPercent: 0, ease: 'none', scrollTrigger: { trigger: '.h-marquee', start: 'top bottom', end: 'bottom top', scrub: 0.5 } });
 
   /* ---------- Cena 3: notificações (presa) ---------- */
+  var mm = gsap.matchMedia();
+  mm.add('(min-width: 768px)', function () {
   gsap.timeline({ scrollTrigger: { trigger: '.h-pain', start: 'top top', end: '+=150%', pin: true, scrub: 0.7 } })
     .from('.h-n1', { y: 80, opacity: 0, scale: 0.8, duration: 0.4 })
     .from('.h-n2', { y: 80, opacity: 0, scale: 0.8, duration: 0.4 }, '+=.1')
@@ -160,6 +162,13 @@
     .to('.h-n3', { y: 200, rotate: 10, opacity: 0, duration: 0.5 }, '<.05')
     .to('.h-pain-title h2', { y: -40, duration: 0.5 }, '<')
     .to('.h-answer', { opacity: 1, y: -10, duration: 0.5 });
+  });
+  mm.add('(max-width: 767px)', function () {
+    gsap.timeline({ scrollTrigger: { trigger: '.h-pain', start: 'top 70%' } })
+      .from('.h-notif', { x: -30, opacity: 0, duration: 0.45, stagger: 0.12, ease: 'power3.out' })
+      .to('.h-notif s', { scaleX: 1, duration: 0.3, stagger: 0.12 }, '+=.1')
+      .to('.h-answer', { opacity: 1, duration: 0.6 });
+  });
 
   /* ---------- Cena 4: o site nascendo (presa) ---------- */
   var steps = gsap.utils.toArray('.h-st'), label = document.querySelector('[data-stage-label]');
@@ -170,8 +179,8 @@
     screen.classList.toggle('is-colored', n >= 2);
     screen.classList.toggle('is-live', n >= 3);
   }
-  gsap.timeline({ scrollTrigger: { trigger: '.h-build', start: 'top top', end: '+=260%', pin: true, scrub: 0.8, onUpdate: function (s) { stage(Math.min(3, Math.floor(s.progress * 4))); } } })
-    .from('.h-wf i', { scaleX: 0, transformOrigin: 'left', opacity: 0, stagger: 0.05, duration: 0.4 })
+  function buildTl(tl) {
+    return tl.from('.h-wf i', { scaleX: 0, transformOrigin: 'left', opacity: 0, stagger: 0.05, duration: 0.4 })
     .to('.h-cursor', { left: '60%', top: '28%', duration: 0.5 }, '<')
     .to('.h-wf', { opacity: 0, duration: 0.4 }, '+=.3')
     .to('.h-ty', { opacity: 1, duration: 0.4 }, '<')
@@ -181,12 +190,21 @@
     .to('.h-cursor', { left: '50%', top: '92%', duration: 0.5 }, '+=.3')
     .to('.h-cursor', { opacity: 0, duration: 0.2 })
     .to({}, { duration: 0.3 });
+  }
+  mm.add('(min-width: 768px)', function () {
+    buildTl(gsap.timeline({ scrollTrigger: { trigger: '.h-build', start: 'top top', end: '+=260%', pin: true, scrub: 0.8, onUpdate: function (s) { stage(Math.min(3, Math.floor(s.progress * 4))); } } }));
+  });
+  mm.add('(max-width: 767px)', function () {
+    var tl = gsap.timeline({ paused: true, defaults: { ease: 'power2.inOut' }, onUpdate: function () { stage(Math.min(3, Math.floor(this.progress() * 4))); } });
+    buildTl(tl); tl.duration(4.5);
+    ScrollTrigger.create({ trigger: '.h-browser', start: 'top 75%', once: true, onEnter: function () { tl.play(); } });
+  });
 
   /* ---------- Cena 5: cartas entram ---------- */
-  gsap.from('.h-card', { y: 90, opacity: 0, stagger: 0.1, duration: 1.1, ease: 'power4.out', scrollTrigger: { trigger: '.h-cards', start: 'top 82%' } });
+  mm.add('(min-width: 768px)', function () { gsap.from('.h-card', { y: 90, opacity: 0, stagger: 0.1, duration: 1.1, ease: 'power4.out', scrollTrigger: { trigger: '.h-cards', start: 'top 82%' } }); });
 
   /* ---------- Cena 6: galeria horizontal ---------- */
-  var mm = gsap.matchMedia(), panels = gsap.utils.toArray('.h-panel'), count = document.querySelector('[data-gal-count]');
+  var panels = gsap.utils.toArray('.h-panel'), count = document.querySelector('[data-gal-count]');
   mm.add('(min-width: 768px)', function () {
     var track = document.querySelector('[data-gal-track]');
     var dist = function () { return (panels.length - 1) * window.innerWidth; };
@@ -206,12 +224,7 @@
       gsap.fromTo(p.querySelector('.h-panel-name'), { xPercent: 20 }, { xPercent: -20, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
     });
   });
-  mm.add('(max-width: 767px)', function () {
-    panels.forEach(function (p) {
-      gsap.fromTo(p.querySelector('.h-shot-in'), { rotateX: 16, scale: 0.9 }, { rotateX: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'center 55%', scrub: true } });
-      ScrollTrigger.create({ trigger: p, start: 'top 55%', end: 'bottom 55%', onToggle: function (s) { if (s.isActive) setBg(p.getAttribute('data-tint')); } });
-    });
-  });
+
 
   /* ---------- Cena 7: perguntas ---------- */
   gsap.from('.h-faq .faq-item', { x: 40, opacity: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: '.h-faq .faq', start: 'top 85%' } });

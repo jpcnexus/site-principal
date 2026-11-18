@@ -169,7 +169,7 @@ export function page({ path, title, description, active, body, crumbs, jsonld = 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script>document.documentElement.classList.add('js');${intro ? "try{if(!sessionStorage.getItem('nx-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('pre-on')}catch(e){}" : ''}</script>
+<script>document.documentElement.classList.add('js');${intro ? "try{if(!sessionStorage.getItem('nx-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&matchMedia('(min-width: 768px) and (pointer: fine)').matches)document.documentElement.classList.add('pre-on')}catch(e){}" : ''}</script>
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
@@ -261,6 +261,7 @@ export function serviceCard(s, i = 0, level = 3) {
   <span class="service-icon">${icon(s.icon)}</span>
   <h${level} class="service-title">${esc(s.titulo)}</h${level}>
   <p class="service-text">${esc(s.descricao)}</p>
+  ${s.preco ? `<span class="service-price">a partir de <b>${esc(s.preco.valor)}</b></span>` : ''}
   <span class="link-arrow" aria-hidden="true">Saiba mais ${icon('arrow')}</span>
 </a>`;
 }

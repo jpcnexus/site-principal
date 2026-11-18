@@ -16,8 +16,9 @@ const caseLines = {
 const projectTint = { calma72: '#0A1A1C', ceia: '#0A1A12', 'bilhar-dourado': '#0A1022' };
 
 const faq = [
-  ['Quanto custa um site?', 'Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.'],
-  ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto.'],
+  ['Quanto custa um site?', 'Os projetos começam em R$ 250 (página de links). Landing pages a partir de R$ 790 e sites institucionais a partir de R$ 1.490. O valor final vem na proposta personalizada, sem compromisso.'],
+  ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto. Domínio e hospedagem são contratados à parte, no seu nome.'],
+  ['Depois que o site fica pronto, vocês continuam ajudando?', 'Sim. Existe a manutenção mensal opcional, a partir de R$ 90/mês, para atualizar textos e fotos, fazer ajustes e acompanhar o site.'],
   ['E se eu não souber o que preciso?', 'Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado, que às vezes é mais simples do que você imagina.'],
   ['Como sei que o projeto não vai ficar parado?', 'As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.'],
   ['Vai ficar com cara de template?', 'Cada projeto parte do seu negócio e do seu público. Veja o portfólio e note que nenhum projeto se parece com o outro.'],
@@ -107,7 +108,7 @@ export function home() {
 <section class="h-case" data-bg="#0B0F14" aria-labelledby="h-case-title">
   <div class="h-wide">
     <div class="section-head is-center"><p class="eyebrow" data-scramble>Qual é o seu caso?</p>
-      <h2 id="h-case-title" class="section-title h-split">Não sabe do que precisa? <span class="grad">Vire uma carta.</span></h2></div>
+      <h2 id="h-case-title" class="section-title h-split">Não sabe do que precisa? <span class="grad">Vire uma carta.</span></h2><p class="h-swipe" aria-hidden="true">Deslize para ver as 4 cartas →</p></div>
     <ul class="h-cards">
       ${services
         .map((s, i) => {
@@ -115,7 +116,7 @@ export function home() {
           return `<li class="h-card" data-card>
         <div class="h-tilt"><div class="h-card-in">
           <button type="button" class="h-face h-front" aria-expanded="false" aria-controls="h-card-${s.slug}" data-cursor-text="virar"><small>Carta 0${i + 1}</small><q>${esc(c.q)}</q><small>toque para virar ↻</small><span class="h-big-n" aria-hidden="true">${i + 1}</span></button>
-          <div class="h-face h-back" id="h-card-${s.slug}"><small>Você precisa de</small><b>${esc(c.label)}</b><p>${esc(c.d)}</p><div class="actions"><a class="link-arrow" href="/servicos/${s.slug}/">Ver como funciona ${icon('arrow')}</a><button type="button" data-unflip>Voltar</button></div></div>
+          <div class="h-face h-back" id="h-card-${s.slug}"><small>Você precisa de</small><b>${esc(c.label)}</b><p>${esc(c.d)}</p><p class="h-price">a partir de <strong>${esc(s.preco.valor)}</strong></p><div class="actions"><a class="link-arrow" href="/servicos/${s.slug}/">Ver como funciona ${icon('arrow')}</a><button type="button" data-unflip>Voltar</button></div></div>
         </div></div>
       </li>`;
         })
@@ -126,7 +127,7 @@ export function home() {
 </section>
 
 <section class="h-gal" data-bg="#0B0F14" aria-labelledby="h-gal-title">
-  <div class="h-gal-head h-wide"><h2 id="h-gal-title" class="eyebrow">Projetos reais · status transparente</h2><span class="h-gal-count" data-gal-count aria-hidden="true">01 / 0${projects.length}</span></div>
+  <div class="h-gal-head h-wide"><h2 id="h-gal-title" class="eyebrow">Projetos reais · status transparente</h2><p class="h-swipe" aria-hidden="true">Deslize para ver os projetos →</p><span class="h-gal-count" data-gal-count aria-hidden="true">01 / 0${projects.length}</span></div>
   <div class="h-gal-track" data-gal-track>
     ${projects
       .map(
