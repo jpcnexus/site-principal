@@ -44,7 +44,7 @@ section{position:relative}
 .hero{min-height:100svh;display:flex;align-items:center;padding:96px 0 64px}
 .hero .grid{display:grid;width:100%}
 @media(min-width:960px){.hero .grid{grid-template-columns:1.1fr .9fr}}
-.hero h1{font-size:clamp(2.6rem,1rem + 6.2vw,6rem);letter-spacing:-.04em;line-height:.98}
+.hero h1{font-size:clamp(2.6rem,1rem + 5.2vw,5.2rem);letter-spacing:-.04em;line-height:.98}
 .acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 .micro{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;font-size:.85rem;color:var(--dim)}
 .micro span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-right:8px;vertical-align:middle;box-shadow:0 0 8px var(--cyan)}
@@ -169,10 +169,66 @@ section{position:relative}
 .final .lead{margin-inline:auto}
 .safe{margin-top:18px;font-size:.85rem;color:var(--dim)}
 .note{text-align:center;padding:30px 16px 60px;color:var(--dim);font-size:.8rem}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}.real{opacity:1}.ty{opacity:1}.answer{opacity:1}}
+/* abertura */
+.pre{position:fixed;inset:0;z-index:50;pointer-events:none;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding:0 max(24px,env(safe-area-inset-right,0px)) 28px max(24px,env(safe-area-inset-left,0px))}
+.pre-count{font:700 clamp(4.5rem,15vw,11rem)/.9 var(--head);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px rgba(148,163,184,.45);font-variant-numeric:tabular-nums}
+.pre-label{font:600 .72rem/1.6 var(--head);letter-spacing:.24em;text-transform:uppercase;color:var(--dim);text-align:right;padding-bottom:12px}
+.pre-label b{display:block;color:var(--text);font-size:.9rem;letter-spacing:.16em}
+html.pre-on .wrap{opacity:0}
+html.pre-on body{overflow:hidden}
+/* textura e luz */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;z-index:30;pointer-events:none;opacity:.08;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain .9s steps(5) infinite}
+@keyframes grain{0%,100%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}}
+.spot{position:fixed;left:0;top:0;width:760px;height:760px;margin:-380px 0 0 -380px;border-radius:50%;background:radial-gradient(circle,rgba(59,130,246,.17),rgba(34,211,238,.05) 42%,transparent 70%);z-index:0;pointer-events:none;opacity:0;transition:opacity .6s;will-change:transform}
+.spot.on{opacity:1}
+/* cursor */
+.cur,.cur-dot{position:fixed;left:0;top:0;pointer-events:none;z-index:45;border-radius:50%;display:none}
+html.has-cur .cur,html.has-cur .cur-dot{display:grid}
+.cur{width:40px;height:40px;margin:-20px 0 0 -20px;border:1px solid rgba(34,211,238,.6);place-items:center;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease),background-color .3s,border-color .3s}
+.cur span{font:700 .62rem/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:#04121A;opacity:0;transition:opacity .2s}
+.cur.link{width:60px;height:60px;margin:-30px 0 0 -30px;background:rgba(34,211,238,.1)}
+.cur.big{width:88px;height:88px;margin:-44px 0 0 -44px;background:var(--cyan);border-color:transparent}
+.cur.big span{opacity:1}
+.cur-dot{width:6px;height:6px;margin:-3px 0 0 -3px;background:var(--cyan)}
+html.has-cur,html.has-cur *{cursor:none!important}
+html.has-cur input{cursor:text!important}
+/* título com palavra viva */
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.04em}
+.hero h1 .line>span{display:inline-block}
+.rot{white-space:nowrap}
+/* experimente */
+.try{margin-top:26px;padding:16px;border-radius:16px;border:1px solid rgba(34,211,238,.3);background:rgba(21,27,35,.7)}
+.try label{display:block;font:600 .78rem/1.3 var(--head);letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
+.try-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.try input{flex:1 1 180px;min-height:46px;padding:0 14px;border-radius:12px;border:1px solid rgba(148,163,184,.3);background:#0B0F14;color:var(--text);font:500 1rem/1 var(--body)}
+.try input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 0 3px rgba(34,211,238,.2)}
+.sw{display:flex;gap:8px}
+.sw button{width:30px;height:30px;border-radius:50%;border:2px solid transparent;background:var(--c);cursor:pointer;padding:0;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
+.sw button.on{border-color:#fff}
+.screen{--brand:#22D3EE}
+.ty .nav{position:absolute;left:7%;top:8%;font:700 clamp(.5rem,1.1vw,.9rem)/1 var(--head);color:#fff;letter-spacing:.02em}
+.ty .nav-links{position:absolute;right:7%;top:8%;display:flex;gap:6%;width:34%;justify-content:flex-end}
+.ty .nav-links i{display:block;height:4px;width:22%;border-radius:4px;background:#334155}
+.ty h4{top:26%}
+.ty h4 .nm{display:block;color:#fff;word-break:break-word}
+.ty h4 .sub{display:block;font-size:.5em;letter-spacing:-.01em;margin-top:.35em;color:#cbd5e1;transition:color .6s}
+.colored .ty h4 .sub{color:var(--brand)}
+.colored .ty .b{background:var(--brand);color:#04121A}
+.colored .ty .img{background:radial-gradient(circle at 30% 30%,color-mix(in srgb,var(--brand) 70%,#fff),color-mix(in srgb,var(--brand) 35%,#0B0F14) 60%,#0B0F14)}
+.ty .cards3{position:absolute;left:7%;right:7%;bottom:6%;display:none;gap:3%}
+.ty .cards3 i{flex:1;height:18px;border-radius:6px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.live .ty .cards3{display:flex}
+.live .ty .img{box-shadow:0 20px 40px -10px color-mix(in srgb,var(--brand) 60%,transparent)}
+.badge{position:absolute;left:12px;bottom:12px;z-index:3;font:600 .7rem/1 var(--head);letter-spacing:.14em;text-transform:uppercase;color:#A7F3D0;background:rgba(11,15,20,.75);border:1px solid rgba(52,211,153,.4);padding:7px 10px;border-radius:8px;opacity:0;transition:opacity .4s}
+.live .badge{opacity:1}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.ty{opacity:1}.answer{opacity:1}.grain{display:none}}
 </style>
 
 <canvas id="fx" aria-hidden="true"></canvas>
+<div class="spot" id="spot" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cur" id="cur" aria-hidden="true"><span id="cur-t">ver</span></div><div class="cur-dot" id="cur-dot" aria-hidden="true"></div>
+<div class="pre" id="pre" aria-hidden="true"><span class="pre-count" id="pre-count">000</span><span class="pre-label"><b>NEXUS JPC</b>conectando ideias<br>a soluções digitais</span></div>
 <div class="wrap">
 <header class="top" id="top"><div class="c"><span class="logo">NEXUS <b>JPC</b></span><nav><span>Início</span><span>Serviços</span><span>Projetos</span><span>Sobre</span><span>Contato</span></nav><a class="btn btn-p" href="#cena-8">Quero meu orçamento</a></div></header>
 
@@ -181,7 +237,7 @@ section{position:relative}
   <div class="c grid">
     <div>
       <p class="eyebrow">Estúdio de soluções digitais</p>
-      <h1 class="split">Sua empresa merece uma <span class="grad">presença digital que impressiona.</span></h1>
+      <h1 aria-label="Sua empresa merece uma presença digital que impressiona."><span class="line"><span>Sua empresa merece uma</span></span><span class="line"><span class="grad rot" id="rot">presença digital</span></span><span class="line"><span>que impressiona.</span></span></h1>
       <p class="lead fade">Sites, landing pages e soluções digitais sob medida, com design premium, texto que explica e caminho direto até o seu WhatsApp.</p>
       <div class="acts fade"><a class="btn btn-p" href="#cena-8">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-6">Ver projetos reais</a></div>
       <div class="micro fade"><span>Projetos publicados</span><span>Atendimento direto</span><span>Proposta sem compromisso</span></div>
@@ -222,9 +278,19 @@ section{position:relative}
         <div class="st"><span class="k">04</span><b>Entrega</b><span>No ar, pronto para receber clientes.</span></div>
       </div>
       <p class="pay"><b>50%</b> para começar · <b>50%</b> na entrega</p>
+      <div class="try">
+        <label for="biz">Experimente: digite o nome do seu negócio</label>
+        <div class="try-row"><input id="biz" maxlength="26" placeholder="Ex.: Padaria Sol" autocomplete="off">
+          <div class="sw" role="group" aria-label="Cor da marca">
+            <button type="button" class="on" style="--c:#22D3EE" data-c="#22D3EE" aria-label="Ciano"></button>
+            <button type="button" style="--c:#10B981" data-c="#10B981" aria-label="Verde"></button>
+            <button type="button" style="--c:#F97316" data-c="#F97316" aria-label="Laranja"></button>
+            <button type="button" style="--c:#EAB308" data-c="#EAB308" aria-label="Dourado"></button>
+          </div></div>
+      </div>
     </div>
     <div class="browser">
-      <div class="bbar"><span></span><span></span><span></span><em>calma72.nexusjpc.com.br</em></div>
+      <div class="bbar"><span></span><span></span><span></span><em id="pv-url">seunegocio.com.br</em></div>
       <div class="screen" id="screen">
         <div class="lay wf">
           <div class="blk" style="left:7%;top:8%;width:14%;height:5%"></div><div class="blk" style="right:7%;top:8%;width:18%;height:5%;border-radius:999px"></div>
@@ -233,8 +299,8 @@ section{position:relative}
           <div class="blk" style="left:7%;top:78%;width:24%;height:8%;border-radius:999px"></div>
           <div class="blk" style="right:7%;top:20%;width:30%;height:62%;border-radius:12px"></div>
         </div>
-        <div class="lay ty"><h4>Se faltar luz e água por 3 dias, <i>sua família sabe o que fazer?</i></h4><p>O plano da sua casa para as primeiras 72 horas.</p><span class="b">Quero o plano da minha casa →</span><span class="img"></span></div>
-        <div class="real"><img src="{{IMG_CALMA72}}" alt="Captura real da landing page Calma72"></div>
+        <div class="lay ty"><span class="nav" id="pv-nav">Seu Negócio</span><span class="nav-links"><i></i><i></i><i></i></span><h4><span class="nm" id="pv-name">Seu Negócio</span><span class="sub">Atendimento que impressiona.</span></h4><p>Seu cliente encontra, entende e chama você no WhatsApp.</p><span class="b">Falar no WhatsApp →</span><span class="img"></span><span class="cards3"><i></i><i></i><i></i></span></div>
+        <span class="badge">● no ar</span>
         <span class="cursor" aria-hidden="true"></span>
         <span class="stage-label" id="stage-label">01 · Briefing</span>
       </div>
@@ -248,10 +314,10 @@ section{position:relative}
     <div style="text-align:center"><p class="eyebrow">Qual é o seu caso?</p>
     <h2 class="h2 split" style="max-width:16ch;margin:0 auto">Não sabe do que precisa? <span class="grad">Vire uma carta.</span></h2></div>
     <div class="cards">
-      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 01</small><q>"Quero que me encontrem e confiem no meu negócio."</q><small>toque para virar ↻</small><span class="big-n">1</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Site institucional</b><span>Seu endereço oficial na internet, com serviços, fotos e contato.</span><em>Ver como funciona →</em></span></span></span></button>
-      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 02</small><q>"Vou lançar ou vender um produto ou oferta."</q><small>toque para virar ↻</small><span class="big-n">2</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Landing page</b><span>Uma página focada em uma oferta e em uma única ação.</span><em>Ver como funciona →</em></span></span></span></button>
-      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 03</small><q>"Preciso organizar links, catálogo ou QR Code."</q><small>toque para virar ↻</small><span class="big-n">3</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Solução digital</b><span>Páginas de links, catálogos e QR Codes com a sua marca.</span><em>Ver como funciona →</em></span></span></span></button>
-      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 04</small><q>"Minha rotina vive em planilhas e mensagens soltas."</q><small>toque para virar ↻</small><span class="big-n">4</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Sistema ou automação</b><span>Agenda, cadastros e tarefas organizados, com avaliação técnica.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" data-cur="virar" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 01</small><q>"Quero que me encontrem e confiem no meu negócio."</q><small>toque para virar ↻</small><span class="big-n">1</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Site institucional</b><span>Seu endereço oficial na internet, com serviços, fotos e contato.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" data-cur="virar" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 02</small><q>"Vou lançar ou vender um produto ou oferta."</q><small>toque para virar ↻</small><span class="big-n">2</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Landing page</b><span>Uma página focada em uma oferta e em uma única ação.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" data-cur="virar" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 03</small><q>"Preciso organizar links, catálogo ou QR Code."</q><small>toque para virar ↻</small><span class="big-n">3</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Solução digital</b><span>Páginas de links, catálogos e QR Codes com a sua marca.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" data-cur="virar" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 04</small><q>"Minha rotina vive em planilhas e mensagens soltas."</q><small>toque para virar ↻</small><span class="big-n">4</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Sistema ou automação</b><span>Agenda, cadastros e tarefas organizados, com avaliação técnica.</span><em>Ver como funciona →</em></span></span></span></button>
     </div>
     <p class="cfoot">Ainda em dúvida? Descreva com suas palavras e a gente indica o formato.</p>
   </div>
@@ -264,17 +330,17 @@ section{position:relative}
   <div class="gal-track">
     <div class="panel" data-bg="#0A1A1C">
       <span class="panel-name">CALMA72</span>
-      <div class="shot"><div class="shot-in"><img src="{{IMG_CALMA72}}" alt="Captura real da landing page Calma72"></div>
+      <div class="shot" data-cur="ver"><div class="shot-in"><img src="{{IMG_CALMA72}}" alt="Captura real da landing page Calma72"></div>
         <div class="meta"><h3>Calma72</h3><span class="chip">Landing Page</span><span class="chip live">● Publicado</span></div></div>
     </div>
     <div class="panel" data-bg="#0A1A12">
       <span class="panel-name">CEIA</span>
-      <div class="shot"><div class="shot-in"><img src="{{IMG_CEIA}}" alt="Captura real da landing page Ceia no Seu Orçamento"></div>
+      <div class="shot" data-cur="ver"><div class="shot-in"><img src="{{IMG_CEIA}}" alt="Captura real da landing page Ceia no Seu Orçamento"></div>
         <div class="meta"><h3>Ceia no Seu Orçamento</h3><span class="chip">Landing Page</span><span class="chip live">● Publicado</span></div></div>
     </div>
     <div class="panel" data-bg="#0A1022">
       <span class="panel-name">BILHAR</span>
-      <div class="shot"><div class="shot-in"><img src="{{IMG_BILHAR}}" alt="Captura real do site Bilhar Dourado"></div>
+      <div class="shot" data-cur="ver"><div class="shot-in"><img src="{{IMG_BILHAR}}" alt="Captura real do site Bilhar Dourado"></div>
         <div class="meta"><h3>Bilhar Dourado</h3><span class="chip">Site + Sistema</span><span class="chip live">● Site publicado</span><span class="chip">Sistema em desenvolvimento</span></div></div>
     </div>
   </div>
@@ -301,11 +367,11 @@ section{position:relative}
     <p class="eyebrow">Orçamento</p>
     <h2 class="split">Vamos tirar seu projeto do <span class="grad">papel?</span></h2>
     <p class="lead fade">Conte sua ideia em 2 minutos. Você recebe uma proposta personalizada, sem compromisso.</p>
-    <div class="acts fade"><a class="btn btn-p" href="#cena-1">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-1">Falar no WhatsApp</a></div>
+    <div class="acts fade"><a class="btn btn-p" href="#cena-1" id="final-cta">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-1">Falar no WhatsApp</a></div>
     <p class="safe fade">Resposta pelo WhatsApp · 50% para começar, 50% na entrega</p>
   </div>
 </section>
-<p class="note">Simulação v2 da Carta 2 · role de volta ao topo para ver o N se formar de novo</p>
+<p class="note">Simulação v3 da Carta 2 · role de volta ao topo para ver o N se formar de novo</p>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
@@ -313,6 +379,7 @@ section{position:relative}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
+document.documentElement.classList.add('pre-on');
 (function(){
 'use strict';
 var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -322,11 +389,20 @@ var coarse = matchMedia('(pointer: coarse)').matches;
 var cv = document.getElementById('fx'), ctx = cv.getContext('2d');
 var W, H, dpr, cols, rows, wave = [], trav = [], nPts = null;
 var t = Math.random()*50, mouse = {x:-9999,y:-9999,tx:-9999,ty:-9999,a:0,ta:0,nx:.5,ny:.5};
-var st = { intro:0, keep:1, fin:0 }, rot = { y:0, x:0 };
+var st = { intro:0, keep:1, fin:0, pre:1 }, rot = { y:0, x:0 };
 var TINTS = ['#3B82F6','#3197F2','#2AACEE','#26BFEC','#22D3EE','#5EE0F2','#A5F3FC'];
 var N_PATHS = ['M 80,114 L 145,159 L 145,385 L 80,422 Z','M 80,114 L 182,53 Q 193,46 205,53 L 525,252 L 525,132 L 588,132 L 588,348 Q 588,361 575,369 L 529,396 Q 513,406 500,397 L 145,179 Z'];
 var N_NODES = [[115,421],[557,132]];
 var finalSec = document.getElementById('cena-8');
+// "Experimente": o site em construção vira do visitante
+function setupTry(){
+  var inp = document.getElementById('biz'), scr = document.getElementById('screen'), cta = document.getElementById('final-cta');
+  var nm = document.getElementById('pv-name'), nav = document.getElementById('pv-nav'), url = document.getElementById('pv-url');
+  function slug(v){ return (v.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]/g,'') || 'seunegocio') + '.com.br'; }
+  function upd(){ var v = inp.value.trim(); var name = v || 'Seu Negócio'; nm.textContent = name; nav.textContent = name; url.textContent = slug(v); cta.textContent = v ? 'Quero um site assim para ' + v + ' →' : 'Quero meu orçamento →'; }
+  inp.addEventListener('input', upd);
+  document.querySelectorAll('.sw button').forEach(function(b){ b.addEventListener('click', function(){ document.querySelectorAll('.sw button').forEach(function(x){ x.classList.toggle('on', x === b); }); scr.style.setProperty('--brand', b.dataset.c); }); });
+}
 
 function sampleN(){
   var oc = document.createElement('canvas'); oc.width = 564; oc.height = 478;
@@ -369,6 +445,7 @@ function draw(){
   var mx = mouse.x, my = mouse.y, ma = mouse.a;
   var useFinal = st.fin > 0.001, prog = useFinal ? st.fin : st.intro*st.keep;
   var T = useFinal ? finalTarget() : heroTarget(), alphaN = useFinal ? .3 : 1;
+  if (!useFinal && st.pre > 0){ var ps = Math.min(W*.62, H*.62)/478, k = st.pre*st.pre*(3-2*st.pre); T = { cx: T.cx + (W/2 - T.cx)*k, cy: T.cy + (H*.46 - T.cy)*k, s: T.s + (ps - T.s)*k }; }
   for (var i=0;i<wave.length;i++){
     var p = wave[i]; if (p.trav && prog > .02) continue;
     var q = wpos(p), lift = 0;
@@ -416,7 +493,7 @@ addEventListener('pointerup', function(e){ if (e.pointerType !== 'mouse') mouse.
 document.addEventListener('pointerleave', function(){ mouse.ta = 0; mouse.nx=.5; mouse.ny=.5; });
 if (coarse && window.DeviceOrientationEvent){ addEventListener('deviceorientation', function(e){ if (e.gamma != null){ mouse.nx = .5 + Math.max(-30,Math.min(30,e.gamma))/60; mouse.ny = .5 + Math.max(-30,Math.min(30,(e.beta||45)-45))/60; } }); }
 
-if (reduce || !window.gsap){ st.intro = 1; draw(); document.querySelectorAll('.real,.ty').forEach(function(el){ el.style.opacity = 1; }); return; }
+if (reduce || !window.gsap){ st.intro = 1; st.pre = 0; document.documentElement.classList.remove('pre-on'); document.getElementById('pre').style.display='none'; draw(); document.querySelectorAll('.ty').forEach(function(el){ el.style.opacity = 1; }); setupTry(); return; }
 requestAnimationFrame(tick);
 
 /* ============ Lenis + GSAP ============ */
@@ -430,19 +507,42 @@ ScrollTrigger.create({ start: 80, end: 'max', onToggle: function(s){ document.ge
 function setBg(c){ document.body.style.backgroundColor = c; }
 gsap.utils.toArray('section[data-bg]').forEach(function(sec){ ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onToggle: function(s){ if (s.isActive) setBg(sec.dataset.bg); } }); });
 
+// Abertura: contador + N montando no centro, depois o N voa para o topo
+if (lenis) lenis.stop();
+var cnt = { v: 0 }, pc = document.getElementById('pre-count');
+gsap.timeline()
+  .to(st, { intro: 1, duration: 1.7, ease: 'power3.inOut' }, 0)
+  .to(cnt, { v: 100, duration: 1.7, ease: 'power2.inOut', onUpdate: function(){ pc.textContent = String(Math.round(cnt.v)).padStart(3,'0'); } }, 0)
+  .to('#pre', { opacity: 0, duration: .45, ease: 'power2.out' }, '+=.15')
+  .to(st, { pre: 0, duration: 1.2, ease: 'power3.inOut' }, '<')
+  .add(function(){ document.documentElement.classList.remove('pre-on'); if (lenis) lenis.start(); }, '<.15')
+  .fromTo('.wrap', { opacity: 0 }, { opacity: 1, duration: .5 }, '<')
+  .from('.hero h1 .line > span', { yPercent: 115, duration: 1.1, ease: 'power4.out', stagger: .1 }, '<.1')
+  .add(function(){ document.getElementById('pre').style.display = 'none'; startRot(); });
+
 // Cena 1
-gsap.to(st, { intro: 1, duration: 2.4, ease: 'power3.inOut', delay: .2 });
 ScrollTrigger.create({ trigger: '#cena-1', start: 'top top', end: 'bottom top', onUpdate: function(s){ st.keep = Math.max(0, 1 - s.progress*1.6); } });
 gsap.to('#cena-1 .c', { yPercent: -16, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cena-1', start: 'top top', end: 'bottom top', scrub: true } });
 
 document.fonts.ready.then(function(){
   document.querySelectorAll('.split').forEach(function(el, i){
     var sp = new SplitText(el, { type: 'lines', mask: 'lines' });
-    gsap.from(sp.lines, { yPercent: 115, duration: 1.1, ease: 'power4.out', stagger: .1, delay: i === 0 ? .35 : 0, scrollTrigger: i === 0 ? null : { trigger: el, start: 'top 85%' } });
+    gsap.from(sp.lines, { yPercent: 115, duration: 1.1, ease: 'power4.out', stagger: .1, scrollTrigger: { trigger: el, start: 'top 85%' } });
   });
   ScrollTrigger.refresh();
 });
-gsap.utils.toArray('.fade, .eyebrow').forEach(function(el){ gsap.from(el, { y: 24, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%' } }); });
+gsap.utils.toArray('.fade, .eyebrow').forEach(function(el){ if (el.closest('#cena-1')) return; gsap.from(el, { y: 24, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%' } }); });
+// texto vivo: letras embaralham antes de assentar
+var GLY = '01<>/_-+=#*';
+function scramble(el, txt, dur){
+  var start = performance.now(), len = txt.length;
+  (function step(){ var p = Math.min(1, (performance.now()-start)/(dur*1000)), out = '';
+    for (var i=0;i<len;i++){ var c = txt[i]; out += (c === ' ' || i < p*len) ? c : GLY[(Math.random()*GLY.length)|0]; }
+    el.textContent = out; if (p < 1) requestAnimationFrame(step); })();
+}
+gsap.utils.toArray('.eyebrow').forEach(function(el){ var txt = el.textContent; ScrollTrigger.create({ trigger: el, start: 'top 90%', once: true, onEnter: function(){ scramble(el, txt, .7); } }); });
+var WORDS = ['presença digital','landing page','solução digital','automação','marca online'], wi = 0, rotEl = document.getElementById('rot');
+function startRot(){ setInterval(function(){ wi = (wi+1) % WORDS.length; scramble(rotEl, WORDS[wi], .55); }, 2600); }
 
 // Cena 2: faixa gigante andando com a rolagem
 gsap.fromTo('.r1', { xPercent: 0 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: '#cena-2', start: 'top bottom', end: 'bottom top', scrub: .5 } });
@@ -463,7 +563,8 @@ tl3.from('.n1', { y: 80, opacity: 0, scale: .8, duration: .4 }, '+=.1')
 // Cena 4: o site se construindo (presa)
 var stepsEl = gsap.utils.toArray('.st'), label = document.getElementById('stage-label'), screen = document.getElementById('screen');
 var labels = ['01 · Briefing','02 · Wireframe aprovado','03 · Design e interações','04 · No ar'];
-function setStage(n){ stepsEl.forEach(function(s,i){ s.classList.toggle('on', i <= n); }); label.textContent = labels[n]; screen.classList.toggle('colored', n >= 2); }
+function setStage(n){ stepsEl.forEach(function(s,i){ s.classList.toggle('on', i <= n); }); label.textContent = labels[n]; screen.classList.toggle('colored', n >= 2); screen.classList.toggle('live', n >= 3); }
+setupTry();
 var tl4 = gsap.timeline({ scrollTrigger: { trigger: '#cena-4', start: 'top top', end: '+=260%', pin: true, scrub: .8,
   onUpdate: function(s){ setStage(Math.min(3, Math.floor(s.progress*4))); } } });
 tl4.from('.wf .blk', { scaleX: 0, transformOrigin: 'left', opacity: 0, stagger: .05, duration: .4 })
@@ -471,11 +572,10 @@ tl4.from('.wf .blk', { scaleX: 0, transformOrigin: 'left', opacity: 0, stagger: 
    .to('.wf', { opacity: .0, duration: .4 }, '+=.3')
    .to('.ty', { opacity: 1, duration: .4 }, '<')
    .to('.cursor', { left: '18%', top: '82%', duration: .5 }, '<')
-   .to(screen, { backgroundColor: '#0f2221', duration: .4 }, '+=.2')
+   .to(screen, { backgroundColor: '#0d1520', duration: .4 }, '+=.2')
    .to('.cursor', { left: '80%', top: '50%', duration: .5 }, '<')
-   .to('.real', { opacity: 1, duration: .5 }, '+=.3')
-   .fromTo('.real img', { scale: 1.08 }, { scale: 1, duration: .6 }, '<')
-   .to('.cursor', { opacity: 0, duration: .2 }, '<')
+   .to('.cursor', { left: '50%', top: '92%', duration: .5 }, '+=.3')
+   .to('.cursor', { opacity: 0, duration: .2 })
    .to({}, { duration: .3 });
 
 // Cena 5: cartas com inclinação 3D seguindo o mouse e giro ao toque
@@ -509,6 +609,25 @@ mm.add('(max-width: 767px)', function(){
 
 // Cena 7
 gsap.from('.faq details', { x: 40, opacity: 0, stagger: .08, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.faq', start: 'top 85%' } });
+
+// Cursor vivo, luz que segue o mouse e botões magnéticos (só computador)
+if (matchMedia('(hover: hover) and (pointer: fine)').matches){
+  document.documentElement.classList.add('has-cur');
+  var cur = document.getElementById('cur'), dot = document.getElementById('cur-dot'), curT = document.getElementById('cur-t'), spot = document.getElementById('spot');
+  var cx = gsap.quickTo(cur, 'x', { duration: .45, ease: 'power3' }), cyq = gsap.quickTo(cur, 'y', { duration: .45, ease: 'power3' });
+  var sx = gsap.quickTo(spot, 'x', { duration: 1.2, ease: 'power3' }), syq = gsap.quickTo(spot, 'y', { duration: 1.2, ease: 'power3' });
+  addEventListener('pointermove', function(e){ cx(e.clientX); cyq(e.clientY); gsap.set(dot, { x: e.clientX, y: e.clientY }); sx(e.clientX); syq(e.clientY); spot.classList.add('on');
+    var tgt = e.target.closest('[data-cur], a, button, summary, input');
+    cur.classList.toggle('big', !!(tgt && tgt.dataset && tgt.dataset.cur));
+    cur.classList.toggle('link', !!(tgt && !(tgt.dataset && tgt.dataset.cur)));
+    if (tgt && tgt.dataset && tgt.dataset.cur) curT.textContent = tgt.dataset.cur;
+  }, { passive: true });
+  document.querySelectorAll('.btn').forEach(function(b){
+    var bx = gsap.quickTo(b, 'x', { duration: .5, ease: 'elastic.out(1,.4)' }), by = gsap.quickTo(b, 'y', { duration: .5, ease: 'elastic.out(1,.4)' });
+    b.addEventListener('pointermove', function(e){ var r = b.getBoundingClientRect(); bx((e.clientX - r.left - r.width/2)*.3); by((e.clientY - r.top - r.height/2)*.4); });
+    b.addEventListener('pointerleave', function(){ bx(0); by(0); });
+  });
+}
 
 // Cena 8: o N volta a se formar atrás da chamada final
 ScrollTrigger.create({ trigger: '#cena-8', start: 'top 85%', end: 'bottom bottom', onUpdate: function(s){ st.fin = s.progress; }, onLeaveBack: function(){ st.fin = 0; } });
