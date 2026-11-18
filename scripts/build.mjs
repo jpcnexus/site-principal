@@ -48,5 +48,5 @@ ${routes
 </urlset>
 `;
 writeFileSync(join(root, 'sitemap.xml'), sitemap);
-writeFileSync(join(root, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /src/\nDisallow: /scripts/\n\nSitemap: ${site.url}/sitemap.xml\n`);
+writeFileSync(join(root, 'robots.txt'), `User-agent: *\nAllow: /\nDisallow: /src/\nDisallow: /scripts/\nDisallow: /projeto/\n\nSitemap: ${site.url}/sitemap.xml\n`);
 console.log(`  ✓ sitemap.xml (${routes.length} URLs)\n  ✓ robots.txt\nPronto.`);

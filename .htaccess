@@ -6,7 +6,7 @@ DirectoryIndex index.html
 ErrorDocument 404 /404.html
 
 # Bloqueia acesso público aos arquivos-fonte do gerador
-RedirectMatch 404 ^/(src|scripts)(/.*)?$
+RedirectMatch 404 ^/(src|scripts|projeto)(/.*)?$
 RedirectMatch 404 ^/\.git
 <FilesMatch "(^\.|\.md$|\.mjs$|package\.json$)">
   Require all denied

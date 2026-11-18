@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /src/
 Disallow: /scripts/
+Disallow: /projeto/
 
 Sitemap: https://nexusjpc.com.br/sitemap.xml
