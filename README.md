@@ -40,7 +40,11 @@ assets/
   og/                  ← imagem de compartilhamento (Open Graph)
   css/site.css         ← estilos (tokens da identidade no :root)
   js/site.js           ← menu, animações, filtros, galeria, formulário
-  js/waves.js          ← ondas de pontos animadas no fundo (canvas, reagem ao mouse/toque)
+  js/waves.js          ← onda de pontos no fundo + N de partículas da página inicial (canvas)
+  js/home.js           ← coreografia da página inicial (abertura, cenas, personalização)
+  css/home.css         ← estilos exclusivos da página inicial
+  vendor/              ← GSAP 3.13 (ScrollTrigger, SplitText) e Lenis 1.1, hospedados no próprio site
+projeto/               ← método Carta Secreta: briefing, copy, design system, roteiro, simulação (não vai ao ar)
 index.html, servicos/, projetos/, sobre/, contato/, 404.html   ← páginas geradas
 sitemap.xml, robots.txt, .htaccess
 ```

@@ -517,3 +517,30 @@ body.menu-open { overflow: hidden; }
   .hn-line { stroke-dashoffset: 0; }
   @view-transition { navigation: none; }
 }
+
+/* ---------- Efeitos globais: luz, grão, cursor ---------- */
+.btn { transition: transform .25s var(--ease), translate .5s cubic-bezier(.34,1.56,.64,1), box-shadow .25s var(--ease), background-color .25s, border-color .25s, color .25s; }
+.fx-spot { position: fixed; left: 0; top: 0; width: 760px; height: 760px; margin: -380px 0 0 -380px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,.15), rgba(34,211,238,.045) 42%, transparent 70%); z-index: 0; pointer-events: none; opacity: 0; transition: opacity .8s; will-change: transform; }
+.fx-spot.is-on { opacity: 1; }
+.fx-grain { position: fixed; inset: -50%; width: 200%; height: 200%; z-index: 60; pointer-events: none; opacity: .045; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: grain .9s steps(5) infinite; }
+@keyframes grain { 0%,100% { transform: translate(0,0); } 20% { transform: translate(-3%,2%); } 40% { transform: translate(2%,-3%); } 60% { transform: translate(-2%,-1%); } 80% { transform: translate(3%,3%); } }
+.fx-cursor, .fx-cursor-dot { position: fixed; left: 0; top: 0; z-index: 70; pointer-events: none; border-radius: 50%; display: none; }
+.has-cursor .fx-cursor, .has-cursor .fx-cursor-dot { display: grid; }
+.fx-cursor { width: 40px; height: 40px; margin: -20px 0 0 -20px; border: 1px solid rgba(34,211,238,.6); place-items: center; transition: width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background-color .3s, border-color .3s, opacity .3s; }
+.fx-cursor span { font: 700 .62rem/1 var(--font-head); letter-spacing: .14em; text-transform: uppercase; color: #04121A; opacity: 0; transition: opacity .2s; }
+.fx-cursor.is-link { width: 60px; height: 60px; margin: -30px 0 0 -30px; background: rgba(34,211,238,.1); }
+.fx-cursor.is-big { width: 88px; height: 88px; margin: -44px 0 0 -44px; background: var(--cyan); border-color: transparent; }
+.fx-cursor.is-big span { opacity: 1; }
+.fx-cursor.is-hidden { opacity: 0; }
+.fx-cursor-dot { width: 6px; height: 6px; margin: -3px 0 0 -3px; background: var(--cyan); }
+.has-cursor, .has-cursor * { cursor: none !important; }
+.has-cursor input, .has-cursor textarea { cursor: text !important; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html.lenis, html.lenis body { height: auto; }
+@media (prefers-reduced-motion: reduce) { .fx-grain { display: none; } }
+
+/* ---------- Botão de orçamento fixo no celular ---------- */
+.m-cta { position: fixed; z-index: 55; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(14px + env(safe-area-inset-bottom, 0px)); display: flex; align-items: center; justify-content: center; gap: 10px; flex-direction: row-reverse; min-height: 52px; border-radius: 14px; background: var(--grad); color: #04121A; font-weight: 700; box-shadow: 0 16px 40px -12px rgba(34,211,238,.7); transform: translateY(140%); transition: transform .45s var(--ease); }
+.m-cta.is-on { transform: none; }
+@media (min-width: 1024px) { .m-cta { display: none; } }
+@media (max-width: 1023px) { .site-footer { padding-bottom: 96px; } }

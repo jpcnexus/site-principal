@@ -70,7 +70,7 @@ function header(active) {
     <nav class="nav" aria-label="Principal">
       <ul class="nav-list">${links}</ul>
     </nav>
-    <a class="btn btn-primary btn-sm header-cta" href="/contato/">Solicitar orçamento</a>
+    <a class="btn btn-primary btn-sm header-cta" href="/contato/">Quero meu orçamento</a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu" data-menu-toggle>
       <span class="menu-icon menu-icon-open">${icon('menu')}</span>
       <span class="menu-icon menu-icon-close">${icon('close')}</span>
@@ -84,7 +84,7 @@ function header(active) {
             `<li style="--i:${i}"><a href="${n.href}"${n.id === active ? ' aria-current="page"' : ''}>${n.label}${icon('arrow')}</a></li>`
         )
         .join('')}</ul>
-      <a class="btn btn-primary btn-block" href="/contato/">Solicitar orçamento</a>
+      <a class="btn btn-primary btn-block" href="/contato/">Quero meu orçamento</a>
       <a class="btn btn-ghost btn-block" href="${waLink()}" target="_blank" rel="noopener">${icon('whatsapp')} Falar no WhatsApp</a>
     </nav>
   </div>
@@ -158,7 +158,7 @@ function breadcrumbLd(items) {
 }
 
 // ---------- Página completa ----------
-export function page({ path, title, description, active, body, crumbs, jsonld = [], ogImage, preload = [], bodyClass = '', noindex = false }) {
+export function page({ path, title, description, active, body, crumbs, jsonld = [], ogImage, preload = [], bodyClass = '', noindex = false, styles = [], scripts = [], intro = false }) {
   const canonical = site.url + path;
   const fullTitle = path === '/' ? title : `${title} | Nexus JPC`;
   const og = site.url + (ogImage || '/assets/og/nexus-jpc-og.jpg');
@@ -169,6 +169,7 @@ export function page({ path, title, description, active, body, crumbs, jsonld = 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>document.documentElement.classList.add('js');${intro ? "try{if(!sessionStorage.getItem('nx-intro')&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('pre-on')}catch(e){}" : ''}</script>
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
@@ -196,17 +197,25 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 ${preload.map((p) => `<link rel="preload" as="image" href="${p}" fetchpriority="high">`).join('\n')}
 <link rel="stylesheet" href="/assets/css/site.css?v=${ASSET_V}">
+${styles.map((h) => `<link rel="stylesheet" href="${h}?v=${ASSET_V}">`).join('\n')}
 ${ld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}
 </head>
 <body class="${bodyClass}">
 <canvas class="bg-waves" aria-hidden="true" data-waves></canvas>
+<div class="fx-spot" aria-hidden="true" data-spot></div>
+<div class="fx-grain" aria-hidden="true"></div>
+<div class="fx-cursor" aria-hidden="true" data-cursor><span data-cursor-label></span></div><div class="fx-cursor-dot" aria-hidden="true" data-cursor-dot></div>
 ${header(active)}
 <main id="conteudo" tabindex="-1">
 ${body}
 </main>
 ${footer()}
+${active !== 'contato' ? `<a class="m-cta" href="/contato/" data-m-cta>${icon('arrow')}<span>Quero meu orçamento</span></a>` : ''}
+<script src="/assets/vendor/lenis.min.js" defer></script>
+${scripts.filter((x) => x.startsWith('/assets/vendor/')).map((x) => `<script src="${x}" defer></script>`).join('\n')}
 <script src="/assets/js/site.js?v=${ASSET_V}" defer></script>
 <script src="/assets/js/waves.js?v=${ASSET_V}" defer></script>
+${scripts.filter((x) => !x.startsWith('/assets/vendor/')).map((x) => `<script src="${x}?v=${ASSET_V}" defer></script>`).join('\n')}
 </body>
 </html>
 `;

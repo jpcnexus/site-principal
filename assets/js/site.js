@@ -178,6 +178,7 @@
     var qp = new URLSearchParams(location.search);
     if (qp.get('tipo') && tipoLabels[qp.get('tipo')]) form.elements.tipo.value = qp.get('tipo');
     var ref = qp.get('ref');
+    if (qp.get('empresa')) form.elements.empresa.value = qp.get('empresa').slice(0, 80);
 
     // máscara simples de telefone brasileiro
     phone.addEventListener('input', function () {
@@ -243,4 +244,72 @@
     });
     send.addEventListener('click', function () { done.hidden = false; });
   }
+})();
+
+/* ---------- Rolagem suave, cursor vivo, luz e botões magnéticos (todas as páginas) ---------- */
+(function () {
+  'use strict';
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // Rolagem suave (Lenis). Se a página inicial usar GSAP, home.js conecta o ScrollTrigger a ela.
+  if (!reduce && window.Lenis) {
+    var lenis = new window.Lenis({ lerp: 0.1 });
+    window.__lenis = lenis;
+    if (!window.gsap) {
+      (function loop(time) { lenis.raf(time); requestAnimationFrame(loop); })(performance.now());
+    }
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        var id = a.getAttribute('href'); if (id.length < 2) return;
+        var el = document.querySelector(id); if (!el) return;
+        e.preventDefault(); lenis.scrollTo(el, { offset: -80 });
+      });
+    });
+  }
+
+  if (!fine || reduce) return;
+  var cur = document.querySelector('[data-cursor]'), dot = document.querySelector('[data-cursor-dot]');
+  var label = document.querySelector('[data-cursor-label]'), spot = document.querySelector('[data-spot]');
+  if (!cur || !dot) return;
+  document.documentElement.classList.add('has-cursor');
+  var m = { x: -100, y: -100 }, c = { x: -100, y: -100 }, s = { x: -400, y: -400 };
+  window.addEventListener('pointermove', function (e) {
+    if (e.pointerType !== 'mouse') return;
+    m.x = e.clientX; m.y = e.clientY;
+    dot.style.transform = 'translate(' + m.x + 'px,' + m.y + 'px)';
+    if (spot) spot.classList.add('is-on');
+    var tgt = e.target.closest && e.target.closest('[data-cursor-text], a, button, summary, label, select');
+    var txt = tgt && tgt.getAttribute('data-cursor-text');
+    cur.classList.toggle('is-big', !!txt);
+    cur.classList.toggle('is-link', !!tgt && !txt);
+    if (txt) label.textContent = txt;
+  }, { passive: true });
+  document.addEventListener('pointerleave', function () { cur.classList.add('is-hidden'); });
+  document.addEventListener('pointerenter', function () { cur.classList.remove('is-hidden'); });
+  (function follow() {
+    c.x += (m.x - c.x) * 0.18; c.y += (m.y - c.y) * 0.18;
+    s.x += (m.x - s.x) * 0.06; s.y += (m.y - s.y) * 0.06;
+    cur.style.transform = 'translate(' + c.x + 'px,' + c.y + 'px)';
+    if (spot) spot.style.transform = 'translate(' + s.x + 'px,' + s.y + 'px)';
+    requestAnimationFrame(follow);
+  })();
+  // botões magnéticos
+  document.querySelectorAll('.btn-primary, .btn-ghost, .menu-toggle').forEach(function (b) {
+    b.addEventListener('pointermove', function (e) {
+      var r = b.getBoundingClientRect();
+      b.style.translate = ((e.clientX - r.left - r.width / 2) * 0.25) + 'px ' + ((e.clientY - r.top - r.height / 2) * 0.35) + 'px';
+    });
+    b.addEventListener('pointerleave', function () { b.style.translate = ''; });
+  });
+})();
+
+/* ---------- Botão de orçamento fixo no celular: aparece depois do topo, some perto do fim ---------- */
+(function () {
+  var b = document.querySelector('[data-m-cta]'); if (!b) return;
+  function upd() {
+    var y = window.scrollY, max = document.documentElement.scrollHeight - window.innerHeight;
+    b.classList.toggle('is-on', y > window.innerHeight * 0.6 && y < max - 260);
+  }
+  window.addEventListener('scroll', upd, { passive: true }); upd();
 })();

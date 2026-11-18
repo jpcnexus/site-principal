@@ -69,117 +69,7 @@ function highlightsGrid() {
   </ul>`;
 }
 
-// =====================================================================
-// INÍCIO
-// =====================================================================
-export function home() {
-  const featured = activeProjects.filter((p) => p.destaque);
-  const [a, b, c] = featured;
-  const body = `
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true">
-    <div class="hero-grid"></div>
-    <div class="hero-orb hero-orb-1"></div>
-    <div class="hero-orb hero-orb-2"></div>
-  </div>
-  <div class="container hero-inner">
-    <div class="hero-copy">
-      <p class="eyebrow eyebrow-pill"><span class="pulse" aria-hidden="true"></span>Estúdio de soluções digitais</p>
-      <h1 class="hero-title">Sua empresa merece uma <span class="grad">presença digital que impressiona.</span></h1>
-      <p class="hero-lead">Criamos sites, landing pages e soluções digitais que unem design moderno, tecnologia e estratégia para valorizar o seu negócio.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="/contato/">Solicitar orçamento ${icon('arrow')}</a>
-        <a class="btn btn-ghost btn-lg" href="/projetos/">Conhecer projetos</a>
-      </div>
-      <ul class="hero-points">
-        <li>${icon('check')} Mobile-first</li>
-        <li>${icon('check')} SEO técnico</li>
-        <li>${icon('check')} Atendimento direto</li>
-      </ul>
-    </div>
-    <div class="hero-visual" aria-hidden="true">
-      <svg class="hero-network" viewBox="0 0 560 520">
-        <defs>
-          <linearGradient id="hn" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#3B82F6"/><stop offset="1" stop-color="#22D3EE"/></linearGradient>
-        </defs>
-        <path class="hn-line" d="M60 470 L60 90 L500 400 L500 50"/>
-        <path class="hn-line hn-thin" d="M60 90 L280 40 L500 50 M60 470 L280 500 L500 400 M280 40 L280 245 L280 500"/>
-        <circle class="hn-node" cx="60" cy="470" r="9"/><circle class="hn-node" cx="500" cy="50" r="9"/>
-        <circle class="hn-dot" cx="60" cy="90" r="4"/><circle class="hn-dot" cx="500" cy="400" r="4"/><circle class="hn-dot" cx="280" cy="40" r="3"/><circle class="hn-dot" cx="280" cy="500" r="3"/><circle class="hn-dot" cx="280" cy="245" r="4"/>
-      </svg>
-      <div class="stack">
-        ${[c, b, a]
-          .filter(Boolean)
-          .map(
-            (p, i) => `<figure class="stack-card stack-card-${i + 1}">
-          <div class="browser-bar"><span></span><span></span><span></span><em>${esc(p.url ? p.url.replace('https://', '') : p.nome)}</em></div>
-          <img src="/assets/projects/${p.slug}/capa-720.webp" alt="" width="720" height="450" ${i === 2 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">
-        </figure>`
-          )
-          .join('')}
-        <div class="float-chip float-chip-1">${icon('phone')} Responsivo</div>
-        <div class="float-chip float-chip-2">${icon('spark')} Interativo</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section section-intro" aria-labelledby="intro-title">
-  <div class="container intro">
-    <div class="intro-mark" data-reveal><img src="${ICON}" alt="" width="120" height="102" loading="lazy"></div>
-    <div class="intro-copy" data-reveal>
-      <p class="eyebrow">Sobre a Nexus JPC</p>
-      <h2 id="intro-title" class="section-title">Tecnologia, criatividade e soluções com propósito.</h2>
-      <p class="section-text">A Nexus JPC é um estúdio independente que une design, tecnologia e atenção aos detalhes para desenvolver experiências online profissionais, do primeiro site à ferramenta sob medida.</p>
-      <a class="link-arrow" href="/sobre/">Conheça o estúdio ${icon('arrow')}</a>
-    </div>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="servicos-title">
-  <div class="container">
-    <div class="section-row">
-      ${sectionHead({ eyebrow: 'Nossos serviços', title: '<span id="servicos-title">Soluções digitais para o seu negócio</span>', text: 'Da presença online ao desenvolvimento de ferramentas personalizadas.' })}
-      <a class="btn btn-ghost btn-sm section-row-cta" href="/servicos/">Ver todos os serviços ${icon('arrow')}</a>
-    </div>
-    <div class="services-grid">${services.map((s, i) => serviceCard(s, i)).join('')}</div>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="destaques-title">
-  <div class="container">
-    <div class="section-row">
-      ${sectionHead({ eyebrow: 'Projetos em destaque', title: '<span id="destaques-title">Ideias que viraram experiências digitais</span>', text: 'Trabalhos reais, publicados e em desenvolvimento, com status transparente.' })}
-      <a class="btn btn-ghost btn-sm section-row-cta" href="/projetos/">Ver portfólio ${icon('arrow')}</a>
-    </div>
-    <div class="projects-grid">${featured.map((p) => projectCard(p)).join('')}</div>
-  </div>
-</section>
-
-<section class="section" aria-labelledby="dif-title">
-  <div class="container">
-    ${sectionHead({ eyebrow: 'Diferenciais', title: '<span id="dif-title">Um estúdio próximo, com olhar de produto</span>', text: 'Cada projeto é pensado para funcionar comercialmente, não apenas para ficar bonito.' })}
-    ${highlightsGrid()}
-  </div>
-</section>
-
-${ctaBanner()}
-`;
-  return page({
-    path: '/',
-    title: 'Nexus JPC | Sites, Landing Pages e Soluções Digitais',
-    description:
-      'Criação de sites profissionais, landing pages e soluções digitais para empresas e negócios. Conheça os projetos da Nexus JPC.',
-    active: 'inicio',
-    body,
-    bodyClass: 'is-home',
-    preload: [`/assets/projects/${a.slug}/capa-720.webp`],
-    jsonld: [
-      orgLd,
-      { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.url + '/', inLanguage: 'pt-BR', publisher: { '@id': site.url + '/#org' } },
-    ],
-  });
-}
+export { home } from './home.mjs';
 
 // =====================================================================
 // SERVIÇOS
@@ -199,6 +89,17 @@ ${pageHero({
   </div>
 </section>
 ${processSection()}
+<section class="section" aria-labelledby="duvidas-title">
+  <div class="container narrow">
+    ${sectionHead({ eyebrow: 'Dúvidas', title: '<span id="duvidas-title">Antes de pedir seu orçamento</span>' })}
+    <div class="faq">${[
+      ['Quanto custa um site?', 'Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.'],
+      ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto.'],
+      ['E se eu não souber o que preciso?', 'Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado.'],
+      ['Como sei que o projeto não vai ficar parado?', 'As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.'],
+    ].map(([q, a]) => `<details class="faq-item" data-reveal><summary><span>${esc(q)}</span>${icon('plus')}</summary><div class="faq-body"><p>${esc(a)}</p></div></details>`).join('')}</div>
+  </div>
+</section>
 <section class="section" aria-labelledby="nao-sabe-title">
   <div class="container">
     <div class="note-card" data-reveal>
@@ -238,7 +139,7 @@ ${pageHero({
   title: esc(s.titulo),
   text: esc(s.descricao),
   crumbs,
-  extra: `<div class="hero-actions"><a class="btn btn-primary" href="/contato/?tipo=${s.slug}">Solicitar orçamento ${icon('arrow')}</a><a class="btn btn-ghost" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('whatsapp')} Conversar no WhatsApp</a></div>`,
+  extra: `<div class="hero-actions"><a class="btn btn-primary" href="/contato/?tipo=${s.slug}">Quero meu orçamento ${icon('arrow')}</a><a class="btn btn-ghost" href="${waLink(msg)}" target="_blank" rel="noopener">${icon('whatsapp')} Conversar no WhatsApp</a></div>`,
 })}
 
 <section class="section section-tight" aria-labelledby="apresentacao-title">
@@ -313,7 +214,7 @@ ${
   </div>
 </section>
 
-${ctaBanner({ title: `Quer um projeto de <span class="grad">${esc(s.titulo.toLowerCase())}</span>?`, text: 'Conte sua ideia e receba uma proposta personalizada para o seu negócio.', primary: { label: 'Solicitar orçamento', href: `/contato/?tipo=${s.slug}` } })}
+${ctaBanner({ title: `Quer um projeto de <span class="grad">${esc(s.titulo.toLowerCase())}</span>?`, text: 'Conte sua ideia e receba uma proposta personalizada para o seu negócio.', primary: { label: 'Quero um projeto assim', href: `/contato/?tipo=${s.slug}` } })}
 `;
   return page({
     path: `/servicos/${s.slug}/`,
