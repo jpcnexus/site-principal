@@ -4,6 +4,7 @@
 
 **Negócio:** estúdio independente de soluções digitais (sites, landing pages, soluções digitais e sistemas sob medida).
 **Oferta principal:** projetos digitais sob medida, com proposta personalizada e sem preço tabelado.
+**Condição de pagamento:** 50% do valor antes de começar e 50% na entrega.
 **Ação desejada:** pedir orçamento pelo WhatsApp, pelo formulário de briefing (`/contato/`) ou pelo botão direto.
 **Endereço:** `https://nexusjpc.com.br` (domínio principal).
 
@@ -28,7 +29,7 @@ Quatro perfis, nesta ordem de prioridade:
 |---|---|
 | "Site deve ser caro demais pra mim." | Proposta sob medida, feita a partir do que você precisa. Você conhece o valor antes de começar e não há compromisso para pedir. Existem formatos enxutos (página de links, landing page). |
 | "Nem sei se preciso de site, landing page ou só um link." | Seção interativa **"Qual é o seu caso?"**: a pessoa escolhe a situação e vê o formato indicado. No briefing, é só descrever com as próprias palavras, e a Nexus indica o formato. |
-| "Já paguei alguém que sumiu ou demorou meses." | Atendimento direto com quem faz, processo em 4 etapas combinadas, e você aprova a estrutura antes do desenvolvimento. Sem prazos inventados: o prazo é combinado na proposta. |
+| "Já paguei alguém que sumiu ou demorou meses." | Atendimento direto com quem faz, processo em 4 etapas combinadas, e você aprova a estrutura antes do desenvolvimento. **Pagamento: 50% para começar e 50% na entrega.** Sem prazos inventados: o prazo é combinado na proposta. |
 | "Será que vai ficar profissional ou com cara de template?" | Portfólio real com status transparente, e o próprio site como prova do nível. |
 
 ## Diferencial

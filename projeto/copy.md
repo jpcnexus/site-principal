@@ -60,11 +60,12 @@ Cards: Calma72 · Ceia no Seu Orçamento · Bilhar Dourado (textos atuais).
 3. **Desenvolvimento:** construímos e testamos no celular e no computador.
 4. **Entrega:** ajustes combinados e projeto preparado para publicação.
 
-**Linha de apoio:** Sem intermediários: você fala com quem faz.
+**Linha de apoio:** Sem intermediários: você fala com quem faz. 50% para começar, 50% na entrega.
 *Atende: "medo de sumirem".*
 
 ## 7. Perguntas (objeções)
 - **Quanto custa um site?** Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.
+- **Como funciona o pagamento?** 50% do valor para começar e os outros 50% na entrega do projeto.
 - **E se eu não souber o que preciso?** Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado, que às vezes é mais simples do que você imagina.
 - **Como sei que o projeto não vai ficar parado?** As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.
 - **Vai ficar com cara de template?** Cada projeto parte do seu negócio e do seu público. Veja o portfólio e note que nenhum projeto se parece com o outro.
