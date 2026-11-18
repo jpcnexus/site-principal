@@ -81,7 +81,6 @@ export function home() {
     <div class="hero-grid"></div>
     <div class="hero-orb hero-orb-1"></div>
     <div class="hero-orb hero-orb-2"></div>
-    <svg class="hero-wave" viewBox="0 0 1440 320" preserveAspectRatio="none"><path d="M0 230 C 240 170, 420 290, 720 220 S 1200 120, 1440 170" /><path d="M0 260 C 260 210, 460 310, 760 250 S 1220 160, 1440 205" /><path d="M0 290 C 300 250, 520 320, 800 280 S 1240 200, 1440 240" /></svg>
   </div>
   <div class="container hero-inner">
     <div class="hero-copy">

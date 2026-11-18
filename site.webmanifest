@@ -1,0 +1,12 @@
+{
+  "name": "Nexus JPC — Soluções Digitais",
+  "short_name": "Nexus JPC",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#0B0F14",
+  "theme_color": "#0B0F14",
+  "icons": [
+    { "src": "/assets/brand/nexus-jpc/nexus-jpc-app-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/brand/nexus-jpc/nexus-jpc-app-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

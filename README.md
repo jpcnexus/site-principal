@@ -40,6 +40,7 @@ assets/
   og/                  ← imagem de compartilhamento (Open Graph)
   css/site.css         ← estilos (tokens da identidade no :root)
   js/site.js           ← menu, animações, filtros, galeria, formulário
+  js/waves.js          ← ondas de pontos animadas no fundo (canvas, reagem ao mouse/toque)
 index.html, servicos/, projetos/, sobre/, contato/, 404.html   ← páginas geradas
 sitemap.xml, robots.txt, .htaccess
 ```

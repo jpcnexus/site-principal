@@ -189,7 +189,8 @@ ${noindex ? '<meta name="robots" content="noindex">' : `<link rel="canonical" hr
 <meta name="twitter:image" content="${og}">
 <link rel="icon" type="image/svg+xml" href="/assets/brand/nexus-jpc/nexus-jpc-favicon.svg">
 <link rel="icon" type="image/png" href="/assets/brand/nexus-jpc/nexus-jpc-favicon.png">
-<link rel="apple-touch-icon" href="/assets/brand/nexus-jpc/nexus-jpc-favicon.png">
+<link rel="apple-touch-icon" href="/assets/brand/nexus-jpc/nexus-jpc-app-180.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
@@ -198,12 +199,14 @@ ${preload.map((p) => `<link rel="preload" as="image" href="${p}" fetchpriority="
 ${ld.map((o) => `<script type="application/ld+json">${JSON.stringify(o)}</script>`).join('\n')}
 </head>
 <body class="${bodyClass}">
+<canvas class="bg-waves" aria-hidden="true" data-waves></canvas>
 ${header(active)}
 <main id="conteudo" tabindex="-1">
 ${body}
 </main>
 ${footer()}
 <script src="/assets/js/site.js?v=${ASSET_V}" defer></script>
+<script src="/assets/js/waves.js?v=${ASSET_V}" defer></script>
 </body>
 </html>
 `;
