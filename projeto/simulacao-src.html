@@ -1,0 +1,516 @@
+<title>Nexus JPC · Simulação</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Layout: simulação v2 — 8 cenas com formatos diferentes (hero com N 3D de partículas, faixa tipográfica gigante, notificações presas, site se construindo, cartas em leque, galeria horizontal colorida, FAQ em duas colunas, CTA com o N de volta) */
+:root{
+  --bg:#0B0F14; --surface:#151B23; --line:rgba(148,163,184,.16);
+  --text:#F8FAFC; --muted:#CBD5E1; --dim:#94A3B8; --blue:#3B82F6; --cyan:#22D3EE;
+  --head:'Space Grotesk',ui-sans-serif,system-ui,sans-serif; --body:'Inter',ui-sans-serif,system-ui,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--bg);color:var(--muted);font:400 16px/1.65 var(--body);overflow-x:hidden;transition:background-color 1s var(--ease)}
+h1,h2,h3{font-family:var(--head);color:var(--text);margin:0;letter-spacing:-.03em;line-height:1.02;text-wrap:balance}
+p{margin:0}
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{position:relative;z-index:1}
+.c{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+@media(min-width:768px){.c{padding-left:max(32px,env(safe-area-inset-left,0px));padding-right:max(32px,env(safe-area-inset-right,0px))}}
+.eyebrow{display:inline-flex;align-items:center;gap:12px;font:600 .75rem/1 var(--head);letter-spacing:.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:20px}
+.eyebrow::before{content:"";width:28px;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px}
+.grad{background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:14px;font:600 .95rem/1 var(--body);border:1px solid transparent;text-decoration:none;cursor:pointer;transition:transform .35s var(--ease),box-shadow .35s}
+.btn-p{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#04121A;box-shadow:0 14px 40px -14px rgba(34,211,238,.75)}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 18px 50px -12px rgba(34,211,238,.9)}
+.btn-g{border-color:rgba(148,163,184,.3);color:var(--text);background:rgba(21,27,35,.55);backdrop-filter:blur(8px)}
+.h2{font-size:clamp(2.2rem,1.2rem + 4vw,4.6rem)}
+.lead{font-size:clamp(1.02rem,.95rem + .35vw,1.2rem);max-width:54ch;margin-top:20px}
+section{position:relative}
+
+/* header */
+.top{position:fixed;top:env(safe-area-inset-top,0px);left:0;right:0;z-index:20;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+.top.solid{background:rgba(11,15,20,.6);backdrop-filter:blur(14px);border-color:var(--line)}
+.top .c{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{font:700 1.08rem/1 var(--head);color:var(--text);letter-spacing:.03em}
+.logo b{color:var(--cyan)}
+.top nav{display:none;gap:28px;font-size:.9rem}
+@media(min-width:960px){.top nav{display:flex}}
+.top .btn{min-height:42px;padding:0 16px;font-size:.85rem}
+
+/* 1 hero */
+.hero{min-height:100svh;display:flex;align-items:center;padding:96px 0 64px}
+.hero .grid{display:grid;width:100%}
+@media(min-width:960px){.hero .grid{grid-template-columns:1.1fr .9fr}}
+.hero h1{font-size:clamp(2.6rem,1rem + 6.2vw,6rem);letter-spacing:-.04em;line-height:.98}
+.acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+.micro{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:28px;font-size:.85rem;color:var(--dim)}
+.micro span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--cyan);margin-right:8px;vertical-align:middle;box-shadow:0 0 8px var(--cyan)}
+.hint{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);font:600 .7rem/1 var(--head);letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+.n-hint{position:absolute;right:max(32px,env(safe-area-inset-right,0px));bottom:70px;font-size:.8rem;color:var(--dim);display:none}
+@media(min-width:960px){.n-hint{display:block}}
+@media(max-width:959px){.hero{align-items:flex-start;padding-top:110px}.hero-space{height:36svh}.hero .acts .btn{flex:1 1 100%}}
+
+/* 2 faixa tipográfica */
+.marquee{padding:40px 0 60px;overflow:hidden}
+.row{display:flex;gap:4vw;white-space:nowrap;font:700 clamp(4rem,14vw,13rem)/1 var(--head);letter-spacing:-.04em;will-change:transform}
+.row span{color:transparent;-webkit-text-stroke:1.5px rgba(148,163,184,.35);transition:color .4s,-webkit-text-stroke-color .4s;cursor:default}
+.row span:hover{-webkit-text-stroke-color:transparent;color:var(--cyan);text-shadow:0 0 40px rgba(34,211,238,.4)}
+.row span.fill{background:linear-gradient(135deg,var(--blue),var(--cyan));-webkit-background-clip:text;background-clip:text;-webkit-text-stroke:0;color:transparent}
+.row .dot{-webkit-text-stroke:0;color:var(--cyan);font-size:.22em;align-self:center;text-shadow:0 0 18px var(--cyan)}
+.row2{margin-top:1vw}
+
+/* 3 notificações */
+.pain{height:100svh;display:grid;place-items:center;overflow:hidden}
+.pain-stage{position:relative;width:min(1100px,100%);height:min(640px,86svh)}
+.pain-title{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:0 16px}
+.pain-title h2{font-size:clamp(2.2rem,1rem + 5vw,5.4rem);max-width:12ch}
+.notif{position:absolute;display:flex;gap:12px;align-items:flex-start;width:min(320px,82vw);padding:14px 16px;border-radius:18px;background:rgba(21,27,35,.92);border:1px solid var(--line);box-shadow:0 30px 60px -20px rgba(0,0,0,.8);backdrop-filter:blur(10px)}
+.notif i{flex:none;width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#1f2937,#111827);display:grid;place-items:center;font-style:normal;color:var(--dim);font:700 .8rem/1 var(--head)}
+.notif b{display:block;color:var(--text);font-size:.85rem;margin-bottom:2px}
+.notif span{font-size:.92rem;color:var(--muted)}
+.notif .x{position:absolute;left:12px;right:12px;top:50%;height:2px;background:#F87171;box-shadow:0 0 10px #F87171;transform-origin:left;transform:scaleX(0)}
+.n1{left:2%;top:6%;rotate:-4deg}.n2{right:2%;top:16%;rotate:3deg}.n3{left:10%;bottom:6%;rotate:2deg}
+@media(max-width:700px){.n1{left:0;top:2%}.n2{right:0;top:auto;bottom:22%}.n3{left:4%;bottom:2%}}
+.answer{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);width:min(680px,92vw);text-align:center;font:600 clamp(1.2rem,1rem + 1vw,1.8rem)/1.3 var(--head);color:var(--text);opacity:0}
+.answer em{font-style:normal}
+
+/* 4 site se construindo */
+.build{min-height:100svh;display:flex;align-items:center;padding:90px 0 40px}
+.build .grid{display:grid;gap:32px;width:100%;align-items:center}
+@media(min-width:1024px){.build .grid{grid-template-columns:.75fr 1.25fr;gap:56px}}
+.steps{display:grid;gap:6px;margin-top:28px}
+.st{display:grid;grid-template-columns:42px 1fr;gap:4px 14px;padding:12px 0;opacity:.35;transition:opacity .5s}
+.st.on{opacity:1}
+.st .k{grid-row:span 2;width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;font:700 .85rem/1 var(--head);color:var(--dim);transition:all .5s var(--ease)}
+.st.on .k{border-color:var(--cyan);color:#04121A;background:linear-gradient(135deg,var(--blue),var(--cyan));box-shadow:0 0 20px rgba(34,211,238,.45)}
+.st b{color:var(--text);font:600 1.1rem/1.2 var(--head)}
+.st span{font-size:.9rem}
+.pay{margin-top:14px;font-size:.9rem;color:var(--text)}
+.pay b{color:var(--cyan)}
+.browser{position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(148,163,184,.25);background:#0F141B;box-shadow:0 0 0 1px rgba(34,211,238,.15),0 50px 120px -40px rgba(34,211,238,.35),0 40px 80px -30px rgba(0,0,0,.9)}
+.bbar{display:flex;align-items:center;gap:6px;height:32px;padding:0 14px;background:#0B1016;border-bottom:1px solid var(--line)}
+.bbar span{width:9px;height:9px;border-radius:50%;background:#263241}
+.bbar em{font-style:normal;font-size:.72rem;color:var(--dim);margin-left:10px}
+.screen{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0E1218;transition:background-color .6s}
+.lay{position:absolute;inset:0;padding:7% 7%}
+.wf .blk{position:absolute;background:#1E2732;border-radius:6px}
+.ty{opacity:0}
+.ty h4{position:absolute;left:7%;top:24%;width:52%;margin:0;font:700 clamp(.9rem,2.6vw,2.4rem)/1.02 var(--head);letter-spacing:-.03em;color:#fff}
+.ty h4 i{font-style:normal;transition:color .6s}
+.ty p{position:absolute;left:7%;top:62%;width:48%;font-size:clamp(.5rem,1vw,.9rem);color:#cbd5e1}
+.ty .b{position:absolute;left:7%;top:78%;padding:2% 4%;border-radius:999px;font:700 clamp(.5rem,1vw,.85rem)/1 var(--body);background:#2a3441;color:#fff;transition:background .6s}
+.ty .img{position:absolute;right:7%;top:20%;width:30%;height:62%;border-radius:12px;background:#1E2732;transition:background .6s}
+.colored .ty h4 i{color:#FDBA8C}
+.colored .ty .b{background:#EA580C}
+.colored .ty .img{background:linear-gradient(160deg,#1f3b3a,#0f2423)}
+.real{position:absolute;inset:0;opacity:0}
+.real img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.cursor{position:absolute;width:18px;height:18px;border-radius:50%;border:2px solid var(--cyan);box-shadow:0 0 14px var(--cyan);left:20%;top:30%;z-index:3;pointer-events:none}
+@media(max-width:1023px){.build{padding-top:84px}.build .grid{gap:18px}.build .browser{order:2}.build .grid>div:first-child{display:contents}.build .eyebrow,.build .h2{order:0}.steps{order:3;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}.st{grid-template-columns:1fr;text-align:center;justify-items:center;padding:4px 0}.st .k{grid-row:auto;width:34px;height:34px}.st b{font-size:.72rem}.st span{display:none}.pay{order:4;margin-top:0;text-align:center}}
+.stage-label{position:absolute;right:12px;bottom:12px;z-index:3;font:600 .7rem/1 var(--head);letter-spacing:.18em;text-transform:uppercase;color:var(--text);background:rgba(11,15,20,.75);border:1px solid var(--line);padding:7px 10px;border-radius:8px}
+
+/* 5 cartas */
+.case{padding:130px 0 120px}
+.cards{display:grid;gap:18px;margin-top:48px}
+@media(min-width:640px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1100px){.cards{grid-template-columns:repeat(4,1fr)}.card:nth-child(1){rotate:-5deg;translate:0 14px}.card:nth-child(2){rotate:-1.5deg}.card:nth-child(3){rotate:1.5deg}.card:nth-child(4){rotate:5deg;translate:0 14px}}
+.card{position:relative;height:280px;border:0;padding:0;background:none;cursor:pointer;text-align:left;font:inherit;color:inherit;perspective:1000px;transition:rotate .5s var(--ease),translate .5s var(--ease)}
+.card:hover{rotate:0deg;translate:0 -8px}
+.tilt{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .25s ease-out}
+.card-in{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .9s var(--ease)}
+.card.flip .card-in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;border:1px solid var(--line);overflow:hidden}
+.front{background:radial-gradient(260px 160px at var(--mx,50%) var(--my,0%),rgba(34,211,238,.18),transparent 70%),linear-gradient(160deg,#16202c,#11161d)}
+.front q{font:600 1.2rem/1.3 var(--head);color:var(--text);quotes:none}
+.front small{font:600 .72rem/1 var(--head);color:var(--cyan);letter-spacing:.16em;text-transform:uppercase}
+.big-n{position:absolute;right:-10px;bottom:-30px;font:700 9rem/1 var(--head);color:transparent;-webkit-text-stroke:1px rgba(148,163,184,.12)}
+.back{background:linear-gradient(160deg,#0d2a33,#0f1720);border-color:rgba(34,211,238,.5);transform:rotateY(180deg);box-shadow:inset 0 0 60px rgba(34,211,238,.12)}
+.back b{font:700 1.45rem/1.15 var(--head);color:var(--text)}
+.back em{font-style:normal;color:var(--cyan);font-weight:600}
+.card:focus-visible{outline:2px solid var(--cyan);outline-offset:6px;border-radius:20px}
+.cfoot{margin-top:40px;color:var(--dim);text-align:center}
+
+/* 6 galeria horizontal */
+.gal{height:100svh;overflow:hidden}
+.gal-track{display:flex;height:100%;will-change:transform}
+.panel{flex:0 0 100vw;height:100%;display:grid;place-items:center;position:relative;padding:90px 0 40px}
+.panel-name{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font:700 clamp(4rem,17vw,16rem)/.9 var(--head);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.1);white-space:nowrap;pointer-events:none}
+.shot{position:relative;width:min(860px,86vw);perspective:1400px}
+.shot-in{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.14);box-shadow:0 60px 120px -40px rgba(0,0,0,.9);transform:rotateY(-22deg) rotateX(8deg) scale(.9);transition:box-shadow .4s}
+.shot-in img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top}
+.meta{position:absolute;left:0;bottom:-74px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.meta h3{font-size:1.5rem}
+.chip{font-size:.75rem;font-weight:600;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.2);color:var(--text)}
+.chip.live{border-color:rgba(52,211,153,.4);color:#A7F3D0}
+.gal-head{position:absolute;top:96px;left:0;right:0;z-index:2}
+.gal-count{position:absolute;right:max(32px,env(safe-area-inset-right,0px));top:100px;z-index:2;font:600 .8rem/1 var(--head);letter-spacing:.2em;color:var(--dim)}
+@media(max-width:767px){.gal{height:auto}.gal-track{flex-direction:column}.panel{flex:none;height:auto;min-height:80svh;padding:60px 0 120px}.gal-head{position:relative;top:auto;padding-top:100px}.gal-count{display:none}.shot-in{transform:rotateX(14deg) scale(.94)}}
+
+/* 7 faq */
+.faq-s{padding:130px 0}
+.faq-grid{display:grid;gap:36px}
+@media(min-width:960px){.faq-grid{grid-template-columns:.8fr 1.2fr;gap:64px}.faq-side{position:sticky;top:120px;align-self:start}}
+.faq{display:grid;gap:10px}
+.faq details{border:1px solid var(--line);border-radius:16px;background:rgba(21,27,35,.65);padding:2px 22px;transition:border-color .3s,background .3s}
+.faq details[open]{border-color:rgba(34,211,238,.45);background:rgba(21,27,35,.9)}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;font:600 1.08rem/1.3 var(--head);color:var(--text);padding:18px 0}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";color:var(--cyan);font-size:1.4rem;line-height:1;transition:transform .3s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq p{padding-bottom:18px}
+
+/* 8 cta */
+.final{min-height:100svh;display:grid;place-items:center;text-align:center;padding:120px 0}
+.final h2{font-size:clamp(2.6rem,1rem + 6vw,6.4rem);max-width:12ch;margin:0 auto}
+.final .acts{justify-content:center}
+.final .lead{margin-inline:auto}
+.safe{margin-top:18px;font-size:.85rem;color:var(--dim)}
+.note{text-align:center;padding:30px 16px 60px;color:var(--dim);font-size:.8rem}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}.real{opacity:1}.ty{opacity:1}.answer{opacity:1}}
+</style>
+
+<canvas id="fx" aria-hidden="true"></canvas>
+<div class="wrap">
+<header class="top" id="top"><div class="c"><span class="logo">NEXUS <b>JPC</b></span><nav><span>Início</span><span>Serviços</span><span>Projetos</span><span>Sobre</span><span>Contato</span></nav><a class="btn btn-p" href="#cena-8">Quero meu orçamento</a></div></header>
+
+<!-- CENA 1 -->
+<section class="hero" id="cena-1" data-bg="#0B0F14">
+  <div class="c grid">
+    <div>
+      <p class="eyebrow">Estúdio de soluções digitais</p>
+      <h1 class="split">Sua empresa merece uma <span class="grad">presença digital que impressiona.</span></h1>
+      <p class="lead fade">Sites, landing pages e soluções digitais sob medida, com design premium, texto que explica e caminho direto até o seu WhatsApp.</p>
+      <div class="acts fade"><a class="btn btn-p" href="#cena-8">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-6">Ver projetos reais</a></div>
+      <div class="micro fade"><span>Projetos publicados</span><span>Atendimento direto</span><span>Proposta sem compromisso</span></div>
+    </div>
+    <div class="hero-space" aria-hidden="true"></div>
+  </div>
+  <span class="n-hint">mova o mouse: o N acompanha você</span>
+  <span class="hint">role ↓</span>
+</section>
+
+<!-- CENA 2 -->
+<section class="marquee" id="cena-2" data-bg="#0B0F14" aria-label="O que fazemos">
+  <div class="row r1"><span>SITES</span><span class="dot">●</span><span class="fill">LANDING PAGES</span><span class="dot">●</span><span>SOLUÇÕES DIGITAIS</span><span class="dot">●</span><span>SITES</span><span class="dot">●</span></div>
+  <div class="row row2 r2"><span>SISTEMAS</span><span class="dot">●</span><span class="fill">AUTOMAÇÕES</span><span class="dot">●</span><span>QR CODES</span><span class="dot">●</span><span>CATÁLOGOS</span><span class="dot">●</span></div>
+</section>
+
+<!-- CENA 3 -->
+<section class="pain" id="cena-3" data-bg="#0B0F14">
+  <div class="pain-stage">
+    <div class="pain-title"><h2>Bom no balcão, <span class="grad">invisível no celular.</span></h2></div>
+    <div class="notif n1"><i>IG</i><div><b>Comentário no post</b><span>"Qual é o preço?" … sem resposta há 3 dias</span></div><s class="x"></s></div>
+    <div class="notif n2"><i>?</i><div><b>Visitante</b><span>"Não entendi o que vocês fazem."</span></div><s class="x"></s></div>
+    <div class="notif n3"><i>WA</i><div><b>Link da bio</b><span>"Cadê o WhatsApp de vocês?"</span></div><s class="x"></s></div>
+    <p class="answer">Com a Nexus JPC, o visitante <em class="grad">entende, confia e chama você.</em></p>
+  </div>
+</section>
+
+<!-- CENA 4 -->
+<section class="build" id="cena-4" data-bg="#091526">
+  <div class="c grid">
+    <div>
+      <p class="eyebrow">Como funciona</p>
+      <h2 class="h2 split">Assista um site <span class="grad">nascer.</span></h2>
+      <div class="steps">
+        <div class="st on"><span class="k">01</span><b>Entendimento</b><span>Conversa direta sobre o seu negócio e objetivo.</span></div>
+        <div class="st"><span class="k">02</span><b>Planejamento</b><span>Você aprova a estrutura antes de qualquer código.</span></div>
+        <div class="st"><span class="k">03</span><b>Desenvolvimento</b><span>Tipografia, cores, interações e testes no celular.</span></div>
+        <div class="st"><span class="k">04</span><b>Entrega</b><span>No ar, pronto para receber clientes.</span></div>
+      </div>
+      <p class="pay"><b>50%</b> para começar · <b>50%</b> na entrega</p>
+    </div>
+    <div class="browser">
+      <div class="bbar"><span></span><span></span><span></span><em>calma72.nexusjpc.com.br</em></div>
+      <div class="screen" id="screen">
+        <div class="lay wf">
+          <div class="blk" style="left:7%;top:8%;width:14%;height:5%"></div><div class="blk" style="right:7%;top:8%;width:18%;height:5%;border-radius:999px"></div>
+          <div class="blk" style="left:7%;top:24%;width:50%;height:8%"></div><div class="blk" style="left:7%;top:35%;width:44%;height:8%"></div><div class="blk" style="left:7%;top:46%;width:36%;height:8%"></div>
+          <div class="blk" style="left:7%;top:62%;width:46%;height:3%"></div><div class="blk" style="left:7%;top:67%;width:40%;height:3%"></div>
+          <div class="blk" style="left:7%;top:78%;width:24%;height:8%;border-radius:999px"></div>
+          <div class="blk" style="right:7%;top:20%;width:30%;height:62%;border-radius:12px"></div>
+        </div>
+        <div class="lay ty"><h4>Se faltar luz e água por 3 dias, <i>sua família sabe o que fazer?</i></h4><p>O plano da sua casa para as primeiras 72 horas.</p><span class="b">Quero o plano da minha casa →</span><span class="img"></span></div>
+        <div class="real"><img src="{{IMG_CALMA72}}" alt="Captura real da landing page Calma72"></div>
+        <span class="cursor" aria-hidden="true"></span>
+        <span class="stage-label" id="stage-label">01 · Briefing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CENA 5 -->
+<section class="case" id="cena-5" data-bg="#0B0F14">
+  <div class="c">
+    <div style="text-align:center"><p class="eyebrow">Qual é o seu caso?</p>
+    <h2 class="h2 split" style="max-width:16ch;margin:0 auto">Não sabe do que precisa? <span class="grad">Vire uma carta.</span></h2></div>
+    <div class="cards">
+      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 01</small><q>"Quero que me encontrem e confiem no meu negócio."</q><small>toque para virar ↻</small><span class="big-n">1</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Site institucional</b><span>Seu endereço oficial na internet, com serviços, fotos e contato.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 02</small><q>"Vou lançar ou vender um produto ou oferta."</q><small>toque para virar ↻</small><span class="big-n">2</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Landing page</b><span>Uma página focada em uma oferta e em uma única ação.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 03</small><q>"Preciso organizar links, catálogo ou QR Code."</q><small>toque para virar ↻</small><span class="big-n">3</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Solução digital</b><span>Páginas de links, catálogos e QR Codes com a sua marca.</span><em>Ver como funciona →</em></span></span></span></button>
+      <button class="card" type="button" aria-pressed="false"><span class="tilt"><span class="card-in"><span class="face front"><small>Carta 04</small><q>"Minha rotina vive em planilhas e mensagens soltas."</q><small>toque para virar ↻</small><span class="big-n">4</span></span><span class="face back"><small style="color:var(--cyan);font:600 .72rem/1 var(--head);letter-spacing:.16em">VOCÊ PRECISA DE</small><b>Sistema ou automação</b><span>Agenda, cadastros e tarefas organizados, com avaliação técnica.</span><em>Ver como funciona →</em></span></span></span></button>
+    </div>
+    <p class="cfoot">Ainda em dúvida? Descreva com suas palavras e a gente indica o formato.</p>
+  </div>
+</section>
+
+<!-- CENA 6 -->
+<section class="gal" id="cena-6" data-bg="#0B0F14">
+  <div class="gal-head c"><p class="eyebrow">Projetos reais · status transparente</p></div>
+  <span class="gal-count" id="gal-count">01 / 03</span>
+  <div class="gal-track">
+    <div class="panel" data-bg="#0A1A1C">
+      <span class="panel-name">CALMA72</span>
+      <div class="shot"><div class="shot-in"><img src="{{IMG_CALMA72}}" alt="Captura real da landing page Calma72"></div>
+        <div class="meta"><h3>Calma72</h3><span class="chip">Landing Page</span><span class="chip live">● Publicado</span></div></div>
+    </div>
+    <div class="panel" data-bg="#0A1A12">
+      <span class="panel-name">CEIA</span>
+      <div class="shot"><div class="shot-in"><img src="{{IMG_CEIA}}" alt="Captura real da landing page Ceia no Seu Orçamento"></div>
+        <div class="meta"><h3>Ceia no Seu Orçamento</h3><span class="chip">Landing Page</span><span class="chip live">● Publicado</span></div></div>
+    </div>
+    <div class="panel" data-bg="#0A1022">
+      <span class="panel-name">BILHAR</span>
+      <div class="shot"><div class="shot-in"><img src="{{IMG_BILHAR}}" alt="Captura real do site Bilhar Dourado"></div>
+        <div class="meta"><h3>Bilhar Dourado</h3><span class="chip">Site + Sistema</span><span class="chip live">● Site publicado</span><span class="chip">Sistema em desenvolvimento</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CENA 7 -->
+<section class="faq-s" id="cena-7" data-bg="#0B0F14">
+  <div class="c faq-grid">
+    <div class="faq-side"><p class="eyebrow">Dúvidas</p><h2 class="h2 split">As dúvidas, respondidas.</h2><p class="lead fade">Não achou a sua? Pergunte direto no WhatsApp.</p></div>
+    <div class="faq">
+      <details><summary>Quanto custa um site?</summary><p>Depende do formato e do que você precisa. Você descreve o projeto e recebe uma proposta personalizada, sem compromisso, antes de começar.</p></details>
+      <details><summary>Como funciona o pagamento?</summary><p>50% do valor para começar e os outros 50% na entrega do projeto.</p></details>
+      <details><summary>E se eu não souber o que preciso?</summary><p>Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado.</p></details>
+      <details><summary>Como sei que o projeto não vai ficar parado?</summary><p>As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.</p></details>
+      <details><summary>Vai ficar com cara de template?</summary><p>Cada projeto parte do seu negócio e do seu público. Veja o portfólio e note que nenhum projeto se parece com o outro.</p></details>
+      <details><summary>Funciona no celular?</summary><p>Sim. Tudo é pensado primeiro para o celular, de onde vem a maior parte dos visitantes.</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- CENA 8 -->
+<section class="final" id="cena-8" data-bg="#060A10">
+  <div class="c">
+    <p class="eyebrow">Orçamento</p>
+    <h2 class="split">Vamos tirar seu projeto do <span class="grad">papel?</span></h2>
+    <p class="lead fade">Conte sua ideia em 2 minutos. Você recebe uma proposta personalizada, sem compromisso.</p>
+    <div class="acts fade"><a class="btn btn-p" href="#cena-1">Quero meu orçamento →</a><a class="btn btn-g" href="#cena-1">Falar no WhatsApp</a></div>
+    <p class="safe fade">Resposta pelo WhatsApp · 50% para começar, 50% na entrega</p>
+  </div>
+</section>
+<p class="note">Simulação v2 da Carta 2 · role de volta ao topo para ver o N se formar de novo</p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+(function(){
+'use strict';
+var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var coarse = matchMedia('(pointer: coarse)').matches;
+
+/* ============ Canvas: onda de pontos + N de partículas em 3D ============ */
+var cv = document.getElementById('fx'), ctx = cv.getContext('2d');
+var W, H, dpr, cols, rows, wave = [], trav = [], nPts = null;
+var t = Math.random()*50, mouse = {x:-9999,y:-9999,tx:-9999,ty:-9999,a:0,ta:0,nx:.5,ny:.5};
+var st = { intro:0, keep:1, fin:0 }, rot = { y:0, x:0 };
+var TINTS = ['#3B82F6','#3197F2','#2AACEE','#26BFEC','#22D3EE','#5EE0F2','#A5F3FC'];
+var N_PATHS = ['M 80,114 L 145,159 L 145,385 L 80,422 Z','M 80,114 L 182,53 Q 193,46 205,53 L 525,252 L 525,132 L 588,132 L 588,348 Q 588,361 575,369 L 529,396 Q 513,406 500,397 L 145,179 Z'];
+var N_NODES = [[115,421],[557,132]];
+var finalSec = document.getElementById('cena-8');
+
+function sampleN(){
+  var oc = document.createElement('canvas'); oc.width = 564; oc.height = 478;
+  var o = oc.getContext('2d'); o.translate(-55,-18); o.fillStyle = '#fff';
+  N_PATHS.forEach(function(d){ o.fill(new Path2D(d)); });
+  var img = o.getImageData(0,0,564,478).data, pts = [], step = (coarse || innerWidth < 700) ? 12 : 9;
+  for (var y=0; y<478; y+=step) for (var x=0; x<564; x+=step) if (img[(y*564+x)*4+3] > 128) pts.push({x:x+55-337, y:y+18-257, z:(Math.random()-.5)*26, node:false});
+  N_NODES.forEach(function(n){ for (var r=0; r<=46; r+=step*.8){ var k=Math.max(1,Math.round(2*Math.PI*r/(step*.9))); for (var i=0;i<k;i++){ var a=i/k*Math.PI*2; pts.push({x:n[0]+Math.cos(a)*r-337, y:n[1]+Math.sin(a)*r-257, z:40+(Math.random()-.5)*20, node:true}); } } });
+  return pts;
+}
+function layout(){
+  W = innerWidth; H = innerHeight; dpr = Math.min(devicePixelRatio||1, 1.5);
+  cv.width = W*dpr; cv.height = H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  var sp = W < 640 ? 11 : 13; cols = Math.min(130, Math.round(W/sp)); rows = W < 640 ? 20 : 30;
+  wave = []; for (var r=0;r<rows;r++) for (var c=0;c<cols;c++) wave.push({r:r,c:c});
+  if (!nPts) nPts = sampleN();
+  var pool = wave.filter(function(p){ return p.r > rows*.35; });
+  trav = nPts.map(function(p,i){ return { w: pool[(i*7919) % pool.length], p:p, ox:0, oy:0, delay:Math.random()*.35 }; });
+  var used = {}; trav.forEach(function(a){ used[a.w.r*1000+a.w.c]=1; });
+  wave.forEach(function(p){ p.trav = !!used[p.r*1000+p.c]; });
+}
+function heroTarget(){
+  var size = W < 960 ? Math.min(W*.56, H*.24) : Math.min(H*.6, W*.36), cx = W < 960 ? W*.5 : W*.74, cy = H*.52;
+  if (W < 960){ var mi = document.querySelector('.hero .micro'); var top = mi ? mi.getBoundingClientRect().bottom : H*.7; cy = Math.min(top + 40 + size/2, H - size/2 - 16); }
+  return { cx:cx, cy:cy, s:size/478 };
+}
+function finalTarget(){
+  var r = finalSec.getBoundingClientRect(), size = Math.min(W*.7, H*.62);
+  return { cx:W/2, cy:r.top + r.height/2, s:size/478 };
+}
+function wpos(p){
+  var d = p.r/(rows-1), u = p.c/(cols-1), s = .3 + .7*Math.pow(d,1.25);
+  var h = Math.sin(u*6.2 + t*.55 + d*2.4)*.6 + Math.sin(u*13 - t*.85 + d*4.1)*.22 + Math.sin(u*2.3 + t*.32 - d*1.3)*.53;
+  return { x:W/2 + (u-.5)*W*(1.08+.55*d), y:H*(.58+.42*Math.pow(d,1.3)) - h*H*.09*s, s:s, d:d, u:u, h:h };
+}
+function ease(x){ x=Math.max(0,Math.min(1,x)); return x<.5 ? 4*x*x*x : 1-Math.pow(-2*x+2,3)/2; }
+
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  var mx = mouse.x, my = mouse.y, ma = mouse.a;
+  var useFinal = st.fin > 0.001, prog = useFinal ? st.fin : st.intro*st.keep;
+  var T = useFinal ? finalTarget() : heroTarget(), alphaN = useFinal ? .3 : 1;
+  for (var i=0;i<wave.length;i++){
+    var p = wave[i]; if (p.trav && prog > .02) continue;
+    var q = wpos(p), lift = 0;
+    if (ma > .01){ var dx=q.x-mx, dy=(q.y-my)*1.4, dd=Math.sqrt(dx*dx+dy*dy), R=140+90*q.s; if (dd<R){ var f=1-dd/R; lift=f*f*42*q.s*ma; } }
+    var cr = (q.h+1.35)/2.7;
+    ctx.globalAlpha = Math.min(1,(.12+.78*Math.pow(q.d,1.4))*(.45+.75*cr) + lift/80);
+    ctx.fillStyle = TINTS[Math.min(6,Math.round((q.u*.45+cr*.45+lift/60)*6))];
+    var sz = .8 + 1.5*q.s + lift/22; ctx.fillRect(q.x-sz/2, q.y-lift-sz/2, sz, sz);
+  }
+  if (prog <= .02) { ctx.globalAlpha = 1; return; }
+  var cy = Math.cos(rot.y), sy = Math.sin(rot.y), cx2 = Math.cos(rot.x), sx = Math.sin(rot.x);
+  for (var j=0;j<trav.length;j++){
+    var a = trav[j], w = wpos(a.w), P = a.p;
+    var e = ease(prog*1.35 - a.delay);
+    // rotação 3D do N (segue o mouse) + respiração
+    var X = P.x, Y = P.y + Math.sin(t*1.2 + j*.37)*1.5, Z = P.z;
+    var x1 = X*cy - Z*sy, z1 = X*sy + Z*cy;
+    var y1 = Y*cx2 - z1*sx, z2 = Y*sx + z1*cx2;
+    var f3 = 700/(700 + z2*T.s*2.2);
+    var bx = T.cx + x1*T.s*f3, by = T.cy + y1*T.s*f3;
+    if (ma > .01 && e > .6){ var dx2=bx-mx, dy2=by-my, d2=Math.sqrt(dx2*dx2+dy2*dy2); if (d2<100){ var f2=(1-d2/100)*30*ma; a.ox += (dx2/(d2||1)*f2 - a.ox)*.2; a.oy += (dy2/(d2||1)*f2 - a.oy)*.2; } else { a.ox*=.9; a.oy*=.9; } } else { a.ox*=.9; a.oy*=.9; }
+    var x = w.x + (bx + a.ox - w.x)*e, y = w.y + (by + a.oy - w.y)*e - Math.sin(e*Math.PI)*70;
+    var tint = P.node ? 6 : Math.max(0, Math.min(5, Math.round((P.x/250 + .5)*5)));
+    ctx.globalAlpha = (.35 + .65*e) * (.7 + .3*f3) * (e > .5 ? alphaN : 1);
+    ctx.fillStyle = TINTS[tint];
+    var s2 = (.9 + 1.4*w.s)*(1-e) + (P.node ? 2.8 : 2.3)*f3*e*(useFinal ? 1.2 : 1);
+    ctx.fillRect(x-s2/2, y-s2/2, s2, s2);
+  }
+  ctx.globalAlpha = 1;
+}
+var last = 0;
+function tick(ts){
+  requestAnimationFrame(tick);
+  if (ts - last < (coarse ? 33 : 16)) return;
+  var dt = Math.min(64, ts-(last||ts))/1000; last = ts; t += dt;
+  mouse.x += (mouse.tx-mouse.x)*.12; mouse.y += (mouse.ty-mouse.y)*.12; mouse.a += (mouse.ta-mouse.a)*.06;
+  var ty = (mouse.nx-.5)*.6 + Math.sin(t*.4)*.14, tx = -(mouse.ny-.5)*.5;
+  rot.y += (ty-rot.y)*.06; rot.x += (tx-rot.x)*.06;
+  draw();
+}
+layout();
+var rt; addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(layout,150); });
+addEventListener('pointermove', function(e){ if (mouse.x < -999){ mouse.x=e.clientX; mouse.y=e.clientY; } mouse.tx=e.clientX; mouse.ty=e.clientY; mouse.ta=1; mouse.nx=e.clientX/W; mouse.ny=e.clientY/H; }, {passive:true});
+addEventListener('pointerup', function(e){ if (e.pointerType !== 'mouse') mouse.ta = 0; }, {passive:true});
+document.addEventListener('pointerleave', function(){ mouse.ta = 0; mouse.nx=.5; mouse.ny=.5; });
+if (coarse && window.DeviceOrientationEvent){ addEventListener('deviceorientation', function(e){ if (e.gamma != null){ mouse.nx = .5 + Math.max(-30,Math.min(30,e.gamma))/60; mouse.ny = .5 + Math.max(-30,Math.min(30,(e.beta||45)-45))/60; } }); }
+
+if (reduce || !window.gsap){ st.intro = 1; draw(); document.querySelectorAll('.real,.ty').forEach(function(el){ el.style.opacity = 1; }); return; }
+requestAnimationFrame(tick);
+
+/* ============ Lenis + GSAP ============ */
+gsap.registerPlugin(ScrollTrigger, SplitText);
+var lenis = window.Lenis ? new Lenis({ lerp: .09 }) : null;
+if (lenis){ lenis.on('scroll', ScrollTrigger.update); gsap.ticker.add(function(time){ lenis.raf(time*1000); }); gsap.ticker.lagSmoothing(0); }
+document.querySelectorAll('a[href^="#"]').forEach(function(a){ a.addEventListener('click', function(e){ var el = document.querySelector(a.getAttribute('href')); if (!el) return; e.preventDefault(); lenis ? lenis.scrollTo(el) : el.scrollIntoView({behavior:'smooth'}); }); });
+ScrollTrigger.create({ start: 80, end: 'max', onToggle: function(s){ document.getElementById('top').classList.toggle('solid', s.isActive); } });
+
+// fundo muda de cor por cena (e por projeto na galeria)
+function setBg(c){ document.body.style.backgroundColor = c; }
+gsap.utils.toArray('section[data-bg]').forEach(function(sec){ ScrollTrigger.create({ trigger: sec, start: 'top 55%', end: 'bottom 55%', onToggle: function(s){ if (s.isActive) setBg(sec.dataset.bg); } }); });
+
+// Cena 1
+gsap.to(st, { intro: 1, duration: 2.4, ease: 'power3.inOut', delay: .2 });
+ScrollTrigger.create({ trigger: '#cena-1', start: 'top top', end: 'bottom top', onUpdate: function(s){ st.keep = Math.max(0, 1 - s.progress*1.6); } });
+gsap.to('#cena-1 .c', { yPercent: -16, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#cena-1', start: 'top top', end: 'bottom top', scrub: true } });
+
+document.fonts.ready.then(function(){
+  document.querySelectorAll('.split').forEach(function(el, i){
+    var sp = new SplitText(el, { type: 'lines', mask: 'lines' });
+    gsap.from(sp.lines, { yPercent: 115, duration: 1.1, ease: 'power4.out', stagger: .1, delay: i === 0 ? .35 : 0, scrollTrigger: i === 0 ? null : { trigger: el, start: 'top 85%' } });
+  });
+  ScrollTrigger.refresh();
+});
+gsap.utils.toArray('.fade, .eyebrow').forEach(function(el){ gsap.from(el, { y: 24, opacity: 0, duration: .9, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 92%' } }); });
+
+// Cena 2: faixa gigante andando com a rolagem
+gsap.fromTo('.r1', { xPercent: 0 }, { xPercent: -35, ease: 'none', scrollTrigger: { trigger: '#cena-2', start: 'top bottom', end: 'bottom top', scrub: .5 } });
+gsap.fromTo('.r2', { xPercent: -35 }, { xPercent: 0, ease: 'none', scrollTrigger: { trigger: '#cena-2', start: 'top bottom', end: 'bottom top', scrub: .5 } });
+
+// Cena 3: cena presa — notificações chegam, são riscadas e voam; a resposta entra
+var tl3 = gsap.timeline({ scrollTrigger: { trigger: '#cena-3', start: 'top top', end: '+=150%', pin: true, scrub: .7 } });
+tl3.from('.n1', { y: 80, opacity: 0, scale: .8, duration: .4 }, '+=.1')
+   .from('.n2', { y: 80, opacity: 0, scale: .8, duration: .4 }, '+=.1')
+   .from('.n3', { y: 80, opacity: 0, scale: .8, duration: .4 }, '+=.1')
+   .to('.notif .x', { scaleX: 1, duration: .3, stagger: .15 }, '+=.2')
+   .to('.n1', { x: -260, y: -120, rotate: -20, opacity: 0, duration: .5 }, '+=.15')
+   .to('.n2', { x: 260, y: -80, rotate: 20, opacity: 0, duration: .5 }, '<.05')
+   .to('.n3', { y: 200, rotate: 10, opacity: 0, duration: .5 }, '<.05')
+   .to('.pain-title h2', { y: -40, duration: .5 }, '<')
+   .to('.answer', { opacity: 1, y: -10, duration: .5 });
+
+// Cena 4: o site se construindo (presa)
+var stepsEl = gsap.utils.toArray('.st'), label = document.getElementById('stage-label'), screen = document.getElementById('screen');
+var labels = ['01 · Briefing','02 · Wireframe aprovado','03 · Design e interações','04 · No ar'];
+function setStage(n){ stepsEl.forEach(function(s,i){ s.classList.toggle('on', i <= n); }); label.textContent = labels[n]; screen.classList.toggle('colored', n >= 2); }
+var tl4 = gsap.timeline({ scrollTrigger: { trigger: '#cena-4', start: 'top top', end: '+=260%', pin: true, scrub: .8,
+  onUpdate: function(s){ setStage(Math.min(3, Math.floor(s.progress*4))); } } });
+tl4.from('.wf .blk', { scaleX: 0, transformOrigin: 'left', opacity: 0, stagger: .05, duration: .4 })
+   .to('.cursor', { left: '60%', top: '28%', duration: .5 }, '<')
+   .to('.wf', { opacity: .0, duration: .4 }, '+=.3')
+   .to('.ty', { opacity: 1, duration: .4 }, '<')
+   .to('.cursor', { left: '18%', top: '82%', duration: .5 }, '<')
+   .to(screen, { backgroundColor: '#0f2221', duration: .4 }, '+=.2')
+   .to('.cursor', { left: '80%', top: '50%', duration: .5 }, '<')
+   .to('.real', { opacity: 1, duration: .5 }, '+=.3')
+   .fromTo('.real img', { scale: 1.08 }, { scale: 1, duration: .6 }, '<')
+   .to('.cursor', { opacity: 0, duration: .2 }, '<')
+   .to({}, { duration: .3 });
+
+// Cena 5: cartas com inclinação 3D seguindo o mouse e giro ao toque
+gsap.from('.card', { y: 90, opacity: 0, stagger: .1, duration: 1.1, ease: 'power4.out', scrollTrigger: { trigger: '.cards', start: 'top 82%' } });
+document.querySelectorAll('.card').forEach(function(c){
+  var tilt = c.querySelector('.tilt'), front = c.querySelector('.front');
+  c.addEventListener('pointermove', function(e){ if (e.pointerType !== 'mouse') return; var r = c.getBoundingClientRect(), px = (e.clientX-r.left)/r.width, py = (e.clientY-r.top)/r.height;
+    tilt.style.transform = 'rotateY(' + ((px-.5)*16) + 'deg) rotateX(' + ((.5-py)*14) + 'deg)'; front.style.setProperty('--mx', px*100+'%'); front.style.setProperty('--my', py*100+'%'); });
+  c.addEventListener('pointerleave', function(){ tilt.style.transform = ''; });
+  c.addEventListener('click', function(){ var on = !c.classList.contains('flip'); c.classList.toggle('flip', on); c.setAttribute('aria-pressed', String(on)); });
+});
+
+// Cena 6: galeria horizontal com telas em perspectiva e cor de cada projeto
+var mm = gsap.matchMedia(), panels = gsap.utils.toArray('.panel'), count = document.getElementById('gal-count');
+mm.add('(min-width: 768px)', function(){
+  var track = document.querySelector('.gal-track');
+  var tween = gsap.to(track, { x: function(){ return -(track.scrollWidth - innerWidth); }, ease: 'none',
+    scrollTrigger: { trigger: '#cena-6', start: 'top top', end: function(){ return '+=' + (track.scrollWidth - innerWidth); }, pin: true, scrub: .8, invalidateOnRefresh: true,
+      onUpdate: function(s){ var n = Math.min(panels.length-1, Math.round(s.progress*(panels.length-1))); count.textContent = '0' + (n+1) + ' / 0' + panels.length; setBg(panels[n].dataset.bg); } } });
+  panels.forEach(function(p){
+    gsap.fromTo(p.querySelector('.shot-in'), { rotateY: -24, rotateX: 8, scale: .86 }, { rotateY: 0, rotateX: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left 90%', end: 'center center', scrub: true } });
+    gsap.fromTo(p.querySelector('.panel-name'), { xPercent: 20 }, { xPercent: -20, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: tween, start: 'left right', end: 'right left', scrub: true } });
+  });
+});
+mm.add('(max-width: 767px)', function(){
+  panels.forEach(function(p){
+    gsap.fromTo(p.querySelector('.shot-in'), { rotateX: 16, scale: .9 }, { rotateX: 0, scale: 1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 85%', end: 'center 55%', scrub: true } });
+    ScrollTrigger.create({ trigger: p, start: 'top 55%', end: 'bottom 55%', onToggle: function(s){ if (s.isActive) setBg(p.dataset.bg); } });
+  });
+});
+
+// Cena 7
+gsap.from('.faq details', { x: 40, opacity: 0, stagger: .08, duration: .8, ease: 'power3.out', scrollTrigger: { trigger: '.faq', start: 'top 85%' } });
+
+// Cena 8: o N volta a se formar atrás da chamada final
+ScrollTrigger.create({ trigger: '#cena-8', start: 'top 85%', end: 'bottom bottom', onUpdate: function(s){ st.fin = s.progress; }, onLeaveBack: function(){ st.fin = 0; } });
+})();
+</script>
