@@ -201,7 +201,7 @@
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { seen.set(e.target, e.isIntersecting); });
       var any = false; seen.forEach(function (v) { if (v) any = true; });
-      if (any && !document.hidden) start(); else { stop(); }
+      if (any && !document.hidden) start(); else { stop(); setTimeout(function () { if (!running) { st.keep = 0; if (!seen.get(finalEl)) st.fin = 0; draw(); } }, 120); }
     }, { threshold: 0 });
     io.observe(heroEl); if (finalEl) io.observe(finalEl);
   } else {

@@ -241,3 +241,29 @@ html.pre-on .h-pre { display: flex; }
 }
 .h-price { font-size: .85rem; color: var(--dim); margin-top: -4px; }
 .h-price strong { font-family: var(--font-head); font-size: 1.1rem; color: var(--cyan); }
+
+/* do problema à solução */
+.h-fix { padding: 110px 0; }
+.h-fix-list { display: grid; gap: 14px; margin-top: 34px; }
+.h-fix-row { display: grid; gap: 10px; align-items: stretch; }
+@media (min-width: 900px) { .h-fix-row { grid-template-columns: 1fr auto 1fr; gap: 18px; } }
+.h-fix-p, .h-fix-s { padding: 18px 20px; border-radius: 16px; border: 1px solid var(--line); }
+.h-fix-p { background: rgba(21,27,35,.55); }
+.h-fix-p p { color: var(--dim); }
+.h-fix-s { background: linear-gradient(160deg, rgba(34,211,238,.10), rgba(21,27,35,.75) 60%); border-color: rgba(34,211,238,.35); }
+.h-fix-s p { color: var(--text); font-weight: 500; }
+.h-fix-row small { display: block; margin-bottom: 6px; font: 600 .7rem/1 var(--font-head); letter-spacing: .16em; text-transform: uppercase; color: var(--dim); }
+.h-fix-s small { color: var(--cyan); }
+.h-fix-arrow { display: grid; place-items: center; color: var(--cyan); }
+@media (max-width: 899px) { .h-fix-arrow { transform: rotate(90deg); height: 18px; } }
+.h-fix-foot { margin-top: 26px; color: var(--muted); max-width: 70ch; }
+.h-fix-foot a { color: var(--cyan); font-weight: 600; }
+@media (max-width: 767px) { .h-fix { padding: 48px 0; } .h-fix-p, .h-fix-s { padding: 14px 16px; } .h-fix-p p, .h-fix-s p { font-size: .95rem; } }
+@media (max-width: 767px) {
+  .h-card { height: 290px; }
+  .h-face { padding: 18px; gap: 8px; }
+  .h-back small { display: none; }
+  .h-back b { font-size: 1.2rem; }
+  .h-back p { font-size: .88rem; line-height: 1.5; }
+  .h-price { margin-top: 0; }
+}

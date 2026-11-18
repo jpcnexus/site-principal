@@ -1,16 +1,16 @@
-# Tabela de preços — Nexus JPC (faixa "Equilibrada")
+# Tabela de preços — Nexus JPC (faixa "Equilibrada" −35%, ajustada à cidade)
 
-> Escolhida em 18/11/2026. Os valores aparecem no site como "a partir de". O valor final sempre vem na proposta.
+> Escolhida em 18/11/2026 e reduzida em 35% (arredondando para a dezena de baixo) para a realidade da cidade. Os valores aparecem no site como "a partir de". O valor final sempre vem na proposta.
 > Para alterar: `src/data/services.mjs` (campo `preco`), `src/config.mjs` (`pricing`) e a tabela em `src/pages.mjs` (página /servicos/).
 
 | Serviço | A partir de | Escopo de partida |
 |---|---|---|
-| Página de links / cartão digital | R$ 250 | 1 página com a sua marca, links e botões |
-| Catálogo digital com QR Code | R$ 450 | catálogo simples com pedido pelo WhatsApp + QR Code |
-| Landing page | R$ 790 | página única focada em uma oferta |
-| Site institucional | R$ 1.490 | até 5 páginas |
-| Sistemas e automações | R$ 2.500 | somente após avaliação técnica |
-| Manutenção mensal (opcional) | R$ 90/mês | atualizações de texto e foto, ajustes, acompanhamento |
+| Página de links / cartão digital | R$ 160 | 1 página com a sua marca, links e botões |
+| Catálogo digital com QR Code | R$ 290 | catálogo simples com pedido pelo WhatsApp + QR Code |
+| Landing page | R$ 510 | página única focada em uma oferta |
+| Site institucional | R$ 960 | até 5 páginas |
+| Sistemas e automações | R$ 1.620 | somente após avaliação técnica |
+| Manutenção mensal (opcional) | R$ 50/mês | atualizações de texto e foto, ajustes, acompanhamento |
 
 **Condições:** 50% para começar e 50% na entrega. Domínio e hospedagem são contratados à parte, no nome do cliente.
 

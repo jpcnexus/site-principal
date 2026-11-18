@@ -170,6 +170,14 @@
       .to('.h-answer', { opacity: 1, duration: 0.6 });
   });
 
+  /* ---------- Do problema à solução ---------- */
+  gsap.utils.toArray('.h-fix-row').forEach(function (row) {
+    gsap.timeline({ scrollTrigger: { trigger: row, start: 'top 85%' } })
+      .from(row.querySelector('.h-fix-p'), { x: -30, opacity: 0, duration: 0.6, ease: 'power3.out' })
+      .from(row.querySelector('.h-fix-arrow'), { scale: 0, opacity: 0, duration: 0.35 }, '-=.2')
+      .from(row.querySelector('.h-fix-s'), { x: 30, opacity: 0, duration: 0.6, ease: 'power3.out' }, '-=.15');
+  });
+
   /* ---------- Cena 4: o site nascendo (presa) ---------- */
   var steps = gsap.utils.toArray('.h-st'), label = document.querySelector('[data-stage-label]');
   var labels = ['01 · Briefing', '02 · Wireframe aprovado', '03 · Design e interações', '04 · No ar'];

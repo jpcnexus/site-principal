@@ -6,19 +6,19 @@ import { page, esc, icon } from './layout.mjs';
 
 // Frases do "Qual é o seu caso?" ligadas a cada serviço
 const caseLines = {
-  sites: { q: 'Quero que me encontrem e confiem no meu negócio.', label: 'Site institucional', d: 'Seu endereço oficial na internet, com serviços, fotos e contato.' },
-  'landing-pages': { q: 'Vou lançar ou vender um produto ou oferta.', label: 'Landing page', d: 'Uma página focada em uma oferta e em uma única ação.' },
-  'solucoes-digitais': { q: 'Preciso organizar links, catálogo ou QR Code.', label: 'Solução digital', d: 'Páginas de links, catálogos e QR Codes com a sua marca.' },
-  automacoes: { q: 'Minha rotina vive em planilhas e mensagens soltas.', label: 'Sistema ou automação', d: 'Agenda, cadastros e tarefas organizados, com avaliação técnica.' },
+  sites: { q: 'Quero que me encontrem e confiem no meu negócio.', label: 'Site institucional', d: 'Para quem só tem Instagram e perde cliente por falta de confiança. Seu site oficial, com serviços, fotos e WhatsApp.' },
+  'landing-pages': { q: 'Vou lançar ou vender um produto ou oferta.', label: 'Landing page', d: 'Para vender um produto ou serviço específico. Uma página que explica a oferta e leva direto à compra ou à conversa.' },
+  'solucoes-digitais': { q: 'Preciso organizar links, catálogo ou QR Code.', label: 'Solução digital', d: 'Para quem tem links ou produtos soltos. Tudo organizado numa página com a sua marca, fácil de compartilhar.' },
+  automacoes: { q: 'Minha rotina vive em planilhas e mensagens soltas.', label: 'Sistema ou automação', d: 'Para quem perde tempo com planilhas e mensagens. Agenda, cadastros e tarefas num só lugar.' },
 };
 
 // Cor de fundo de cada projeto na galeria (tom escuro da identidade real de cada site)
 const projectTint = { calma72: '#0A1A1C', ceia: '#0A1A12', 'bilhar-dourado': '#0A1022' };
 
 const faq = [
-  ['Quanto custa um site?', 'Os projetos começam em R$ 250 (página de links). Landing pages a partir de R$ 790 e sites institucionais a partir de R$ 1.490. O valor final vem na proposta personalizada, sem compromisso.'],
+  ['Quanto custa um site?', 'Os projetos começam em R$ 160 (página de links). Landing pages a partir de R$ 510 e sites institucionais a partir de R$ 960. O valor final vem na proposta personalizada, sem compromisso.'],
   ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto. Domínio e hospedagem são contratados à parte, no seu nome.'],
-  ['Depois que o site fica pronto, vocês continuam ajudando?', 'Sim. Existe a manutenção mensal opcional, a partir de R$ 90/mês, para atualizar textos e fotos, fazer ajustes e acompanhar o site.'],
+  ['Depois que o site fica pronto, vocês continuam ajudando?', 'Sim. Existe a manutenção mensal opcional, a partir de R$ 50/mês, para atualizar textos e fotos, fazer ajustes e acompanhar o site.'],
   ['E se eu não souber o que preciso?', 'Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado, que às vezes é mais simples do que você imagina.'],
   ['Como sei que o projeto não vai ficar parado?', 'As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.'],
   ['Vai ficar com cara de template?', 'Cada projeto parte do seu negócio e do seu público. Veja o portfólio e note que nenhum projeto se parece com o outro.'],
@@ -61,6 +61,20 @@ export function home() {
     <div class="h-notif h-n2" aria-hidden="true"><i>?</i><div><b>Visitante</b><span>"Não entendi o que vocês fazem."</span></div><s></s></div>
     <div class="h-notif h-n3" aria-hidden="true"><i>WA</i><div><b>Link da bio</b><span>"Cadê o WhatsApp de vocês?"</span></div><s></s></div>
     <p class="h-answer">O cliente procura, não entende e vai para o concorrente. Com a Nexus JPC, o visitante <em class="grad">entende, confia e chama você.</em></p>
+  </div>
+</section>
+
+<section class="h-fix" data-bg="#0B0F14" aria-labelledby="h-fix-title">
+  <div class="h-wide">
+    <p class="eyebrow" data-scramble>Do problema à solução</p>
+    <h2 id="h-fix-title" class="section-title h-split">O que a gente resolve, <span class="grad">sem complicação.</span></h2>
+    <p class="section-text">Você não precisa saber o nome técnico de nada. Veja se algum desses problemas parece com o seu:</p>
+    <ol class="h-fix-list">
+      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>O cliente procura seu negócio e não encontra nada confiável, só um perfil no Instagram.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Um site com a sua cara, que aparece no Google e mostra que você é profissional.</p></div></li>
+      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>As pessoas perguntam preço, horário e serviços toda hora, e muitas desistem antes de comprar.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Uma página que explica tudo de forma clara, respondendo as dúvidas antes de a pessoa perguntar.</p></div></li>
+      <li class="h-fix-row"><div class="h-fix-p"><small>O problema</small><p>O interessado não acha o seu WhatsApp ou cansa de procurar o contato.</p></div><span class="h-fix-arrow" aria-hidden="true">${icon('arrow')}</span><div class="h-fix-s"><small>A solução</small><p>Botão de WhatsApp em todo lugar: o cliente fala com você em um toque.</p></div></li>
+    </ol>
+    <p class="h-fix-foot">Ainda não sabe qual formato é o seu? Tudo bem. <a href="/contato/">Conte o problema com suas palavras</a>: a gente indica o formato mais simples e barato que resolve.</p>
   </div>
 </section>
 

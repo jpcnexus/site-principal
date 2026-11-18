@@ -93,11 +93,11 @@ ${pageHero({
     ${sectionHead({ eyebrow: 'Investimento', title: '<span id="precos-title">Quanto custa, sem rodeios</span>', text: 'Valores de partida para você se planejar. O valor final depende do que o seu projeto precisa e vem na proposta, sem compromisso.' })}
     <div class="price-table" data-reveal>
       ${[
-        ['Página de links / cartão digital', 'R$ 250', '/servicos/solucoes-digitais/'],
-        ['Catálogo digital com QR Code', 'R$ 450', '/servicos/solucoes-digitais/'],
-        ['Landing page', 'R$ 790', '/servicos/landing-pages/'],
-        ['Site institucional (até 5 páginas)', 'R$ 1.490', '/servicos/sites/'],
-        ['Sistemas e automações (após avaliação técnica)', 'R$ 2.500', '/servicos/automacoes/'],
+        ['Página de links / cartão digital', 'R$ 160', '/servicos/solucoes-digitais/'],
+        ['Catálogo digital com QR Code', 'R$ 290', '/servicos/solucoes-digitais/'],
+        ['Landing page', 'R$ 510', '/servicos/landing-pages/'],
+        ['Site institucional (até 5 páginas)', 'R$ 960', '/servicos/sites/'],
+        ['Sistemas e automações (após avaliação técnica)', 'R$ 1.620', '/servicos/automacoes/'],
       ].map(([n, v, h]) => `<a class="price-row" href="${h}"><span>${esc(n)}</span><span class="price-val">a partir de <b>${v}</b></span></a>`).join('')}
       <div class="price-row price-extra"><span>Manutenção mensal (opcional): atualizações, ajustes e acompanhamento</span><span class="price-val">a partir de <b>${esc(pricing.manutencao)}</b></span></div>
     </div>
@@ -113,7 +113,7 @@ ${processSection()}
   <div class="container narrow">
     ${sectionHead({ eyebrow: 'Dúvidas', title: '<span id="duvidas-title">Antes de pedir seu orçamento</span>' })}
     <div class="faq">${[
-      ['Quanto custa um site?', 'Os projetos começam em R$ 250 (página de links). Landing pages a partir de R$ 790 e sites institucionais a partir de R$ 1.490. O valor final vem na proposta personalizada, sem compromisso.'],
+      ['Quanto custa um site?', 'Os projetos começam em R$ 160 (página de links). Landing pages a partir de R$ 510 e sites institucionais a partir de R$ 960. O valor final vem na proposta personalizada, sem compromisso.'],
       ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto.'],
       ['E se eu não souber o que preciso?', 'Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado.'],
       ['Como sei que o projeto não vai ficar parado?', 'As etapas e o prazo são combinados na proposta, você aprova a estrutura antes do desenvolvimento e fala direto com quem está fazendo.'],
