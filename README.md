@@ -76,19 +76,29 @@ O número fica centralizado em `src/config.mjs` (`whatsapp.number`). Todos os bo
 
 ## Publicação na Hostinger
 
-> Nada foi publicado. O site atual continua no ar até você aprovar.
+> **Atenção:** os subdomínios (calma72, ceia, bilhardourado, rota360) ficam **dentro** de `public_html`.
+> **Não use** "Implantar via Git" nem "Auto Deploy" do hPanel neste domínio: eles substituem a pasta inteira e apagam os subdomínios.
+> Publique sempre **enviando os arquivos**, sem apagar nada que já está lá.
 
-**Opção A: Git (recomendado)**
-1. No hPanel: *Sites → nexusjpc.com.br → Avançado → Git*.
-2. Repositório `jpcnexus/site-principal`, branch `main` (depois de fazer o merge desta branch), diretório de instalação vazio (`public_html`).
-3. Clique em *Implantar*. Ative o *Auto Deploy* se quiser publicar a cada push.
+**O que enviar para `public_html/`** (substituindo os arquivos com o mesmo nome):
 
-**Opção B: Gerenciador de arquivos / FTP**
-Envie para `public_html/` todo o conteúdo do repositório, **exceto** `src/`, `scripts/`, `.git/` e `README.md` (o `.htaccess` bloqueia esses caminhos de qualquer forma).
+- `index.html`, `404.html`, `.htaccess`, `robots.txt`, `sitemap.xml`, `site.webmanifest`
+- as pastas `assets/`, `servicos/`, `projetos/`, `sobre/`, `contato/`
 
-**Depois de publicar**
-- Confirme que o SSL está ativo e descomente o bloco de redirecionamento HTTPS no `.htaccess`.
-- Teste algumas URLs diretas (ex.: `/projetos/ceia/`) e uma inexistente (deve abrir a 404 personalizada).
+**Não enviar:** `src/`, `scripts/`, `projeto/`, `.git/`, `README.md`, `.gitignore`.
+**Nunca apagar:** as pastas `calma72/`, `ceia/`, `bilhardourado/`, `rota360/`.
+
+**Passo a passo pelo Gerenciador de Arquivos**
+1. Gere as páginas com `node scripts/build.mjs`.
+2. No computador, selecione só os itens da lista acima e compacte em um `.zip`.
+   O `.htaccess` começa com ponto e pode estar oculto: ative "mostrar arquivos ocultos".
+3. No hPanel, abra *Arquivos → Gerenciador de Arquivos* e entre em `public_html`.
+4. Antes de tudo, baixe uma cópia do `index.html` atual (backup).
+5. Envie o `.zip` para `public_html`, extraia ali mesmo (aceite substituir) e apague o `.zip`.
+6. Teste no celular: a página inicial, uma página interna, um endereço inexistente (deve abrir a 404) e os subdomínios.
+
+**Depois da primeira publicação** (feita em 19/11/2026)
+- O HTTPS já funciona e o `http://` já redireciona para `https://`.
 - Envie `https://nexusjpc.com.br/sitemap.xml` no Google Search Console.
 
 ## Pendências
