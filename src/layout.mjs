@@ -158,7 +158,7 @@ function breadcrumbLd(items) {
 }
 
 // ---------- Página completa ----------
-export function page({ path, title, description, active, body, crumbs, jsonld = [], ogImage, preload = [], bodyClass = '', noindex = false, styles = [], scripts = [], intro = false }) {
+export function page({ path, title, description, active, body, crumbs, jsonld = [], ogImage, preload = [], bodyClass = '', noindex = false, styles = [], scripts = [], intro = false, cta = true }) {
   const canonical = site.url + path;
   const fullTitle = path === '/' ? title : `${title} | Nexus JPC`;
   const og = site.url + (ogImage || '/assets/og/nexus-jpc-og.jpg');
@@ -210,7 +210,7 @@ ${header(active)}
 ${body}
 </main>
 ${footer()}
-${active !== 'contato' ? `<a class="m-cta" href="/contato/" data-m-cta>${icon('arrow')}<span>Quero meu orçamento</span></a>` : ''}
+${cta && active !== 'contato' ? `<a class="m-cta" href="/contato/" data-m-cta>${icon('arrow')}<span>Quero meu orçamento</span></a>` : ''}
 <script src="/assets/vendor/lenis.min.js" defer></script>
 ${scripts.filter((x) => x.startsWith('/assets/vendor/')).map((x) => `<script src="${x}" defer></script>`).join('\n')}
 <script src="/assets/js/site.js?v=${ASSET_V}" defer></script>

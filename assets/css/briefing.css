@@ -1,0 +1,105 @@
+/* Briefing em etapas */
+.bf-meta { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 22px; }
+.bf-meta li { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid var(--line-2); border-radius: 999px; background: rgba(21,27,35,.6); font-size: .85rem; color: var(--muted); }
+.bf-meta .ico { width: 16px; height: 16px; color: var(--cyan); }
+
+.bf-wrap { max-width: 880px; }
+.bf { position: relative; }
+.bf-top { margin: -4px 0 28px; }
+.bf-steps { display: flex; gap: 6px; margin-bottom: 14px; }
+.bf-steps li { flex: 1; display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--dim); font-size: .8rem; }
+.bf-steps span { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--line-2); font: 600 .78rem/1 var(--font-head); transition: background-color .3s, border-color .3s, color .3s; }
+.bf-steps span .ico { width: 14px; height: 14px; }
+.bf-steps em { font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bf-steps li.is-cur { color: var(--text); }
+.bf-steps li.is-cur span { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 0 4px rgba(34,211,238,.12); }
+.bf-steps li.is-done span { background: var(--grad); border-color: transparent; color: #04121A; }
+.bf-bar { height: 4px; border-radius: 4px; background: rgba(148,163,184,.16); overflow: hidden; }
+.bf-bar i { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--grad); transition: width .5s var(--ease); }
+.bf-count { margin-top: 10px; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+
+.bf-step { animation: bfIn .45s var(--ease); }
+@keyframes bfIn { from { opacity: 0; transform: translateY(10px); } }
+.bf-title { font-family: var(--font-head); font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem); outline: none; }
+.bf-intro { margin: 6px 0 24px; color: var(--muted); }
+.bf-field { border: 0; padding: 0; margin: 0; min-width: 0; }
+.bf-field legend { display: block; padding: 0; margin-bottom: 10px; font-size: .95rem; font-weight: 600; color: var(--text); line-height: 1.4; }
+.bf-field label { line-height: 1.4; }
+.bf-hint { margin: -4px 0 10px; font-size: .84rem; color: var(--dim); }
+.bf .req { color: var(--cyan); }
+.bf .opt { font-weight: 400; font-size: .82rem; color: var(--slate); }
+
+.bf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.bf-chip { position: relative; display: inline-flex; cursor: pointer; }
+.bf-chip input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; z-index: 1; }
+.bf-chip span { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(11,15,20,.6); color: var(--muted); font-size: .93rem; line-height: 1.3; transition: border-color .2s, background-color .2s, color .2s, box-shadow .2s, transform .15s; }
+.bf-chip span i { flex: none; width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--slate); transition: background-color .2s, border-color .2s; }
+.bf-chip:hover span { border-color: rgba(34,211,238,.45); color: var(--text); }
+.bf-chip input:checked + span { border-color: var(--cyan); background: rgba(34,211,238,.1); color: var(--text); box-shadow: inset 0 0 0 1px rgba(34,211,238,.35); }
+.bf-chip input:checked + span i { background: var(--cyan) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2304121A' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 12px no-repeat; border-color: var(--cyan); }
+.bf-chip input:focus-visible + span { outline: 2px solid var(--cyan); outline-offset: 2px; }
+.bf-chip:active span { transform: scale(.98); }
+.bf-outro { width: 100%; min-height: 48px; margin-top: 10px; padding: 10px 14px; border-radius: 12px; border: 1px solid var(--line-2); background: rgba(11,15,20,.7); color: var(--text); }
+.bf-outro:focus { outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(34,211,238,.18); }
+.bf-field.has-error .bf-chip span { border-color: rgba(248,113,113,.55); }
+
+.bf-nav { display: flex; align-items: center; gap: 10px; margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); }
+.bf-saved { margin-right: auto; font-size: .82rem; color: var(--dim); }
+
+.bf-summary { display: grid; gap: 14px; margin-top: 22px; }
+.bf-sum-group { padding: 18px 20px; border-radius: 14px; border: 1px solid var(--line); background: rgba(11,15,20,.45); }
+.bf-sum-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bf-sum-head h3 { font-size: 1rem; }
+.bf-edit { padding: 6px 12px; border-radius: 8px; border: 1px solid var(--line-2); background: none; color: var(--cyan); font-size: .84rem; font-weight: 600; cursor: pointer; }
+.bf-edit:hover { border-color: var(--cyan); }
+.bf-summary dl { display: grid; gap: 10px; margin: 0; }
+.bf-summary dl div { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); gap: 4px 16px; padding-top: 10px; border-top: 1px solid var(--line); }
+.bf-summary dl div:first-child { border-top: 0; padding-top: 0; }
+.bf-summary dt { font-size: .85rem; color: var(--dim); }
+.bf-summary dd { margin: 0; color: var(--text); font-size: .93rem; white-space: pre-line; overflow-wrap: anywhere; }
+.bf-empty { font-size: .88rem; color: var(--slate); }
+.bf-done { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: rgba(52,211,153,.08); border: 1px solid rgba(52,211,153,.3); color: var(--muted); font-size: .92rem; }
+.bf-done .ico { flex: none; color: #34D399; margin-top: 2px; }
+.bf-done a { color: var(--cyan); font-weight: 600; }
+
+.bf-privacy { display: flex; gap: 10px; align-items: flex-start; margin-top: 18px; font-size: .84rem; color: var(--dim); }
+.bf-privacy .ico { flex: none; width: 18px; height: 18px; color: var(--cyan); margin-top: 1px; }
+.bf-privacy b { color: var(--muted); }
+.bf-privacy a { color: var(--cyan); font-weight: 600; }
+
+/* Página /briefing/ */
+.bf-list { display: grid; gap: 16px; }
+@media (min-width: 720px) { .bf-list { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1100px) { .bf-list { grid-template-columns: repeat(3, 1fr); } }
+.bf-card { height: 100%; }
+.bf-card p { color: var(--muted); font-size: .93rem; }
+.bf-card-n { font: 700 .8rem/1 var(--font-head); letter-spacing: .14em; color: var(--cyan); }
+.bf-card-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line); font-size: .85rem; color: var(--dim); }
+.bf-card-foot span { display: inline-flex; align-items: center; gap: 6px; }
+.bf-card-foot .ico { width: 15px; height: 15px; }
+.bf-card-foot b { color: var(--text); font-family: var(--font-head); }
+
+@media (max-width: 719px) {
+  .bf-sec { padding-top: 8px; }
+  .bf.form-card { padding: 20px 16px; border-radius: 18px; }
+  .bf-steps em { display: none; }
+  .bf-steps { justify-content: space-between; }
+  .bf-steps li { flex: none; }
+  .bf-chip span { min-height: 42px; padding: 9px 13px; font-size: .9rem; }
+  .bf-nav { position: sticky; bottom: 0; z-index: 5; margin: 26px -16px -20px; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: rgba(14,19,26,.94); backdrop-filter: blur(10px); border-radius: 0 0 18px 18px; flex-wrap: wrap; }
+  .bf-nav .btn { flex: 1; min-width: 0; padding: 0 14px; }
+  .bf-nav [data-prev] { flex: 0 0 auto; }
+  .bf-saved { display: none; }
+  .bf-nav [data-copy]:not([hidden]) { order: 3; flex-basis: 100%; }
+  .bf-summary dl div { grid-template-columns: 1fr; gap: 2px; }
+  .bf-sum-group { padding: 14px; }
+  .bf-meta li { font-size: .8rem; padding: 6px 10px; }
+}
+@media (prefers-reduced-motion: reduce) { .bf-step { animation: none; } }
+.bf [hidden], .bf-nav [hidden] { display: none !important; }
+@media (max-width: 719px) {
+  .is-briefing .page-hero { padding-bottom: 20px; }
+  .is-briefing .page-title { font-size: 2rem; }
+  .is-briefing .page-lead { font-size: 1rem; }
+  .bf-meta { gap: 6px; margin-top: 16px; }
+}

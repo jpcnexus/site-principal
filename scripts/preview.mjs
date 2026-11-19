@@ -11,7 +11,7 @@ const out = process.argv[2] || join(root, 'preview');
 const site = join(out, 'site');
 rmSync(out, { recursive: true, force: true });
 
-const pages = ['index.html', '404.html', 'servicos', 'projetos', 'sobre', 'contato'];
+const pages = ['index.html', '404.html', 'servicos', 'projetos', 'sobre', 'contato', 'briefing'];
 const skip = new Set(['nexus-jpc-master-editavel.svg', 'nexus-jpc-logo-principal.jpg', 'nexus-jpc-logo-fundo-claro.jpg', 'nexus-jpc-logo-fundo-claro.png', 'nexus-jpc-logo-transparente.png', 'nexus-jpc-logo-principal.png', 'nexus-jpc-logo-branco.png', 'nexus-jpc-icone.png', 'nexus-jpc-icone-branco.png', 'nexus-jpc-app-512.png', 'nexus-jpc-banner.webp', 'nexus-jpc-perfil.webp', 'LEIA-ME.md']);
 
 function walk(dir, fn) {

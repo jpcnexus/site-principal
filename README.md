@@ -20,6 +20,8 @@ Site **multipáginas estático** (HTML, CSS e JavaScript puros, sem dependência
 | `/projetos/bilhar-dourado/` | Case Bilhar Dourado |
 | `/sobre/` | Sobre a Nexus JPC |
 | `/contato/` | Contato e orçamento (formulário → WhatsApp) |
+| `/briefing/` | Briefings por serviço (links para enviar aos clientes; fora do Google e do menu) |
+| `/briefing/site/`, `/landing-page/`, `/pagina-de-links/`, `/catalogo/`, `/sistema/` | Briefing de cada serviço |
 | `/404.html` | Página de erro personalizada |
 
 QR Turismo e RABICA estão cadastrados, mas **desativados** (`ativo: false`) até haver imagens reais e status definido.
@@ -31,6 +33,7 @@ src/
   config.mjs           ← WhatsApp, URL do site, redes sociais, e-mail
   data/projects.mjs    ← portfólio (textos, status, imagens, tecnologias)
   data/services.mjs    ← serviços (textos, FAQ, funcionalidades)
+  data/briefings.mjs   ← perguntas de cada briefing (respostas vão pelo WhatsApp)
   layout.mjs           ← <head>, header, footer, breadcrumbs, componentes
   pages.mjs            ← conteúdo de cada página
 scripts/build.mjs      ← gera os HTML a partir de src/
@@ -83,7 +86,7 @@ O número fica centralizado em `src/config.mjs` (`whatsapp.number`). Todos os bo
 **O que enviar para `public_html/`** (substituindo os arquivos com o mesmo nome):
 
 - `index.html`, `404.html`, `.htaccess`, `robots.txt`, `sitemap.xml`, `site.webmanifest`
-- as pastas `assets/`, `servicos/`, `projetos/`, `sobre/`, `contato/`
+- as pastas `assets/`, `servicos/`, `projetos/`, `sobre/`, `contato/`, `briefing/`
 
 **Não enviar:** `src/`, `scripts/`, `projeto/`, `.git/`, `README.md`, `.gitignore`.
 **Nunca apagar:** as pastas `calma72/`, `ceia/`, `bilhardourado/`, `rota360/`.
