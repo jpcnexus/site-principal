@@ -16,7 +16,7 @@ export const projects = [
   {
     slug: 'calma72',
     ativo: true,
-    referencia: 'R$ 890', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
+    referencia: 'R$ 900', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
     destaque: true,
     nome: 'Calma72',
     categoria: 'Landing Page',
@@ -54,7 +54,7 @@ export const projects = [
   {
     slug: 'ceia',
     ativo: true,
-    referencia: 'R$ 790', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
+    referencia: 'R$ 800', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
     destaque: true,
     nome: 'Ceia no Seu Orçamento',
     nomeCurto: 'Ceia',
@@ -93,7 +93,7 @@ export const projects = [
   {
     slug: 'bilhar-dourado',
     ativo: true,
-    referencia: 'R$ 960', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
+    referencia: 'R$ 1.000', // quanto um cliente pagaria por um projeto semelhante (tabela atual)
     destaque: true,
     nome: 'Bilhar Dourado',
     categoria: 'Site Comercial e Sistema',

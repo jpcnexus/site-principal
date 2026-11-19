@@ -31,7 +31,15 @@ export function waLink(message = whatsapp.defaultMessage) {
 }
 
 // Preços de referência ("a partir de"). O valor final sempre vem na proposta.
+// Para mudar um valor, altere só aqui: a home e a página /servicos/ usam esta lista.
 export const pricing = {
+  tabela: [
+    { nome: 'Página de links', desc: 'Uma página com a sua marca e todos os seus links e botões, para a bio do Instagram e o WhatsApp.', valor: 'R$ 150', href: '/servicos/solucoes-digitais/' },
+    { nome: 'Catálogo digital', desc: 'Seus produtos e preços organizados, com pedido pelo WhatsApp e QR Code.', valor: 'R$ 300', href: '/servicos/solucoes-digitais/' },
+    { nome: 'Landing page', desc: 'Uma página de vendas focada em um produto ou serviço.', valor: 'R$ 500', href: '/servicos/landing-pages/' },
+    { nome: 'Site do seu negócio', desc: 'Site completo com até 5 páginas: serviços, fotos, contato e botão do WhatsApp.', valor: 'R$ 1.000', href: '/servicos/sites/' },
+    { nome: 'Sistema sob medida', desc: 'Programa para organizar agenda, clientes e tarefas. Valor confirmado após avaliação.', valor: 'R$ 1.500', href: '/servicos/automacoes/' },
+  ],
   manutencao: 'R$ 50/mês',
   pagamento: '50% para começar e 50% na entrega',
   observacao: 'Domínio e hospedagem são contratados à parte, no nome do cliente.',

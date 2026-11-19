@@ -259,3 +259,49 @@ html.pre-on .h-pre { display: flex; }
 .h-work-view.is-visible img.is-pan { animation-play-state: running; }
 @keyframes h-pan { 0%, 6% { transform: translateY(0); } 94%, 100% { transform: translateY(calc(var(--dist) * -1)); } }
 @media (prefers-reduced-motion: reduce) { .h-work-view img.is-pan { animation: none; } }
+
+/* ---------- Tabela de preços (valores mínimos) ---------- */
+.h-prices { padding: 110px 0 40px; }
+.h-prices .section-text strong { color: var(--text); }
+.h-ptab { max-width: 860px; margin: 0 auto; padding: 1px; border-radius: var(--radius-lg); background: linear-gradient(135deg, rgba(59,130,246,.55), rgba(148,163,184,.14) 40%, rgba(148,163,184,.14) 60%, rgba(34,211,238,.55)); box-shadow: 0 30px 80px -40px rgba(34,211,238,.35); }
+.h-ptab table { width: 100%; border-collapse: collapse; border-radius: calc(var(--radius-lg) - 1px); overflow: hidden; background: linear-gradient(180deg, #121922, #0E141B); }
+.h-ptab thead th { padding: 16px 26px; font: 600 .72rem/1 var(--font-head); letter-spacing: .18em; text-transform: uppercase; color: var(--dim); text-align: left; border-bottom: 1px solid var(--line-2); }
+.h-ptab thead th:last-child, .h-ptab td { text-align: right; }
+.h-ptab tbody tr { border-top: 1px solid var(--line); transition: background-color .25s; }
+.h-ptab tbody tr:first-child { border-top: 0; }
+.h-ptab tbody tr:hover { background: rgba(34,211,238,.05); }
+.h-ptab th[scope="row"] { text-align: left; font-weight: 400; padding: 0; }
+.h-ptab th[scope="row"] a, .h-ptab tfoot th[scope="row"] { display: block; padding: 20px 26px; color: inherit; }
+.h-ptab th b { display: block; font: 600 1.08rem/1.3 var(--font-head); color: var(--text); }
+.h-ptab th a b::after { content: " →"; color: var(--cyan); opacity: 0; transition: opacity .25s; }
+.h-ptab tr:hover th a b::after, .h-ptab th a:focus-visible b::after { opacity: 1; }
+.h-ptab th span { display: block; margin-top: 4px; font-size: .88rem; line-height: 1.45; color: var(--dim); max-width: 52ch; }
+.h-ptab td { padding: 20px 26px 20px 12px; white-space: nowrap; vertical-align: middle; }
+.h-ptab td small { display: block; font-size: .72rem; letter-spacing: .04em; color: var(--dim); }
+.h-ptab td strong { font: 700 1.55rem/1.15 var(--font-head); background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.h-ptab td em { font-style: normal; font-size: .9rem; }
+.h-ptab tfoot tr { border-top: 1px dashed var(--line-2); background: rgba(59,130,246,.06); }
+.h-ptab tfoot td strong { font-size: 1.25rem; }
+.h-pnotes { max-width: 860px; margin: 22px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; font-size: .88rem; color: var(--muted); }
+.h-pnotes li { display: flex; gap: 10px; align-items: flex-start; padding: 14px 16px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: rgba(21,27,35,.5); }
+.h-pnotes b { color: var(--text); font-weight: 600; }
+.h-pnotes .ico { flex: none; color: var(--cyan); margin-top: 2px; }
+.h-pfoot { margin-top: 22px; text-align: center; }
+@media (max-width: 767px) {
+  .h-prices { padding: 56px 0 8px; }
+  .h-prices .section-head { text-align: left; margin-bottom: 22px; }
+  .h-ptab thead th { padding: 12px 16px; }
+  .h-ptab th[scope="row"] a, .h-ptab tfoot th[scope="row"] { padding: 14px 4px 14px 16px; }
+  .h-ptab th b { font-size: 1rem; }
+  .h-ptab th span { font-size: .8rem; }
+  .h-ptab td { padding: 14px 16px 14px 8px; }
+  .h-ptab td strong { font-size: 1.25rem; }
+  .h-ptab tfoot td strong { font-size: 1.1rem; }
+  .h-ptab thead th { letter-spacing: .12em; white-space: nowrap; }
+  .h-ptab th a b::after { content: none; }
+  .h-ptab th span { line-height: 1.4; }
+  .h-pnotes { grid-template-columns: 1fr; gap: 0; font-size: .84rem; margin-top: 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: rgba(21,27,35,.5); }
+  .h-pnotes li { padding: 10px 12px; border: 0; border-top: 1px solid var(--line); border-radius: 0; background: none; }
+  .h-pnotes li:first-child { border-top: 0; }
+  .h-pfoot { text-align: left; }
+}

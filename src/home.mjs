@@ -1,5 +1,5 @@
 // Página inicial — cenas aprovadas na Carta 2 (ver projeto/roteiro.md).
-import { site, whatsapp, waLink } from './config.mjs';
+import { site, whatsapp, waLink, pricing } from './config.mjs';
 import { services } from './data/services.mjs';
 import { activeProjects, shortName } from './data/projects.mjs';
 import { page, esc, icon } from './layout.mjs';
@@ -31,7 +31,7 @@ const caseLines = {
 // Cor de fundo de cada projeto na galeria (tom escuro da identidade real de cada site)
 
 const faq = [
-  ['Quanto custa um site?', 'Os projetos começam em R$ 160 (página de links). Landing pages a partir de R$ 510 e sites institucionais a partir de R$ 960. O valor final vem na proposta personalizada, sem compromisso.'],
+  ['Quanto custa um site?', 'Os projetos começam em R$ 150 (página de links). Landing pages a partir de R$ 500 e sites institucionais a partir de R$ 1.000. O valor final vem na proposta personalizada, sem compromisso.'],
   ['Como funciona o pagamento?', '50% do valor para começar e os outros 50% na entrega do projeto. Domínio e hospedagem são contratados à parte, no seu nome.'],
   ['Depois que o site fica pronto, vocês continuam ajudando?', 'Sim. Existe a manutenção mensal opcional, a partir de R$ 50/mês, para atualizar textos e fotos, fazer ajustes e acompanhar o site.'],
   ['E se eu não souber o que preciso?', 'Normal. Conte o problema com suas palavras: a gente analisa e indica o formato mais adequado, que às vezes é mais simples do que você imagina.'],
@@ -141,6 +141,33 @@ export function home() {
   </div>
 </section>
 
+<section class="h-prices" id="precos" data-bg="#0B0F14" aria-labelledby="h-prices-title">
+  <div class="container">
+    <div class="section-head is-center"><p class="eyebrow" data-scramble>Preços</p>
+      <h2 id="h-prices-title" class="section-title h-split">Quanto custa? <span class="grad">Está aqui.</span></h2>
+      <p class="section-text">Estes são os <strong>valores mínimos</strong> de cada serviço. Você já sabe por onde começa o investimento, sem precisar chamar ninguém.</p></div>
+    <div class="h-ptab" data-reveal>
+      <table>
+        <caption class="sr-only">Valores mínimos dos serviços da Nexus JPC</caption>
+        <thead><tr><th scope="col">Serviço</th><th scope="col">Valor mínimo</th></tr></thead>
+        <tbody>
+        ${pricing.tabela
+          .map(
+            (t) => `<tr><th scope="row"><a href="${t.href}"><b>${esc(t.nome)}</b><span>${esc(t.desc)}</span></a></th><td><small>a partir de</small><strong>${esc(t.valor)}</strong></td></tr>`
+          )
+          .join('')}
+        </tbody>
+        <tfoot><tr><th scope="row"><b>Manutenção mensal</b><span>Opcional. Atualizar textos e fotos, fazer ajustes e acompanhar o site.</span></th><td><small>a partir de</small><strong>${esc(pricing.manutencao.replace('/mês', ''))}<em>/mês</em></strong></td></tr></tfoot>
+      </table>
+    </div>
+    <ul class="h-pnotes" data-reveal>
+      <li>${icon('check')}<span><b>Valor mínimo</b> é o ponto de partida. O valor exato depende do tamanho do projeto e vem por escrito antes de começar.</span></li>
+      <li>${icon('check')}<span><b>Pagamento:</b> ${esc(pricing.pagamento)}.</span></li>
+      <li>${icon('check')}<span><b>Domínio e hospedagem</b> à parte, no seu nome: o site é seu.</span></li>
+    </ul>
+    <p class="h-pfoot"><a class="link-arrow" href="/servicos/">Ver o que cada serviço inclui ${icon('arrow')}</a></p>
+  </div>
+</section>
 <section class="h-work" data-bg="#0B0F14" aria-labelledby="h-work-title">
   <div class="h-wide">
     <div class="h-work-head">

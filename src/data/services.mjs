@@ -4,7 +4,7 @@
 export const services = [
   {
     slug: 'sites',
-    preco: { valor: 'R$ 960', nota: 'site com até 5 páginas' },
+    preco: { valor: 'R$ 1.000', nota: 'site com até 5 páginas' },
     icon: 'monitor',
     titulo: 'Sites Institucionais',
     curto: 'Presença online profissional para sua marca.',
@@ -38,7 +38,7 @@ export const services = [
       'Site de profissional liberal com portfólio e agendamento por mensagem',
     ],
     faq: [
-      { q: 'Quanto custa um site institucional?', a: 'A partir de R$ 960 para um site com até 5 páginas. O valor final depende dos recursos e do conteúdo e vem na proposta personalizada. Pagamento: 50% para começar e 50% na entrega.' },
+      { q: 'Quanto custa um site institucional?', a: 'A partir de R$ 1.000 para um site com até 5 páginas. O valor final depende dos recursos e do conteúdo e vem na proposta personalizada. Pagamento: 50% para começar e 50% na entrega.' },
       { q: 'O site funciona bem no celular?', a: 'Sim. Todos os projetos são desenvolvidos com abordagem mobile-first e testados em diferentes tamanhos de tela.' },
       { q: 'Preciso ter domínio e hospedagem?', a: 'Se você ainda não tiver, orientamos sobre a contratação e preparamos o projeto para publicação.' },
       { q: 'Eu preciso entregar os textos e as fotos?', a: 'O ideal é que o conteúdo venha de você, porque ninguém conhece seu negócio melhor. Ajudamos a organizar e a estruturar as informações.' },
@@ -46,7 +46,7 @@ export const services = [
   },
   {
     slug: 'landing-pages',
-    preco: { valor: 'R$ 510', nota: 'página única focada em uma oferta' },
+    preco: { valor: 'R$ 500', nota: 'página única focada em uma oferta' },
     icon: 'pointer',
     titulo: 'Landing Pages',
     curto: 'Páginas estratégicas focadas em conversão.',
@@ -87,7 +87,7 @@ export const services = [
   },
   {
     slug: 'solucoes-digitais',
-    preco: { valor: 'R$ 160', nota: 'página de links; catálogo digital com QR Code a partir de R$ 290' },
+    preco: { valor: 'R$ 150', nota: 'página de links; catálogo digital com QR Code a partir de R$ 300' },
     icon: 'qr',
     titulo: 'Soluções Digitais',
     curto: 'Links, catálogos, QR Codes e ferramentas sob medida.',
@@ -127,7 +127,7 @@ export const services = [
   },
   {
     slug: 'automacoes',
-    preco: { valor: 'R$ 1.620', nota: 'após avaliação técnica do projeto' },
+    preco: { valor: 'R$ 1.500', nota: 'após avaliação técnica do projeto' },
     icon: 'workflow',
     titulo: 'Sistemas e Automações',
     curto: 'Agendamento, gestão e automação sob avaliação técnica.',

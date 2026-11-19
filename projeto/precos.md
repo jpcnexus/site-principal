@@ -5,11 +5,11 @@
 
 | Serviço | A partir de | Escopo de partida |
 |---|---|---|
-| Página de links / cartão digital | R$ 160 | 1 página com a sua marca, links e botões |
-| Catálogo digital com QR Code | R$ 290 | catálogo simples com pedido pelo WhatsApp + QR Code |
-| Landing page | R$ 510 | página única focada em uma oferta |
-| Site institucional | R$ 960 | até 5 páginas |
-| Sistemas e automações | R$ 1.620 | somente após avaliação técnica |
+| Página de links / cartão digital | R$ 150 | 1 página com a sua marca, links e botões |
+| Catálogo digital com QR Code | R$ 300 | catálogo simples com pedido pelo WhatsApp + QR Code |
+| Landing page | R$ 500 | página única focada em uma oferta |
+| Site institucional | R$ 1.000 | até 5 páginas |
+| Sistemas e automações | R$ 1.500 | somente após avaliação técnica |
 | Manutenção mensal (opcional) | R$ 50/mês | atualizações de texto e foto, ajustes, acompanhamento |
 
 **Condições:** 50% para começar e 50% na entrega. Domínio e hospedagem são contratados à parte, no nome do cliente.
